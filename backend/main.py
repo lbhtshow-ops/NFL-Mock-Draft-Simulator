@@ -38,6 +38,7 @@ def read_root():
 
 # API endpoint to check health
 @app.get("/health")
+@app.head("/health")
 def health_check():
     return {"status": "healthy", "timestamp": time.time()}
 
