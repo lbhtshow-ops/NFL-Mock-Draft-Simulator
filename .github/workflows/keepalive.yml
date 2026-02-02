@@ -1,8 +1,8 @@
-name: Keep Backend and Database Alive
+name: Keep Backend and Database Alive (Backup)
 
 on:
     schedule:
-        - cron: "*/10 * * * *"  # Runs every 10 minutes
+        - cron: "0 */6 * * *"  # Runs every 6 hours (at :00 minutes)
     workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
