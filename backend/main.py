@@ -89,12 +89,12 @@ def get_team(team_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Team not found")
     return db_team
 
-# API endpoint to retrieve all teams with pagination
+# API endpoint to retrieve all teams from specified year with pagination
 @app.get("/teams/", response_model=list[schemas.TeamBase])
-def get_teams(response: Response, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_teams(response: Response, year: int = 2026, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     response.headers["Cache-Control"] = "public, max-age=3600"
-    response.headers["ETag"] = "teams-v1"
-    return crud.get_teams(db=db, skip=skip, limit=limit)
+    response.headers["ETag"] = f"teams-v1-{year}"
+    return crud.get_teams(db=db, year=year, skip=skip, limit=limit)
 
 # API endpoint to update team information
 @app.put("/teams/{team_id}", response_model=schemas.TeamBase)
@@ -125,15 +125,15 @@ def get_draft_pick(draft_pick_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Draft pick not found")
     return db_draft_pick
 
-# API endpoint to retrieve draft picks by round
+# API endpoint to retrieve draft picks by round and year
 @app.get("/draft_picks/by_rounds/", response_model=list[schemas.DraftPickBase])
-def get_draft_picks_by_round(num_rounds: int = 7, db: Session = Depends(get_db)):
-    return crud.get_draft_picks_by_round(db=db, num_rounds=num_rounds)
+def get_draft_picks_by_round(num_rounds: int = 7, year: int = 2026, db: Session = Depends(get_db)):
+    return crud.get_draft_picks_by_round(db=db, num_rounds=num_rounds, year=year)
 
-# API endpoint to retrieve all draft picks with pagination
+# API endpoint to retrieve all draft picks with pagination and optional year filter
 @app.get("/draft_picks/", response_model=list[schemas.DraftPickBase])
-def get_draft_picks(skip: int = 0, limit: int = 300, db: Session = Depends(get_db)):
-    return crud.get_draft_picks(db=db, skip=skip, limit=limit)
+def get_draft_picks(year: int = None, skip: int = 0, limit: int = 300, db: Session = Depends(get_db)):
+    return crud.get_draft_picks(db=db, year=year, skip=skip, limit=limit)
 
 # API endpoint to update draft pick information
 @app.put("/draft_picks/{draft_pick_id}", response_model=schemas.DraftPickBase)

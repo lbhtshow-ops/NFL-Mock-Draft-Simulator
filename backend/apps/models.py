@@ -38,6 +38,7 @@ class Team(Base):
     lb = Column(Integer, nullable=False)
     cb = Column(Integer, nullable=False)
     s = Column(Integer, nullable=False)
+    year = Column(Integer, nullable=False)
 
     draft_picks = relationship("DraftPick", foreign_keys="[DraftPick.current_team_id]", back_populates="current_team")
 

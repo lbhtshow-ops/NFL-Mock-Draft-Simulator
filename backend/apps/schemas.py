@@ -53,6 +53,7 @@ class TeamCreate(BaseModel):
     lb: int
     cb: int
     s: int
+    year: int
 
 
 # Pydantic schema to read Team data
@@ -70,6 +71,7 @@ class TeamBase(BaseModel):
     lb: int
     cb: int
     s: int
+    year: int
 
     class Config:
         from_attributes = True
@@ -89,6 +91,7 @@ class TeamUpdate(BaseModel):
     lb: Optional[int] = None
     cb: Optional[int] = None
     s: Optional[int] = None
+    year: Optional[int] = None
 
 
 # Pydantic schema to create DraftPick

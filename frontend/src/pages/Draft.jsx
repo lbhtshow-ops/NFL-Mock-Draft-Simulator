@@ -85,7 +85,7 @@ function Draft() {
     const filteredPlayers = [...players].filter(player => (positionFilter.value === "ALL" || player.position === positionFilter.value) && player.name.toLowerCase().includes(searchQuery.toLowerCase())).sort((a, b) => a.rank - b.rank);
 
     // Initialize state variables for team management
-    const teamPositionalNeeds = currentTeam ? Object.entries(currentTeam).filter(([key, value]) => key !== "name" && key !== "id") : [];
+    const teamPositionalNeeds = currentTeam ? Object.entries(currentTeam).filter(([key, value]) => key !== "name" && key !== "id" && key !== "year") : [];
     const teamPicks = currentTeam ? picks.filter(pick => pick.team.id === currentTeam.id) : [];
     const getPositionUrgencyColor = (value) => {
         if (value >= 10) return '#9E1111';

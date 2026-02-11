@@ -20,7 +20,7 @@ function Home() {
     // Initialize state variables for draft settings
     const [name, setName] = useState("");
     const [numRounds, setNumRounds] = useState(1);
-    const [year, setYear] = useState(2025);
+    const [year, setYear] = useState(2026);
     const [autoPickDelay, setAutoPickDelay] = useState(1000);
     const [soundsMuted, setSoundsMuted] = useState(false);
     const [yearDropdownInteracted, setYearDropdownInteracted] = useState(false);
@@ -56,6 +56,7 @@ function Home() {
                 }, 45000); // 45 second timeout
 
                 const response = await axios.get(`${apiURL}/teams`, {
+                    params: { year: year },
                     signal: controller.signal,
                     timeout: 45000,
                     headers: {
@@ -85,7 +86,7 @@ function Home() {
         };
 
         fetchTeams();
-    }, [apiURL]);
+    }, [apiURL, year]);
 
     useEffect(() => {
         if (loading) {
@@ -147,7 +148,7 @@ function Home() {
             })));
 
             // Fetch draft picks for the specified number of rounds and create mock draft picks
-            const retrieved_picks = await axios.get(`${apiURL}/draft_picks/by_rounds/`, { params: { num_rounds: numRounds } });
+            const retrieved_picks = await axios.get(`${apiURL}/draft_picks/by_rounds/`, { params: { num_rounds: numRounds, year: year } });
             await Promise.all(retrieved_picks.data.map(pick => axios.post(`${apiURL}/mock_draft_picks`, {
                 mock_draft_id: createdDraft.id,
                 draft_pick_id: pick.id,
@@ -220,6 +221,9 @@ function Home() {
                                 onBlur={() => setYearDropdownInteracted(true)}
                                 className={yearDropdownInteracted ? "interacted" : ""}
                             >
+                                <option value={2026}>
+                                    2026
+                                </option>
                                 <option value={2025}>
                                     2025
                                 </option>

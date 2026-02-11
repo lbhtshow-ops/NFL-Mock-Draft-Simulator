@@ -9,7 +9,7 @@ from backend.apps.models import Team, Player, DraftPick
 from backend.database import SessionLocal
 
 # Define folder containing the data files
-DATA_FOLDER = os.path.join(os.path.dirname(__file__), "2025")
+DATA_FOLDER = os.path.join(os.path.dirname(__file__), "2026")
 
 # Establish database session
 session = SessionLocal()
@@ -43,7 +43,8 @@ with open(os.path.join(DATA_FOLDER, "teams.csv"), newline="") as file:
             dt=row["DT"],
             lb=row["LB"],
             cb=row["CB"],
-            s=row["S"]
+            s=row["S"],
+            year=row["Year"]
         )
         session.add(team)
 
@@ -53,8 +54,14 @@ session.commit()
 with open(os.path.join(DATA_FOLDER, "draft_picks.csv"), newline="") as file:
     reader = csv.DictReader(file)
     for row in reader:
-        current_team = session.query(Team).filter_by(name=row["Current Team"]).first()
-        original_team = session.query(Team).filter_by(name=row["Original Team"]).first()
+        current_team = session.query(Team).filter(
+            Team.name == row["Current Team"],
+            Team.year == int(row["Year"])
+        ).first()
+        original_team = session.query(Team).filter(
+            Team.name == row["Original Team"],
+            Team.year == int(row["Year"])
+        ).first()
 
         draft_pick = DraftPick(
             round = row["Round"],
@@ -67,3 +74,4 @@ with open(os.path.join(DATA_FOLDER, "draft_picks.csv"), newline="") as file:
 
 session.commit()
 session.close()
+print("2026 data imported successfully.")
