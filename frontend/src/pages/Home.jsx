@@ -134,27 +134,13 @@ function Home() {
 
         try {
             // Create new mock draft with selected settings
-            const result = await axios.post(`${apiURL}/mock_drafts`, {
+            const result = await axios.post(`${apiURL}/mock_drafts/bootstrap`, {
                 name: name || "Mock Draft",
                 num_rounds: numRounds,
-                year: year
+                year: year,
+                user_team_ids: selectedTeams
             });
             const createdDraft = result.data;
-
-            // Add user-controlled teams to the draft
-            await Promise.all(selectedTeams.map(teamId => axios.post(`${apiURL}/user_controlled_teams`, {
-                mock_draft_id: createdDraft.id,
-                team_id: teamId
-            })));
-
-            // Fetch draft picks for the specified number of rounds and create mock draft picks
-            const retrieved_picks = await axios.get(`${apiURL}/draft_picks/by_rounds/`, { params: { num_rounds: numRounds, year: year } });
-            await Promise.all(retrieved_picks.data.map(pick => axios.post(`${apiURL}/mock_draft_picks`, {
-                mock_draft_id: createdDraft.id,
-                draft_pick_id: pick.id,
-                team_id: pick.current_team_id,
-                original_team_id: pick.current_team_id
-            })));
 
             // Navigate to the created draft page with the created draft data
             navigate(`/draft/${createdDraft.id}`, { state: { createdDraft, autoPickDelay } });
@@ -216,6 +202,7 @@ function Home() {
                                 value={year}
                                 onChange={(e) => {
                                     setYear(parseInt(e.target.value));
+                                    setSelectedTeams([]);
                                     setYearDropdownInteracted(true);
                                 }}
                                 onBlur={() => setYearDropdownInteracted(true)}

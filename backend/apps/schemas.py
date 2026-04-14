@@ -5,7 +5,7 @@ Defines Pydantic schemas for creating, reading, and updating players, teams, dra
 
 # Import necessary packages and modules
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 
 # Pydantic schema to create Player
@@ -15,7 +15,6 @@ class PlayerCreate(BaseModel):
     college: str
     rank: int
     year: int
-
 
 # Pydantic schema to read Player data
 class PlayerBase(BaseModel):
@@ -29,7 +28,6 @@ class PlayerBase(BaseModel):
     class Config:
         from_attributes = True
 
-
 # Pydantic schema to update Player data
 class PlayerUpdate(BaseModel):
     name: Optional[str] = None
@@ -37,7 +35,6 @@ class PlayerUpdate(BaseModel):
     college: Optional[str] = None
     rank: Optional[int] = None
     year: Optional[int] = None
-
 
 # Pydantic schema to create Team
 class TeamCreate(BaseModel):
@@ -54,7 +51,6 @@ class TeamCreate(BaseModel):
     cb: int
     s: int
     year: int
-
 
 # Pydantic schema to read Team data
 class TeamBase(BaseModel):
@@ -76,7 +72,6 @@ class TeamBase(BaseModel):
     class Config:
         from_attributes = True
 
-
 # Pydantic schema to update Team data
 class TeamUpdate(BaseModel):
     name: Optional[str] = None
@@ -93,7 +88,6 @@ class TeamUpdate(BaseModel):
     s: Optional[int] = None
     year: Optional[int] = None
 
-
 # Pydantic schema to create DraftPick
 class DraftPickCreate(BaseModel):
     pick_number: int
@@ -101,7 +95,6 @@ class DraftPickCreate(BaseModel):
     year: int
     current_team_id: int
     original_team_id: int
-
 
 # Pydantic schema to read DraftPick data
 class DraftPickBase(BaseModel):
@@ -115,7 +108,6 @@ class DraftPickBase(BaseModel):
     class Config:
         from_attributes = True
 
-
 # Pydantic schema to update DraftPick data
 class DraftPickUpdate(BaseModel):
     pick_number: Optional[int] = None
@@ -124,13 +116,18 @@ class DraftPickUpdate(BaseModel):
     current_team_id: Optional[int] = None
     original_team_id: Optional[int] = None
 
+# Pydantic schema to create MockDraft with user team IDs
+class MockDraftBootstrapCreate(BaseModel):
+    name: Optional[str] = "Mock Draft"
+    num_rounds: int
+    year: int
+    user_team_ids: List[int]
 
 # Pydantic schema to create MockDraft
 class MockDraftCreate(BaseModel):
     name: Optional[str] = "Mock Draft"
     num_rounds: int
     year: int
-
 
 # Pydantic schema to read MockDraft data
 class MockDraftBase(BaseModel):
@@ -142,13 +139,11 @@ class MockDraftBase(BaseModel):
     class Config:
         from_attributes = True
 
-
 # Pydantic schema to update MockDraft data
 class MockDraftUpdate(BaseModel):
     name: Optional[str] = None
     num_rounds: Optional[str] = None
     year: Optional[int] = None
-
 
 # Pydantic schema to create MockDraftPick
 class MockDraftPickCreate(BaseModel):
@@ -156,7 +151,6 @@ class MockDraftPickCreate(BaseModel):
     team_id: int
     draft_pick_id: int
     original_team_id: int
-
 
 # Pydantic schema to read MockDraftPick data
 class MockDraftPickBase(BaseModel):
@@ -175,7 +169,6 @@ class MockDraftPickBase(BaseModel):
     class Config:
         from_attributes = True
 
-
 # Pydantic schema to update MockDraftPick data
 class MockDraftPickUpdate(BaseModel):
     mock_draft_id: Optional[int] = None
@@ -184,12 +177,10 @@ class MockDraftPickUpdate(BaseModel):
     draft_pick_id: Optional[int] = None
     original_team_id: Optional[int] = None
 
-
 # Pydantic schema to create UserControlledTeam
 class UserControlledTeamCreate(BaseModel):
     mock_draft_id: int
     team_id: int
-
 
 # Pydantic schema to read UserControlledTeam data
 class UserControlledTeamBase(BaseModel):
@@ -199,7 +190,6 @@ class UserControlledTeamBase(BaseModel):
 
     class Config:
         from_attributes = True
-
 
 # Pydantic schema to update UserControlledTeam data
 class UserControlledTeamUpdate(BaseModel):

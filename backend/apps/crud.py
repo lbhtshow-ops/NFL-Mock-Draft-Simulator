@@ -17,16 +17,13 @@ def create_player(db: Session, player: schemas.PlayerCreate):
     db.refresh(db_player)
     return db_player
 
-
 # Retrieve player from database by ID
 def get_player(db: Session, player_id: int):
     return db.query(models.Player).filter(models.Player.id == player_id).first()
 
-
 # Retrieve all players from database, filtered by year with pagination support
 def get_players(db: Session, year: int = 2025):
     return db.query(models.Player).filter(models.Player.year == year).all()
-
 
 # Update player information in the database
 def update_player(db: Session, player_id: int, player: schemas.PlayerUpdate):
@@ -46,7 +43,6 @@ def update_player(db: Session, player_id: int, player: schemas.PlayerUpdate):
         db.refresh(db_player)
     return db_player
 
-
 # Delete player from database by ID
 def delete_player(db: Session, player_id: int):
     db_player = db.query(models.Player).filter(models.Player.id == player_id).first()
@@ -56,7 +52,6 @@ def delete_player(db: Session, player_id: int):
         return db_player
     return None
 
-
 # Create team and add to database
 def create_team(db: Session, team: schemas.TeamCreate):
     db_team = models.Team(name=team.name, qb=team.qb, rb=team.rb, wr=team.wr,te=team.te, ot=team.ot, iol=team.iol, de=team.de, dt=team.dt, lb=team.lb, cb=team.cb, s=team.s, year=team.year)
@@ -65,16 +60,13 @@ def create_team(db: Session, team: schemas.TeamCreate):
     db.refresh(db_team)
     return db_team
 
-
 # Retrieve team from database by ID
 def get_team(db: Session, team_id: int):
     return db.query(models.Team).filter(models.Team.id == team_id).first()
 
-
 # Retrieve all teams from database from specified year, with pagination support
 def get_teams(db: Session, year: int = 2026, skip: int = 0, limit: int = 32):
     return db.query(models.Team).filter(models.Team.year == year).order_by(models.Team.id).offset(skip).limit(limit).all()
-
 
 # Update team information in the database
 def update_team(db: Session, team_id: int, team: schemas.TeamUpdate):
@@ -110,7 +102,6 @@ def update_team(db: Session, team_id: int, team: schemas.TeamUpdate):
         db.refresh(db_team)
     return db_team
 
-
 # Delete team from database by ID
 def delete_team(db: Session, team_id: int):
     db_team = db.query(models.Team).filter(models.Team.id == team_id).first()
@@ -120,7 +111,6 @@ def delete_team(db: Session, team_id: int):
         return db_team
     return None
 
-
 # Create draft pick and add to database
 def create_draft_pick(db: Session, draft_pick: schemas.DraftPickCreate):
     db_draft_pick = models.DraftPick(pick_number=draft_pick.pick_number, round=draft_pick.round, year=draft_pick.year, current_team_id=draft_pick.current_team_id, original_team_id=draft_pick.original_team_id)
@@ -129,11 +119,9 @@ def create_draft_pick(db: Session, draft_pick: schemas.DraftPickCreate):
     db.refresh(db_draft_pick)
     return db_draft_pick
 
-
 # Retrieve draft pick from database by ID
 def get_draft_pick(db: Session, draft_pick_id: int):
     return db.query(models.DraftPick).filter(models.DraftPick.id == draft_pick_id).first()
-
 
 # Retrieve all draft picks from database, with pagination support and optional year filter
 def get_draft_picks(db: Session, year: int = None, skip: int = 0, limit: int = 300):
@@ -142,11 +130,9 @@ def get_draft_picks(db: Session, year: int = None, skip: int = 0, limit: int = 3
         query = query.filter(models.DraftPick.year == year)
     return query.order_by(models.DraftPick.pick_number).offset(skip).limit(limit).all()
 
-
 # Retrieve draft picks from database, filtered by round and year
 def get_draft_picks_by_round(db: Session, num_rounds: int, year: int = 2026):
     return db.query(models.DraftPick).filter(models.DraftPick.round <= num_rounds, models.DraftPick.year == year).all()
-
 
 # Update draft pick information in the database
 def update_draft_pick(db: Session, draft_pick_id: int, draft_pick: schemas.DraftPickUpdate):
@@ -166,7 +152,6 @@ def update_draft_pick(db: Session, draft_pick_id: int, draft_pick: schemas.Draft
         db.refresh(db_draft_pick)
     return db_draft_pick
 
-
 # Delete draft pick from database by ID
 def delete_draft_pick(db: Session, draft_pick_id: int):
     db_draft_pick = db.query(models.DraftPick).filter(models.DraftPick.id == draft_pick_id).first()
@@ -176,6 +161,50 @@ def delete_draft_pick(db: Session, draft_pick_id: int):
         return db_draft_pick
     return None
 
+# Create mock draft with associated user-controlled teams and mock draft picks based on specified number of rounds and year, and add to database
+def create_mock_draft_bootstrap(db: Session, payload: schemas.MockDraftBootstrapCreate):
+    try:
+        db_mock_draft = models.MockDraft(
+            name=payload.name,
+            num_rounds=payload.num_rounds,
+            year=payload.year
+        )
+        db.add(db_mock_draft)
+        db.flush()
+
+        for team_id in payload.user_team_ids:
+            db.add(models.UserControlledTeam(
+                mock_draft_id=db_mock_draft.id,
+                team_id=team_id
+            ))
+
+        draft_picks = (
+            db.query(models.DraftPick)
+            .filter(
+                models.DraftPick.round <= payload.num_rounds,
+                models.DraftPick.year == payload.year
+            )
+            .order_by(models.DraftPick.pick_number)
+            .all()
+        )
+
+        if not draft_picks:
+            raise ValueError(f"No draft picks found for year={payload.year}, rounds<={payload.num_rounds}")
+
+        for pick in draft_picks:
+            db.add(models.MockDraftPick(
+                mock_draft_id=db_mock_draft.id,
+                draft_pick_id=pick.id,
+                team_id=pick.current_team_id,
+                original_team_id=pick.original_team_id
+            ))
+
+        db.commit()
+        db.refresh(db_mock_draft)
+        return db_mock_draft
+    except Exception:
+        db.rollback()
+        raise
 
 # Create mock draft and add to database
 def create_mock_draft(db: Session, mock_draft: schemas.MockDraftCreate):
@@ -185,16 +214,13 @@ def create_mock_draft(db: Session, mock_draft: schemas.MockDraftCreate):
     db.refresh(db_mock_draft)
     return db_mock_draft
 
-
 # Retrieve mock draft from database by ID
 def get_mock_draft(db: Session, mock_draft_id: int):
     return db.query(models.MockDraft).filter(models.MockDraft.id == mock_draft_id).first()
 
-
 # Retrieve all mock drafts from database, with pagination support
 def get_mock_drafts(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.MockDraft).offset(skip).limit(limit).all()
-
 
 # Update mock draft information in the database
 def update_mock_draft(db: Session, mock_draft_id: int, mock_draft: schemas.MockDraftUpdate):
@@ -210,7 +236,6 @@ def update_mock_draft(db: Session, mock_draft_id: int, mock_draft: schemas.MockD
         db.refresh(db_mock_draft)
     return db_mock_draft
 
-
 # Delete mock draft from database by ID
 def delete_mock_draft(db: Session, mock_draft_id: int):
     db_mock_draft = db.query(models.MockDraft).filter(models.MockDraft.id == mock_draft_id).first()
@@ -220,7 +245,6 @@ def delete_mock_draft(db: Session, mock_draft_id: int):
         return db_mock_draft
     return None
 
-
 # Create mock draft pick and add to database
 def create_mock_draft_pick(db: Session, mock_draft_pick: schemas.MockDraftPickCreate):
     db_mock_draft_pick = models.MockDraftPick(mock_draft_id=mock_draft_pick.mock_draft_id, team_id=mock_draft_pick.team_id, draft_pick_id=mock_draft_pick.draft_pick_id, original_team_id=mock_draft_pick.original_team_id)
@@ -229,16 +253,13 @@ def create_mock_draft_pick(db: Session, mock_draft_pick: schemas.MockDraftPickCr
     db.refresh(db_mock_draft_pick)
     return db_mock_draft_pick
 
-
 # Retrieve mock draft pick from database by ID
 def get_mock_draft_pick(db: Session, mock_draft_pick_id: int):
     return db.query(models.MockDraftPick).filter(models.MockDraftPick.id == mock_draft_pick_id).first()
 
-
 # Retrieve all mock draft picks for specified mock draft from database, with pagination support
 def get_mock_draft_picks(db: Session, mock_draft_id: int, skip: int = 0, limit: int = 300):
     return db.query(models.MockDraftPick).filter(models.MockDraftPick.mock_draft_id == mock_draft_id).offset(skip).limit(limit).all()
-
 
 # Update mock draft pick information in the database
 def update_mock_draft_pick(db: Session, mock_draft_pick_id: int, mock_draft_pick: schemas.MockDraftPickUpdate):
@@ -258,7 +279,6 @@ def update_mock_draft_pick(db: Session, mock_draft_pick_id: int, mock_draft_pick
         db.refresh(db_mock_draft_pick)
     return db_mock_draft_pick
 
-
 # Delete mock draft pick from database by ID
 def delete_mock_draft_pick(db: Session, mock_draft_pick_id: int):
     db_mock_draft_pick = db.query(models.MockDraftPick).filter(models.MockDraftPick.id == mock_draft_pick_id).first()
@@ -268,7 +288,6 @@ def delete_mock_draft_pick(db: Session, mock_draft_pick_id: int):
         return db_mock_draft_pick
     return None
 
-
 # Create user-controlled team and add to database
 def create_user_controlled_team(db: Session, user_controlled_team: schemas.UserControlledTeamCreate):
     db_user_controlled_team = models.UserControlledTeam(mock_draft_id=user_controlled_team.mock_draft_id, team_id=user_controlled_team.team_id)
@@ -277,16 +296,13 @@ def create_user_controlled_team(db: Session, user_controlled_team: schemas.UserC
     db.refresh(db_user_controlled_team)
     return db_user_controlled_team
 
-
 # Retrieve user-controlled team from database by ID
 def get_user_controlled_team(db: Session, user_controlled_team_id: int):
     return db.query(models.UserControlledTeam).filter(models.UserControlledTeam.id == user_controlled_team_id).first()
 
-
 # Retrieve all user-controlled teams for specified mock draft from database, with pagination support
 def get_user_controlled_teams(db: Session, mock_draft_id: int, skip: int = 0, limit: int = 32):
     return db.query(models.UserControlledTeam).filter(models.UserControlledTeam.mock_draft_id == mock_draft_id).offset(skip).limit(limit).all()
-
 
 # Update user-controlled team information in the database
 def update_user_controlled_team(db: Session, user_controlled_team_id: int, user_controlled_team: schemas.UserControlledTeamUpdate):
@@ -299,7 +315,6 @@ def update_user_controlled_team(db: Session, user_controlled_team_id: int, user_
         db.commit()
         db.refresh(db_user_controlled_team)
     return db_user_controlled_team
-
 
 # Delete user-controlled team from database by ID
 def delete_user_controlled_team(db: Session, user_controlled_team_id: int):

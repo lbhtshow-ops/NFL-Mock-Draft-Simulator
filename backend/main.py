@@ -151,6 +151,14 @@ def delete_draft_pick(draft_pick_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Draft pick not found")
     return db_draft_pick
 
+# API endpoint to create mock draft using bootstrap method
+@app.post("/mock_drafts/bootstrap", response_model=schemas.MockDraftBase)
+def create_mock_draft_bootstrap(payload: schemas.MockDraftBootstrapCreate, db: Session = Depends(get_db)):
+    try:
+        return crud.create_mock_draft_bootstrap(db=db, payload=payload)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 # API endpoint to create mock draft
 @app.post("/mock_drafts", response_model=schemas.MockDraftBase)
 def create_mock_draft(mock_draft: schemas.MockDraftCreate, db: Session = Depends(get_db)):
