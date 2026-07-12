@@ -1,0 +1,30 @@
+.intelligence_tabs{
+    display:flex;
+    gap:12px;
+    padding:24px 32px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    overflow-x:auto;
+}
+
+.intelligence_tab{
+    background:none;
+    border:none;
+    color:#8da2c4;
+    font-weight:700;
+    letter-spacing:.05em;
+    cursor:pointer;
+    padding:12px 18px;
+    border-radius:12px;
+    transition:.25s;
+    white-space:nowrap;
+}
+
+.intelligence_tab:hover{
+    color:white;
+    background:rgba(255,255,255,.05);
+}
+
+.intelligence_tab.active{
+    background:#18d2c3;
+    color:#051426;
+}

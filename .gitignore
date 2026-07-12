@@ -1,0 +1,49 @@
+# IDE's project files
+.idea
+
+# vscode
+.vscode
+
+# Mac system files
+.DS_Store
+
+# Python virtual environment
+venv/
+
+# Environment variables
+backend/.env
+
+# Terminal commands
+terminal.txt
+
+# Dump files
+nfl_mock_draft_simulator.dump
+
+# Python cache and tooling
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node / frontend dependencies and builds
+node_modules/
+dist/
+build/
+coverage/
+
+# Local environment files
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs and temporary files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tmp
+*.temp

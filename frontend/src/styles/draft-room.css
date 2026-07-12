@@ -1,0 +1,2309 @@
+/* ==============================
+   Draft Room V2
+============================== */
+
+.draft_room_v2 {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(20, 184, 166, 0.12), transparent 32%),
+    linear-gradient(180deg, #0f172a 0%, #111827 45%, #0b1120 100%);
+  color: #f8fafc;
+  padding: 24px;
+}
+
+.draft_room_v2_shell {
+  display: grid;
+
+  grid-template-columns:
+    260px
+    minmax(0, 1.25fr)
+    300px;
+
+  gap: 24px;
+
+  max-width: 1900px;
+
+  margin: 0 auto;
+
+  align-items: start;
+}
+
+.draft_room_v2_panel {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(30, 41, 59, 0.86), rgba(15, 23, 42, 0.94));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.draft_room_v2_kicker {
+  margin: 0 0 8px;
+  color: #f59e0b;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.draft_room_v2_title {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.draft_room_v2 .draft_main {
+  width: min(1800px, calc(100% - 48px));
+  margin: 0 auto 40px;
+  padding: 0;
+}
+
+.draft_room_v2_shell {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr) 360px;
+  gap: 24px;
+  align-items: start;
+}
+
+.draft_room_v2 .draft_header {
+  margin-bottom: 18px;
+}
+
+.draft_room_v2_tracker {
+  display: grid;
+  grid-template-columns: 260px minmax(360px, 1fr) 360px;
+  gap: 18px;
+  align-items: stretch;
+  max-width: 1800px;
+  margin: 0 auto 18px;
+}
+
+.draft_room_v2_tracker_meta,
+.draft_room_v2_on_clock,
+.draft_room_v2_upcoming {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.86), rgba(15, 23, 42, 0.94));
+  padding: 18px;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+}
+
+.draft_room_v2_tracker_meta h1 {
+  margin: 0 0 8px;
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.draft_room_v2_tracker_meta span,
+.draft_room_v2_on_clock span {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.draft_room_v2_on_clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  border-color: rgba(20, 184, 166, 0.35);
+}
+
+.draft_room_v2_on_clock_logo {
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.draft_room_v2_on_clock_logo img {
+  max-width: 62px;
+  max-height: 62px;
+  object-fit: contain;
+}
+
+.draft_room_v2_on_clock h2 {
+  margin: 0 0 6px;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.draft_room_v2_upcoming_list {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.draft_room_v2_upcoming_pick {
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.62);
+  padding: 10px;
+}
+
+.draft_room_v2_upcoming_pick span {
+  display: block;
+  color: #f59e0b;
+  font-size: 0.75rem;
+  font-weight: 900;
+}
+
+.draft_room_v2_upcoming_pick strong {
+  display: block;
+  margin-top: 4px;
+  color: #f8fafc;
+  font-size: 0.85rem;
+}
+
+/* =======================================================
+   DRAFT OPERATIONS PANEL
+======================================================= */
+
+.draft_command_panel{
+    display:flex;
+    flex-direction:column;
+    gap:22px;
+}
+
+.draft_command_header,
+.draft_command_status,
+.draft_command_settings,
+.draft_command_session{
+    background:rgba(7,18,45,.55);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:18px;
+    padding:20px;
+}
+
+.draft_command_header h2{
+    margin:6px 0;
+    color:#fff;
+    font-size:1.35rem;
+}
+
+.draft_command_header span{
+    color:#6de8d4;
+    font-size:.85rem;
+    font-weight:700;
+}
+
+.draft_command_actions{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:12px;
+}
+
+.draft_ops_v2_primary,
+.draft_ops_v2_button{
+    width:100%;
+    padding:14px 18px;
+    border:none;
+    border-radius:14px;
+    cursor:pointer;
+    transition:.18s;
+    font-size:.95rem;
+    font-weight:700;
+}
+
+.draft_ops_v2_primary{
+    background:#14b8a6;
+    color:white;
+}
+
+.draft_ops_v2_button{
+    background:#243244;
+    color:#f8fafc;
+}
+
+.draft_ops_v2_button.danger{
+    background:#7f1d1d;
+}
+
+.draft_ops_v2_button:hover,
+.draft_ops_v2_primary:hover{
+    transform:translateY(-2px);
+}
+
+.draft_command_status_grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:16px;
+    margin-top:18px;
+}
+
+.draft_command_status_grid div{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.draft_command_status_grid span{
+    color:#94a3b8;
+    font-size:.75rem;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+
+.draft_command_status_grid strong{
+    color:white;
+    font-size:1rem;
+}
+
+.draft_command_settings{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.draft_ops_v2_setting{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.draft_ops_v2_slider{
+    width:100%;
+}
+
+.draft_ops_v2_sound{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:12px;
+    background:#334155;
+    color:white;
+    cursor:pointer;
+}
+
+.draft_command_session .draft_ops_v2_info{
+    display:grid;
+    gap:14px;
+    margin-top:16px;
+}
+
+.draft_command_session .draft_ops_v2_info div{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    padding-bottom:8px;
+}
+
+.draft_command_session .draft_ops_v2_info span{
+    color:#94a3b8;
+    font-size:.82rem;
+}
+
+.draft_command_session .draft_ops_v2_info strong{
+    color:white;
+}
+
+@media (max-width:1100px){
+
+    .draft_command_status_grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+/* =======================================================
+   DRAFT COMMAND CARD
+======================================================= */
+
+.draft_command_v2 {
+  display: grid;
+  grid-template-columns: 90px 1fr 120px;
+  gap: 18px;
+  align-items: center;
+  padding: 22px;
+  margin-bottom: 18px;
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.draft_command_v2_logo {
+  width: 78px;
+  height: 78px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.draft_command_v2_logo img {
+  max-width: 64px;
+  max-height: 64px;
+  object-fit: contain;
+}
+
+.draft_command_v2_content h2 {
+  margin: 0 0 6px;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.draft_command_v2_content span {
+  display: block;
+  color: #cbd5e1;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.draft_command_v2_content strong {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.draft_command_v2_ai {
+  color: #f59e0b;
+}
+
+.draft_command_v2_user {
+  color: #14b8a6;
+}
+
+.draft_command_v2_actions {
+  display: grid;
+  gap: 10px;
+}
+
+.draft_command_v2_actions button {
+  padding: 12px 14px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 12px;
+  background: #243244;
+  color: #f8fafc;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.draft_command_v2_actions button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* =======================================================
+   PROSPECT BOARD V2
+======================================================= */
+
+.prospect_board_v2 {
+  overflow: hidden;
+  padding: 0;
+  background:
+    linear-gradient(180deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.96));
+}
+
+.prospect_board_v2 .draft_command_v2 {
+  margin: 18px;
+}
+
+.prospect_board_v2 .big_board_header {
+  display: grid;
+  grid-template-columns: 180px 1fr 220px;
+  align-items: center;
+  gap: 16px;
+  padding: 0 18px 18px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.prospect_board_v2 .big_board_center h2 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.prospect_board_v2 .players {
+  max-height: 620px;
+  overflow-y: auto;
+  padding: 12px 18px 18px;
+}
+
+.prospect_board_v2_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  background:
+    linear-gradient(180deg, rgba(15, 23, 42, 0.86), rgba(15, 23, 42, 0.62));
+}
+
+.prospect_board_v2_title_block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 180px;
+}
+
+.prospect_board_v2_kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #2dd4bf;
+}
+
+.prospect_board_v2_title_block h2 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 850;
+  color: #f8fafc;
+}
+
+.prospect_board_v2_toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.prospect_board_v2_search {
+  min-width: 220px;
+  max-width: 300px;
+  flex: 1;
+}
+
+.prospect_board_v2 .player_search_input {
+  width: 100%;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.82);
+  color: #f8fafc;
+  padding: 0 14px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.prospect_board_v2 .player_search_input::placeholder {
+  color: rgba(203, 213, 225, 0.62);
+}
+
+.prospect_board_v2 .player_search_input:focus {
+  border-color: rgba(45, 212, 191, 0.55);
+  box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1);
+}
+
+.prospect_board_v2_filter_button,
+.prospect_board_v2_sort_button {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.82);
+  color: #e2e8f0;
+  padding: 0 14px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.prospect_board_v2_filter_button:hover,
+.prospect_board_v2_sort_button:hover {
+  border-color: rgba(45, 212, 191, 0.45);
+  color: #5eead4;
+}
+
+.prospect_table_v2 {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow-x: auto;
+}
+
+.prospect_table_v2_head {
+  display: grid;
+  grid-template-columns: 44px minmax(250px, 1.8fr) 52px 100px 64px 82px 90px 90px;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(15, 23, 42, 0.88);
+  color: rgba(203, 213, 225, 0.72);
+  font-size: 0.62rem;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  white-space: nowrap;
+}
+
+.prospect_row_v2 {
+  display: grid;
+  grid-template-columns: 44px minmax(250px, 1.8fr) 52px 100px 64px 82px 90px 90px;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  background: rgba(15, 23, 42, 0.42);
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.prospect_row_v2:hover {
+  background: rgba(30, 41, 59, 0.72);
+  border-color: rgba(45, 212, 191, 0.24);
+}
+
+.prospect_row_v2.preview_selected {
+  background:
+    linear-gradient(90deg, rgba(45, 212, 191, 0.16), rgba(15, 23, 42, 0.58));
+  border-color: rgba(45, 212, 191, 0.38);
+}
+
+.prospect_row_rank {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(30,41,59,.95),
+      rgba(15,23,42,.95)
+    );
+
+  border: 1px solid rgba(45,212,191,.22);
+
+  color: white;
+
+  font-size: .95rem;
+  font-weight: 800;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.prospect_row_player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.prospect_row_player_text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.prospect_row_pos {
+  color: #5eead4;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.prospect_row_school {
+  color: #cbd5e1;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.prospect_row_tier{
+
+  justify-self:start;
+
+  padding:6px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(59,130,246,.15);
+
+  color:#93c5fd;
+
+  border:1px solid rgba(59,130,246,.28);
+
+  font-size:.72rem;
+
+  font-weight:800;
+
+  text-transform:uppercase;
+
+  letter-spacing:.06em;
+}
+
+.prospect_row_grade {
+
+  width: 56px;
+  height: 34px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(16,185,129,.25),
+      rgba(5,150,105,.18)
+    );
+
+  color:#6ee7b7;
+
+  border:1px solid rgba(16,185,129,.35);
+
+  font-weight:800;
+
+  letter-spacing:.03em;
+}
+
+.prospect_row_projection{
+
+  justify-self:start;
+
+  padding:6px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(234,179,8,.12);
+
+  color:#fde68a;
+
+  border:1px solid rgba(234,179,8,.25);
+
+  font-size:.72rem;
+
+  font-weight:800;
+
+  text-transform:uppercase;
+
+  letter-spacing:.06em;
+}
+
+.prospect_row_v2 .select_player {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.prospect_row_v2 .select_player_btn {
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid rgba(45, 212, 191, 0.45);
+  background: rgba(20, 184, 166, 0.1);
+  color: #5eead4;
+  padding: 0 12px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.prospect_row_v2 .select_player_btn:hover:not(:disabled) {
+  background: rgba(20, 184, 166, 0.22);
+}
+
+.prospect_row_v2 .select_player_btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.prospect_cards_v3_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  background: rgba(15, 23, 42, 0.72);
+}
+
+.prospect_cards_v3_kicker {
+  margin: 0 0 4px;
+  color: #2dd4bf;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.prospect_cards_v3_header h3 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 0.95rem;
+  font-weight: 850;
+}
+
+.prospect_cards_v3_count {
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.prospect_card_v3 {
+  display: grid;
+  grid-template-columns: 52px minmax(260px, 1fr) 56px 70px 82px 90px;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  background: rgba(15, 23, 42, 0.44);
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.prospect_card_v3:hover {
+  background: rgba(30, 41, 59, 0.72);
+  border-color: rgba(45, 212, 191, 0.24);
+}
+
+.prospect_card_v3.preview_selected {
+  background:
+    linear-gradient(90deg, rgba(45, 212, 191, 0.16), rgba(15, 23, 42, 0.58));
+  border-color: rgba(45, 212, 191, 0.38);
+}
+
+.prospect_card_v3_identity {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.prospect_card_v3_metrics {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  min-width: 260px;
+}
+
+/* ================================
+   War Room V2 Override
+================================ */
+
+.draft_room_v2 .team_profile {
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(30, 41, 59, 0.88), rgba(15, 23, 42, 0.96));
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.draft_room_v2 .team {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px;
+}
+
+.draft_room_v2 .war_room_label {
+  color: #f59e0b;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.draft_room_v2 .team_profile_identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.draft_room_v2 .team_profile_logo_wrapper {
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.draft_room_v2 .team_profile_logo {
+  width: 80%;
+  height: 80%;
+  object-fit: contain;
+}
+
+.draft_room_v2 .team_name {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.draft_room_v2 .team_positional_needs_grid,
+.draft_room_v2 .team_picks_list {
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: none;
+}
+
+.draft_room_v2 .team_positional_needs_header,
+.draft_room_v2 .team_picks_list_header {
+  margin: 0 0 12px;
+  color: #f8fafc;
+  font-size: 0.86rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.draft_room_v2 .positional_needs_row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.draft_room_v2 .position_box {
+  min-height: 50px;
+  border-radius: 10px;
+  border: 1px solid rgba(15, 23, 42, 0.5);
+  box-shadow: none;
+}
+
+.draft_room_v2 .position_label,
+.draft_room_v2 .position_value {
+  color: #f8fafc;
+  font-weight: 900;
+}
+
+.draft_room_v2 .team_picks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.draft_room_v2 .team_pick {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.draft_room_v2 .team_pick.current_team_pick {
+  background: rgba(20, 184, 166, 0.18);
+  border-color: rgba(45, 212, 191, 0.36);
+}
+
+.draft_room_v2 .pick_info {
+  color: #f8fafc;
+  font-weight: 900;
+}
+
+.draft_room_v2 .pick_player,
+.draft_room_v2 .pick_empty {
+  color: #cbd5e1;
+  font-size: 0.78rem;
+}
+
+.draft_room_v2 .war_room_summary {
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.draft_room_v2 .war_room_summary_header {
+  margin-bottom: 12px;
+  color: #2dd4bf;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.draft_room_v2 .war_room_summary_grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.draft_room_v2 .war_room_summary_item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.62);
+  border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.draft_room_v2 .summary_label {
+  color: #94a3b8;
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.draft_room_v2 .summary_value {
+  color: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+/* ================================
+   Prospect Intelligence Center
+================================ */
+
+.prospect_intelligence_center {
+  max-width: 1900px;
+  margin: 24px auto 0;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(30, 41, 59, 0.88), rgba(15, 23, 42, 0.96));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+}
+
+.prospect_intelligence_header {
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.prospect_intelligence_kicker {
+  margin: 0 0 6px;
+  color: #2dd4bf;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.prospect_intelligence_header h2 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1.25rem;
+  font-weight: 900;
+}
+
+.prospect_intelligence_body {
+  display: grid;
+  grid-template-columns: minmax(280px, 1.4fr) 220px;
+  gap: 16px;
+  padding: 18px 22px;
+}
+
+.prospect_identity_card,
+.prospect_grade_card {
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  padding: 16px;
+}
+
+.prospect_identity_card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.prospect_photo_placeholder {
+  width: 140px;
+  height: 180px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(30,41,59,.95),
+      rgba(15,23,42,.95)
+    );
+
+  border:1px solid rgba(148,163,184,.16);
+
+  color:#64748b;
+
+  font-weight:700;
+}
+
+.prospect_identity_info{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:10px;
+}
+
+.prospect_identity_info h2{
+    margin:0;
+    font-size:2rem;
+    font-weight:900;
+    color:#F8FAFC;
+}
+
+.prospect_identity_info p{
+    margin:0;
+    color:#94A3B8;
+    font-size:1.05rem;
+}
+
+.prospect_summary_panel {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  padding: 16px;
+}
+
+.prospect_identity h2 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 2rem;
+  font-weight: 900;
+}
+
+.prospect_identity p {
+  margin: 8px 0 0;
+  color: #94a3b8;
+  font-size: 1.05rem;
+}
+
+.prospect_grade_panel {
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  padding: 18px;
+}
+
+.prospect_grade_panel .grade_label {
+  color: #94a3b8;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.prospect_grade_panel h1 {
+  margin: 10px 0 4px;
+  color: #6ee7b7;
+  font-size: 3rem;
+  font-weight: 950;
+}
+
+.prospect_grade_tier {
+  margin: 0 0 14px;
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.prospect_grade_meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.prospect_grade_meta span {
+  color: #94a3b8;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.prospect_grade_meta strong {
+  color: #f8fafc;
+  font-size: 0.78rem;
+}
+
+.prospect_identity_position {
+  margin: 6px 0 0;
+  color: #94a3b8;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.prospect_identity_stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(72px, 1fr));
+  gap: 10px;
+  margin-top: 18px;
+  max-width: 520px;
+}
+
+.prospect_identity_stats div {
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(30, 41, 59, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.prospect_identity_stats span {
+  display: block;
+  margin-bottom: 4px;
+  color: #94a3b8;
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.prospect_identity_stats strong {
+  color: #f8fafc;
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.prospect_identity_overview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.prospect_identity_overview div {
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.prospect_identity_overview span {
+  display: block;
+  margin-bottom: 6px;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.prospect_identity_overview strong {
+  color: #f8fafc;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+/* =======================================================
+   Prospect Intelligence Header
+======================================================= */
+
+.prospect_player_header {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr 280px;
+    gap: 22px;
+    padding: 24px;
+    min-height: 210px;
+    align-items: stretch;
+}
+
+.prospect_player_header_premium {
+    background: linear-gradient(180deg,#152236,#0f1827);
+    border: 1px solid rgba(148,163,184,.15);
+    border-radius: 18px;
+}
+
+.prospect_header_left{
+    display:flex;
+    gap:20px;
+}
+
+.prospect_header_photo{
+    width:130px;
+    min-width:130px;
+    height:150px;
+    border-radius:16px;
+    background:linear-gradient(145deg,#24354f,#101827);
+    border:1px solid rgba(148,163,184,.18);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#6ee7b7;
+    font-size:2rem;
+    font-weight:900;
+}
+
+.prospect_header_identity{
+    flex:1;
+}
+
+.prospect_header_kicker{
+    color:#60a5fa;
+    font-size:.75rem;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    margin-bottom:8px;
+}
+
+.prospect_header_identity h2{
+    margin:0;
+    color:#f8fafc;
+    font-size:2rem;
+    font-weight:900;
+}
+
+.prospect_header_identity p{
+    margin:8px 0 18px;
+    color:#94a3b8;
+    font-weight:600;
+}
+
+.prospect_header_tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.prospect_header_tags span{
+    padding:8px 14px;
+    border-radius:999px;
+    background:#1e293b;
+    border:1px solid rgba(148,163,184,.12);
+
+    color:#dbeafe;
+    font-size:.75rem;
+    font-weight:700;
+}
+
+.prospect_header_middle{
+    display:grid;
+    gap:14px;
+}
+
+.metric_tile{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:6px;
+    min-height:72px;
+    padding:14px 16px;
+    border-radius:14px;
+    background:rgba(15,23,42,.72);
+    border:1px solid rgba(148,163,184,.14);
+}
+
+.metric_tile span{
+    color:#94a3b8;
+    font-size:.72rem;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+}
+
+.metric_tile strong{
+    color:#f8fafc;
+    font-size:.95rem;
+    font-weight:900;
+}
+
+.prospect_card_v2{
+    width:150px;
+    border-radius:18px;
+    background:linear-gradient(180deg,#1e293b,#0f172a);
+    border:1px solid rgba(148,163,184,.18);
+    overflow:hidden;
+}
+
+.prospect_card_v2_photo{
+    height:150px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#6ee7b7;
+    font-size:2rem;
+    font-weight:900;
+    background:linear-gradient(145deg,#24354f,#101827);
+}
+
+.prospect_card_v2_body{
+    padding:12px;
+    border-top:1px solid rgba(148,163,184,.12);
+}
+
+.prospect_card_v2_badge{
+    display:inline-flex;
+    padding:5px 9px;
+    border-radius:999px;
+    background:rgba(45,212,191,.14);
+    color:#5eead4;
+    font-size:.7rem;
+    font-weight:900;
+}
+
+.prospect_card_v2_school{
+    margin-top:8px;
+    color:#f8fafc;
+    font-size:.78rem;
+    font-weight:800;
+}
+
+.prospect_card_v2_archetype{
+    margin-top:8px;
+    color:#94a3b8;
+    font-size:.68rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+}
+
+.prospect_header_grade_card{
+    border-radius:16px;
+    background:rgba(15,23,42,.72);
+    border:1px solid rgba(148,163,184,.14);
+
+    padding:22px;
+}
+
+.prospect_header_grade_card>span{
+    color:#94a3b8;
+    text-transform:uppercase;
+    font-size:.7rem;
+    font-weight:800;
+}
+
+.prospect_header_grade_card h1{
+    margin:10px 0;
+    color:#6ee7b7;
+    font-size:3.5rem;
+    line-height:1;
+}
+
+.prospect_header_grade_card p{
+    margin-bottom:20px;
+    color:#cbd5e1;
+}
+
+.prospect_header_grade_meta{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    padding:14px 0;
+    border-top:1px solid rgba(148,163,184,.12);
+}
+
+.prospect_header_grade_meta span{
+    display:block;
+    color:#94a3b8;
+    font-size:.7rem;
+    text-transform:uppercase;
+    font-weight:800;
+}
+
+.prospect_header_grade_meta strong{
+    color:#f8fafc;
+    font-size:.95rem;
+}
+
+.prospect_confidence_meter{
+    margin-top:18px;
+}
+
+.prospect_confidence_label{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+}
+
+.prospect_confidence_label span{
+    color:#94a3b8;
+    font-size:.75rem;
+}
+
+.prospect_confidence_label strong{
+    color:#6ee7b7;
+}
+
+.prospect_confidence_track{
+    height:8px;
+    background:#1e293b;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.prospect_confidence_fill{
+    height:100%;
+    border-radius:999px;
+    background:linear-gradient(90deg,#22c55e,#34d399);
+}
+
+.prospect_header_identity,
+.prospect_header_grade,
+.prospect_header_photo {
+  min-height: 230px;
+}
+
+/* ===============================
+   Trait Intelligence V2
+================================ */
+
+.trait_intelligence_v2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+    width:100%;
+}
+
+.trait_grade_card,
+.trait_category_card{
+    border-radius:18px;
+    background:rgba(7,18,45,.62);
+    border:1px solid rgba(148,163,184,.10);
+    padding:24px;
+}
+
+.trait_grade_card{
+    grid-column:1 / -1;
+    text-align:center;
+    background:linear-gradient(135deg,rgba(15,35,70,.92),rgba(7,18,45,.72));
+    border-color:rgba(45,212,191,.20);
+}
+
+.trait_section_label{
+    color:#2dd4bf;
+    font-size:.72rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    margin-bottom:12px;
+}
+
+.trait_overall_grade{
+    color:#6ee7b7;
+    font-size:4rem;
+    font-weight:950;
+    line-height:1;
+}
+
+.trait_grade_subtitle{
+    margin-top:10px;
+    color:#94a3b8;
+    font-size:.9rem;
+    font-weight:800;
+}
+
+.trait_category_card h3{
+    margin:0 0 18px;
+    color:#f8fafc;
+    font-size:1rem;
+    font-weight:950;
+}
+
+.trait_row{
+    display:grid;
+    grid-template-columns:150px 1fr 42px;
+    align-items:center;
+    gap:14px;
+    margin-bottom:14px;
+}
+
+.trait_row:last-child{
+    margin-bottom:0;
+}
+
+.trait_row span{
+    color:#cbd5e1;
+    font-size:.86rem;
+    font-weight:800;
+}
+
+.trait_row strong{
+    color:#6ee7b7;
+    font-size:.88rem;
+    font-weight:950;
+    text-align:right;
+}
+
+.trait_bar{
+    height:9px;
+    border-radius:999px;
+    background:#1e293b;
+    overflow:hidden;
+}
+
+.trait_bar div{
+    height:100%;
+    border-radius:999px;
+    background:linear-gradient(90deg,#22c55e,#34d399);
+}
+
+/* ===============================
+   Scouting Report V2
+================================ */
+
+.scouting_report_v2{
+    display:grid;
+    gap:22px;
+    width:100%;
+}
+
+.scouting_report_hero,
+.scouting_report_card{
+    border-radius:18px;
+    background:rgba(7,18,45,.62);
+    border:1px solid rgba(148,163,184,.10);
+    padding:24px;
+}
+
+.scouting_report_hero{
+    background:linear-gradient(135deg,rgba(15,35,70,.92),rgba(7,18,45,.72));
+    border-color:rgba(45,212,191,.20);
+}
+
+.scouting_report_label{
+    color:#2dd4bf;
+    font-size:.72rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    margin-bottom:12px;
+}
+
+.scouting_report_hero h3{
+    margin:0 0 14px;
+    color:#f8fafc;
+    font-size:1.7rem;
+    font-weight:950;
+}
+
+.scouting_report_hero p{
+    color:#cbd5e1;
+    line-height:1.7;
+    max-width:850px;
+}
+
+.scouting_report_grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.scouting_report_role_grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.scouting_report_stat_grid{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px 18px;
+}
+
+.scouting_report_stat_grid span{
+    color:#94a3b8;
+    font-size:.82rem;
+    font-weight:800;
+}
+
+.scouting_report_stat_grid strong{
+    color:#f8fafc;
+    font-size:.9rem;
+    font-weight:900;
+}
+
+.scouting_list_card ul{
+    margin:0;
+    padding-left:18px;
+}
+
+.scouting_list_card li{
+    margin-bottom:10px;
+    color:#cbd5e1;
+    line-height:1.5;
+}
+
+.scouting_list_card.warning li{
+    color:#facc15;
+}
+
+.scouting_report_card p{
+    color:#cbd5e1;
+    line-height:1.7;
+}
+
+@media (max-width:1100px){
+
+    .scouting_report_grid,
+    .scouting_report_role_grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+/* ========================================
+   Athletic Profile V2
+======================================== */
+
+.athletic_profile_v2{
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+}
+
+.athletic_hero_card{
+    padding:42px;
+    border-radius:22px;
+    text-align:center;
+    background:linear-gradient(180deg,#132a52,#0d1b36);
+    border:1px solid rgba(45,212,191,.35);
+}
+
+.athletic_section_label{
+    color:#2dd4bf;
+    font-size:.82rem;
+    font-weight:900;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+}
+
+.athletic_hero_grade{
+    font-size:4rem;
+    font-weight:900;
+    color:#6ee7b7;
+    line-height:1;
+    margin-bottom:18px;
+}
+
+.athletic_hero_card p{
+    max-width:760px;
+    margin:auto;
+    color:#cbd5e1;
+    line-height:1.8;
+}
+
+.athletic_dashboard_grid,
+.athletic_testing_grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:24px;
+}
+
+.athletic_category_card{
+    background:rgba(7,18,45,.55);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:20px;
+    padding:26px;
+}
+
+.athletic_category_card h3{
+    margin:0 0 24px;
+    text-align:center;
+    color:#f8fafc;
+    font-size:1.2rem;
+}
+
+.athletic_row{
+    display:grid;
+    grid-template-columns:140px 1fr 90px;
+    align-items:center;
+    gap:18px;
+    margin-bottom:18px;
+}
+
+.athletic_row span{
+    color:#b8c7df;
+    font-weight:700;
+}
+
+.athletic_row strong{
+    color:#6ee7b7;
+    text-align:right;
+}
+
+.athletic_bar{
+    height:10px;
+    border-radius:999px;
+    overflow:hidden;
+    background:#25324a;
+}
+
+.athletic_bar div{
+    height:100%;
+    border-radius:999px;
+    background:linear-gradient(90deg,#22c55e,#34d399);
+}
+
+.athletic_testing_list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.athletic_testing_list div{
+    display:flex;
+    justify-content:space-between;
+    padding-bottom:12px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.athletic_testing_list span{
+    color:#9fb0c7;
+    font-weight:700;
+}
+
+.athletic_testing_list strong{
+    color:white;
+}
+
+.athletic_ras_card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.athletic_ras_score{
+    font-size:5rem;
+    font-weight:900;
+    color:#6ee7b7;
+    line-height:1;
+    margin:12px 0 18px;
+}
+
+.athletic_ras_card p{
+    max-width:360px;
+    color:#cbd5e1;
+    line-height:1.7;
+}
+
+@media (max-width:1100px){
+
+    .athletic_dashboard_grid,
+    .athletic_testing_grid{
+        grid-template-columns:1fr;
+    }
+
+    .athletic_row{
+        grid-template-columns:110px 1fr 80px;
+    }
+
+}
+
+/* ========================================
+   Football IQ V2
+======================================== */
+
+.football_iq_v2{
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+}
+
+.football_iq_hero_card{
+    padding:42px;
+    border-radius:22px;
+    text-align:center;
+    background:linear-gradient(180deg,#132a52,#0d1b36);
+    border:1px solid rgba(45,212,191,.35);
+}
+
+.football_iq_label{
+    color:#2dd4bf;
+    font-size:.82rem;
+    font-weight:900;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+}
+
+.football_iq_grade{
+    font-size:4rem;
+    font-weight:900;
+    color:#6ee7b7;
+    line-height:1;
+    margin-bottom:18px;
+}
+
+.football_iq_hero_card p{
+    max-width:760px;
+    margin:auto;
+    color:#cbd5e1;
+    line-height:1.8;
+}
+
+.football_iq_dashboard_grid,
+.football_iq_bottom_grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:24px;
+}
+
+.football_iq_category_card{
+    background:rgba(7,18,45,.55);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:20px;
+    padding:26px;
+}
+
+.football_iq_category_card h3{
+    margin:0 0 24px;
+    text-align:center;
+    color:#f8fafc;
+    font-size:1.2rem;
+}
+
+.football_iq_row{
+    display:grid;
+    grid-template-columns:160px 1fr 90px;
+    align-items:center;
+    gap:18px;
+    margin-bottom:18px;
+}
+
+.football_iq_row span{
+    color:#b8c7df;
+    font-weight:700;
+}
+
+.football_iq_row strong{
+    color:#6ee7b7;
+    text-align:right;
+}
+
+.football_iq_bar{
+    height:10px;
+    border-radius:999px;
+    overflow:hidden;
+    background:#25324a;
+}
+
+.football_iq_bar div{
+    height:100%;
+    border-radius:999px;
+    background:linear-gradient(90deg,#22c55e,#34d399);
+}
+
+.football_iq_stat_list{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+}
+
+.football_iq_stat_list div{
+    display:flex;
+    justify-content:space-between;
+    padding-bottom:12px;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.football_iq_stat_list span{
+    color:#9fb0c7;
+    font-weight:700;
+}
+
+.football_iq_stat_list strong{
+    color:white;
+}
+
+.football_iq_notes_card{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    text-align:center;
+}
+
+.football_iq_notes_card p{
+    max-width:430px;
+    margin:auto;
+    color:#cbd5e1;
+    line-height:1.8;
+}
+
+@media (max-width:1100px){
+
+    .football_iq_dashboard_grid,
+    .football_iq_bottom_grid{
+        grid-template-columns:1fr;
+    }
+
+    .football_iq_row{
+        grid-template-columns:120px 1fr 80px;
+    }
+
+}
+
+.intelligence_badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.intelligence_badge.elite {
+  color: #6ee7b7;
+  background: rgba(16, 185, 129, 0.16);
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+.intelligence_badge.very_good {
+  color: #93c5fd;
+  background: rgba(59, 130, 246, 0.16);
+  border-color: rgba(59, 130, 246, 0.28);
+}
+
+.intelligence_badge.average {
+  color: #fde68a;
+  background: rgba(234, 179, 8, 0.16);
+  border-color: rgba(234, 179, 8, 0.28);
+}
+
+.intelligence_badge.developing {
+  color: #fdba74;
+  background: rgba(249, 115, 22, 0.16);
+  border-color: rgba(249, 115, 22, 0.28);
+}
+
+.intelligence_badge.pending {
+  color: #cbd5e1;
+  background: rgba(148, 163, 184, 0.1);
+}
+
+/* ================================
+   Scheme Fit
+================================ */
+
+/* =====================================
+   Scheme Fit Dashboard
+===================================== */
+
+.scheme_dashboard{
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+}
+
+.scheme_dashboard_grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.scheme_row{
+    display:grid;
+    grid-template-columns:180px 1fr 90px;
+    align-items:center;
+    gap:18px;
+    margin-bottom:18px;
+}
+
+.scheme_row:last-child{
+    margin-bottom:0;
+}
+
+.scheme_row span{
+    color:#b7c9e8;
+    font-weight:700;
+}
+
+.scheme_bar{
+    height:10px;
+    border-radius:999px;
+    background:rgba(255,255,255,.08);
+    overflow:hidden;
+}
+
+.scheme_bar div{
+    width:82%;
+    height:100%;
+    border-radius:999px;
+    background:linear-gradient(90deg,#22c55e,#34d399);
+}
+
+.scheme_row strong{
+    color:#6ee7b7;
+    text-align:right;
+    font-weight:900;
+}
+
+.scheme_list_row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 0;
+    border-bottom:1px solid rgba(255,255,255,.06);
+}
+
+.scheme_list_row:last-child{
+    border-bottom:none;
+}
+
+.scheme_list_row span{
+    color:#b7c9e8;
+    font-weight:700;
+}
+
+.scheme_list_row strong{
+    color:#f8fafc;
+}
+
+.scheme_translation p{
+    margin:0;
+    max-width:900px;
+    color:#cbd5e1;
+    line-height:1.9;
+}
+
+@media (max-width:1100px){
+
+    .scheme_dashboard_grid{
+        grid-template-columns:1fr;
+    }
+
+    .scheme_row{
+        grid-template-columns:120px 1fr 70px;
+    }
+
+}
+
+/* ================================
+   Collapsible Intelligence Sections
+================================ */
+
+.collapsible_section {
+  margin-top: 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.collapsible_section_toggle {
+  width: 100%;
+  padding: 26px 0 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.collapsible_section_toggle .prospect_section_header {
+  margin-bottom: 0;
+}
+
+.collapsible_section_icon {
+  float: right;
+  margin-top: -28px;
+  color: #64e8d4;
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.collapsible_section_content {
+  margin-top: 20px;
+}
+
+.collapsible_section_toggle {
+  position: relative;
+  text-align: left;
+}
+
+.collapsible_section_icon {
+  float: none;
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  margin: 0;
+}
+
+/* ================================
+   Intelligence Workspace V2
+================================ */
+
+.intelligence_workspace {
+  padding: 28px 32px 34px;
+  min-height: 320px;
+}
+
+.intelligence_workspace .prospect_trait_section,
+.intelligence_workspace .prospect_scouting_section,
+.intelligence_workspace .prospect_athletic_section,
+.intelligence_workspace .prospect_football_iq_section,
+.intelligence_workspace .prospect_scheme_fit_section {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* ===============================
+   Overview Dashboard V2
+================================ */
+
+.overview_dashboard{
+    width:100%;
+}
+
+.overview_dashboard_v2{
+    display:grid;
+    gap:22px;
+}
+
+.overview_hero_card,
+.overview_info_card{
+    border-radius:18px;
+    background:rgba(7,18,45,.62);
+    border:1px solid rgba(148,163,184,.10);
+    padding:24px;
+}
+
+.overview_hero_card{
+    min-height:190px;
+    background:linear-gradient(135deg,rgba(15,35,70,.92),rgba(7,18,45,.72));
+    border-color:rgba(45,212,191,.20);
+}
+
+.overview_hero_kicker,
+.overview_card_label{
+    color:#2dd4bf;
+    font-size:.72rem;
+    font-weight:900;
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    margin-bottom:12px;
+}
+
+.overview_hero_card h3{
+    margin:0 0 14px;
+    color:#f8fafc;
+    font-size:1.75rem;
+    font-weight:950;
+}
+
+.overview_hero_card p{
+    max-width:820px;
+    color:#cbd5e1;
+    line-height:1.7;
+}
+
+.overview_snapshot_row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+}
+
+.overview_analysis_row,
+.overview_bottom_row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.overview_stat_grid{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px 18px;
+}
+
+.overview_stat_grid span,
+.overview_metric_list span,
+.overview_scheme_fit_list span{
+    color:#94a3b8;
+    font-size:.82rem;
+    font-weight:800;
+}
+
+.overview_stat_grid strong,
+.overview_metric_list strong,
+.overview_scheme_fit_list strong{
+    color:#f8fafc;
+    font-size:.9rem;
+    font-weight:900;
+}
+
+.overview_metric_list,
+.overview_scheme_fit_list{
+    display:grid;
+    gap:12px;
+}
+
+.overview_metric_list div,
+.overview_scheme_fit_list div{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding-bottom:10px;
+    border-bottom:1px solid rgba(148,163,184,.10);
+}
+
+.overview_metric_list div:last-child,
+.overview_scheme_fit_list div:last-child{
+    border-bottom:none;
+    padding-bottom:0;
+}
+
+.overview_trait_stack{
+    display:grid;
+    gap:10px;
+}
+
+.overview_trait_stack span{
+    padding:10px 12px;
+    border-radius:999px;
+    background:rgba(45,212,191,.12);
+    color:#5eead4;
+    font-size:.82rem;
+    font-weight:900;
+}
+
+.overview_trait_stack.warning span{
+    background:rgba(251,191,36,.12);
+    color:#facc15;
+}
+
+.overview_comparison_card h4{
+    margin:0 0 10px;
+    color:#f8fafc;
+    font-size:1.3rem;
+}
+
+.overview_comparison_card p{
+    color:#cbd5e1;
+    line-height:1.6;
+}
+

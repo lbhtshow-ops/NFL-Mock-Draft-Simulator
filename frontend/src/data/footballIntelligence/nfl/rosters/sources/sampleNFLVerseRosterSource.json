@@ -1,0 +1,32 @@
+[
+  {
+    "player_id": "00-ari-qb-test",
+    "player_name": "Arizona QB Test",
+    "position": "QB",
+    "team": "ARI",
+    "age": 28,
+    "years_exp": 7,
+    "status": "Active",
+    "depth_chart_position": "QB",
+    "depth_chart_rank": 1,
+    "playerTier": "highEndStarter",
+    "rosterValue": 88,
+    "replacementDifficulty": "High",
+    "developmentTrajectory": "Prime"
+  },
+  {
+    "player_id": "00-ari-edge-test",
+    "player_name": "Arizona EDGE Test",
+    "position": "EDGE",
+    "team": "ARI",
+    "age": 25,
+    "years_exp": 3,
+    "status": "Active",
+    "depth_chart_position": "EDGE",
+    "depth_chart_rank": 1,
+    "playerTier": "replacementStarter",
+    "rosterValue": 67,
+    "replacementDifficulty": "Moderate",
+    "developmentTrajectory": "Stable"
+  }
+]

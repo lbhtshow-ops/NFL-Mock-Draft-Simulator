@@ -1,0 +1,237 @@
+.draft_sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+  min-height: 0;
+}
+
+.sidebar_card {
+  background: linear-gradient(180deg, #16243b, #101c30);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 18px;
+  padding: 16px;
+}
+
+.sidebar_card_title {
+  color: var(--draft-gold);
+  font-size: .76rem;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.sidebar_action {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 13px 14px;
+  background: #1b2a42;
+  color: white;
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 800;
+  text-align: left;
+}
+
+.sidebar_action_icon {
+  width: 22px;
+  text-align: center;
+  color: var(--draft-gold);
+}
+
+.sidebar_action.primary {
+  background: linear-gradient(135deg, #17845f, #12664c);
+}
+
+.sidebar_action.danger {
+  background: linear-gradient(135deg, #8b2635, #5f1b28);
+}
+
+.sidebar_speed_grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.sidebar_speed_grid button {
+  padding: 9px 6px;
+  background: #101c30;
+  border: 1px solid rgba(255,255,255,.08);
+  color: var(--draft-muted);
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: .72rem;
+}
+
+.sidebar_speed_grid .active {
+  background: rgba(45, 212, 191, .16);
+  border-color: rgba(45, 212, 191, .55);
+  color: #5eead4;
+}
+
+.sidebar_info_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.sidebar_info_row:last-child {
+  border-bottom: none;
+}
+
+.sidebar_info_row span {
+  color: var(--draft-muted);
+  font-size: .8rem;
+  font-weight: 700;
+}
+
+.sidebar_info_row strong {
+  color: white;
+  font-size: .82rem;
+  font-weight: 900;
+}
+
+.sidebar_toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.sidebar_toggle_pill {
+  width: 38px;
+  height: 20px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #22c55e, #14b8a6);
+  position: relative;
+}
+
+.sidebar_toggle_pill::after {
+  content: "";
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: white;
+}
+
+.sidebar_queue_card {
+  flex: 1;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar_empty {
+  color: var(--draft-muted);
+  text-align: center;
+  padding: 34px 0;
+  font-size: .85rem;
+}
+
+.sidebar_queue_list {
+  display: grid;
+  gap: 10px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.sidebar_queue_item {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(7,18,32,.55);
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+.sidebar_queue_item strong {
+  color: var(--draft-gold);
+  font-weight: 900;
+}
+
+.sidebar_queue_player {
+  display: grid;
+  gap: 2px;
+}
+
+.sidebar_queue_player span {
+  color: white;
+  font-weight: 900;
+  font-size: .82rem;
+}
+
+.sidebar_queue_player small {
+  color: var(--draft-muted);
+  font-size: .7rem;
+  font-weight: 700;
+}
+
+.sidebar_queue_list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar_queue_list::-webkit-scrollbar-track {
+  background: rgba(7,18,32,.35);
+  border-radius: 999px;
+}
+
+.sidebar_queue_list::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.18);
+  border-radius: 999px;
+}
+
+.sidebar_empty_state {
+  display: grid;
+  gap: 8px;
+  padding: 34px 10px;
+  text-align: center;
+}
+
+.sidebar_empty_state strong {
+  color: white;
+  font-size: .9rem;
+  font-weight: 900;
+}
+
+.sidebar_empty_state span {
+  color: var(--draft-muted);
+  font-size: .78rem;
+  line-height: 1.45;
+}
+
+.sidebar_queue_card {
+  flex: 1;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar_queue_card .sidebar_empty_state {
+  flex: 1;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar_queue_list {
+  flex: 1;
+  align-content: start;
+  overflow-y: auto;
+}

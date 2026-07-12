@@ -1,0 +1,66 @@
+.intelligence_indicator {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+}
+
+.intelligence_meter_track {
+  width: 100%;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(7, 18, 32, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.intelligence_meter_fill {
+  height: 100%;
+  min-width: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 7px;
+  border-radius: 5px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.32),
+      rgba(255, 255, 255, 0.07) 42%,
+      rgba(0, 0, 0, 0.22) 100%
+    ),
+    var(--indicator-color, var(--draft-gold));
+  box-shadow:
+    0 0 8px color-mix(in srgb, var(--indicator-color, var(--draft-gold)) 28%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+  transition:
+    width 380ms ease,
+    box-shadow 220ms ease,
+    filter 220ms ease;
+}
+
+.intelligence_meter_fill span {
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+  white-space: nowrap;
+}
+
+.intelligence_indicator small {
+  color: var(--indicator-color, var(--draft-muted));
+  font-size: 0.68rem;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.intelligence_indicator:hover .intelligence_meter_fill {
+  filter: brightness(1.08);
+  box-shadow:
+    0 0 12px color-mix(in srgb, var(--indicator-color, var(--draft-gold)) 38%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.36),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+}

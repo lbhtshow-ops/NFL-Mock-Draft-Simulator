@@ -1,0 +1,192 @@
+// src/data/footballIntelligence/scouting/traitDefinitions.js
+
+export const universalTraits = [
+  "athleticism",
+  "sizeFrame",
+  "playStrength",
+  "footballIQ",
+  "technique",
+  "competitiveness",
+  "durability",
+  "versatility",
+  "developmentRisk",
+  "nflReadiness",
+];
+
+export const positionTraitGroups = {
+  QB: [
+    "armStrength",
+    "accuracy",
+    "decisionMaking",
+    "pocketPresence",
+    "mobility",
+    "processingSpeed",
+    "mechanics",
+    "leadership",
+    "pressureManagement",
+    "playExtension",
+  ],
+
+  RB: [
+    "vision",
+    "burst",
+    "contactBalance",
+    "elusiveness",
+    "longSpeed",
+    "power",
+    "receivingAbility",
+    "passProtection",
+    "ballSecurity",
+    "shortYardageAbility",
+  ],
+
+  WR: [
+    "routeRunning",
+    "hands",
+    "separation",
+    "contestedCatch",
+    "yacAbility",
+    "releasePackage",
+    "longSpeed",
+    "blocking",
+    "catchRadius",
+    "redZoneValue",
+  ],
+
+  TE: [
+    "routeRunning",
+    "hands",
+    "separation",
+    "contestedCatch",
+    "yacAbility",
+    "blocking",
+    "playStrength",
+    "catchRadius",
+    "redZoneValue",
+    "versatility",
+  ],
+
+  OT: [
+    "passProtection",
+    "runBlocking",
+    "anchor",
+    "footwork",
+    "handUsage",
+    "power",
+    "lateralAgility",
+    "awareness",
+    "positionalVersatility",
+    "finish",
+  ],
+
+  IOL: [
+    "passProtection",
+    "runBlocking",
+    "anchor",
+    "footwork",
+    "handUsage",
+    "power",
+    "lateralAgility",
+    "awareness",
+    "positionalVersatility",
+    "finish",
+  ],
+
+  DL: [
+    "explosiveness",
+    "power",
+    "handUsage",
+    "runDefense",
+    "passRushPlan",
+    "firstStep",
+    "motor",
+    "gapDiscipline",
+    "versatility",
+    "playStrength",
+  ],
+
+  DT: [
+    "explosiveness",
+    "power",
+    "handUsage",
+    "runDefense",
+    "passRushPlan",
+    "firstStep",
+    "motor",
+    "gapDiscipline",
+    "versatility",
+    "playStrength",
+  ],
+
+  DE: [
+    "explosiveness",
+    "power",
+    "bend",
+    "handUsage",
+    "runDefense",
+    "passRushPlan",
+    "firstStep",
+    "motor",
+    "gapDiscipline",
+    "versatility",
+  ],
+
+  EDGE: [
+    "explosiveness",
+    "power",
+    "bend",
+    "handUsage",
+    "runDefense",
+    "passRushPlan",
+    "firstStep",
+    "motor",
+    "gapDiscipline",
+    "versatility",
+  ],
+
+  LB: [
+    "range",
+    "processing",
+    "tackling",
+    "coverageAbility",
+    "blockShedding",
+    "blitzAbility",
+    "runFitDiscipline",
+    "athleticism",
+    "playStrength",
+    "leadership",
+  ],
+
+  CB: [
+    "coverage",
+    "manCoverage",
+    "zoneCoverage",
+    "ballSkills",
+    "routeRecognition",
+    "tackling",
+    "range",
+    "physicality",
+    "recoverySpeed",
+    "instincts",
+  ],
+
+  S: [
+    "coverage",
+    "manCoverage",
+    "zoneCoverage",
+    "ballSkills",
+    "routeRecognition",
+    "tackling",
+    "range",
+    "physicality",
+    "recoverySpeed",
+    "instincts",
+  ],
+};
+
+export function getTraitsForPosition(position) {
+  return [
+    ...universalTraits,
+    ...(positionTraitGroups[position] || []),
+  ];
+}

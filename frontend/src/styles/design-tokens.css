@@ -1,0 +1,26 @@
+:root {
+  --lbht-bg: #eef2f6;
+  --lbht-panel: #4c5567;
+  --lbht-surface: #2f394d;
+  --lbht-surface-dark: #111827;
+
+  --lbht-primary: #f59e0b;
+  --lbht-primary-hover: #d97706;
+
+  --lbht-text: #f8fafc;
+  --lbht-text-muted: #b7c1d1;
+
+  --lbht-border: rgba(255, 255, 255, 0.1);
+
+  --lbht-success: #22c55e;
+  --lbht-danger: #ef4444;
+
+  --lbht-radius-sm: 10px;
+  --lbht-radius-md: 16px;
+  --lbht-radius-lg: 24px;
+
+  --lbht-shadow-card: 0 16px 40px rgba(15, 23, 42, 0.22);
+  --lbht-shadow-hover: 0 24px 60px rgba(15, 23, 42, 0.3);
+
+  --lbht-transition: 180ms ease;
+}

@@ -1,0 +1,18 @@
+name: Keep Backend and Database Alive (Backup)
+
+on:
+    schedule:
+        - cron: "0 */6 * * *"  # Runs every 6 hours (at :00 minutes)
+    workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+    ping-backend-and-database:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Ping backend
+              run: curl -s https://nfl-mock-draft-simulator.onrender.com/ > /dev/null
+            
+            - name: Ping Supabase database
+              run: |
+                curl -s '${{ secrets.SUPABASE_URL }}/rest/v1/teams?select=id&limit=1' \
+                  -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" > /dev/null

@@ -1,0 +1,49 @@
+.team_logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.team_logo img {
+  display: block;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.team_logo span {
+  color: var(--draft-gold);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.team_logo--sm {
+  width: 32px;
+  height: 32px;
+}
+
+.team_logo--sm img {
+  max-width: 30px;
+  max-height: 30px;
+}
+
+.team_logo--md {
+  width: 52px;
+  height: 52px;
+}
+
+.team_logo--md img {
+  max-width: 46px;
+  max-height: 46px;
+}
+
+.team_logo--lg {
+  width: 68px;
+  height: 68px;
+}
+
+.team_logo--lg img {
+  max-width: 58px;
+  max-height: 58px;
+}
