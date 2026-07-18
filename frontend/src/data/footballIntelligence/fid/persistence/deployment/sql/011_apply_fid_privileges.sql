@@ -1,0 +1,14 @@
+REVOKE ALL ON SCHEMA fid FROM PUBLIC, anon, authenticated, service_role;
+REVOKE ALL ON ALL TABLES IN SCHEMA fid FROM PUBLIC, anon, authenticated, service_role;
+REVOKE EXECUTE ON FUNCTION fid.fid_execute_atomic_persistence_batch(text,jsonb,text,jsonb,jsonb,jsonb,jsonb,jsonb) FROM PUBLIC, anon, authenticated, service_role;
+GRANT USAGE ON SCHEMA fid TO service_role;
+GRANT EXECUTE ON FUNCTION fid.fid_execute_atomic_persistence_batch(text,jsonb,text,jsonb,jsonb,jsonb,jsonb,jsonb) TO service_role;
+REVOKE ALL ON SCHEMA fid FROM fid_function_owner;
+REVOKE ALL ON ALL TABLES IN SCHEMA fid FROM fid_function_owner;
+GRANT USAGE ON SCHEMA fid TO fid_function_owner;
+GRANT SELECT, INSERT ON TABLE fid.fid_record_revisions TO fid_function_owner;
+GRANT SELECT, INSERT, UPDATE ON TABLE fid.fid_persistence_idempotency TO fid_function_owner;
+GRANT SELECT, INSERT, UPDATE ON TABLE fid.fid_persistence_batches TO fid_function_owner;
+GRANT SELECT, INSERT, UPDATE ON TABLE fid.fid_persistence_batch_operations TO fid_function_owner;
+GRANT SELECT, INSERT ON TABLE fid.fid_persistence_effect_receipts TO fid_function_owner;
+GRANT SELECT, INSERT ON TABLE fid.fid_persistence_audit_events TO fid_function_owner;

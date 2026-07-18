@@ -1,0 +1,4 @@
+const obj=v=>v&&typeof v==="object"&&!Array.isArray(v)?v:{};
+export function createPostgresqlFunctionReview(input={}){const v=obj(input);return Object.freeze({contract:"PostgresqlFunctionReview",qualifiedName:typeof v.qualifiedName==="string"?v.qualifiedName:null,argumentCount:Number.isInteger(v.argumentCount)?v.argumentCount:null,securityDefiner:v.securityDefiner===true,searchPath:typeof v.searchPath==="string"?v.searchPath:null,areas:Array.isArray(v.areas)?structuredClone(v.areas):[],findings:Array.isArray(v.findings)?structuredClone(v.findings):[],reviewComplete:v.reviewComplete===true,sqlExecuted:false,validation:Object.freeze({valid:typeof v.qualifiedName==="string"&&v.argumentCount===8,errors:[]})});}
+export const validatePostgresqlFunctionReview=v=>createPostgresqlFunctionReview(v).validation;
+export default Object.freeze({createPostgresqlFunctionReview,validatePostgresqlFunctionReview});

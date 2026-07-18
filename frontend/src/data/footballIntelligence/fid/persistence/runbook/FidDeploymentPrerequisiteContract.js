@@ -1,0 +1,5 @@
+import { FID_DEPLOYMENT_STEP_STATES } from "./fidTestDeploymentRunbookConstants.js";
+const obj=v=>v&&typeof v==="object"&&!Array.isArray(v)?v:{};
+export function createFidDeploymentPrerequisite(input={}){const v=obj(input),state=FID_DEPLOYMENT_STEP_STATES.includes(v.state)?v.state:"NOT_STARTED";return Object.freeze({contract:"FidDeploymentPrerequisite",prerequisiteId:typeof v.prerequisiteId==="string"?v.prerequisiteId:null,description:typeof v.description==="string"?v.description:null,required:v.required!==false,blocking:v.blocking!==false,state,manual:v.manual!==false,evidenceRequired:Array.isArray(v.evidenceRequired)?structuredClone(v.evidenceRequired):[],operatorConfirmation:false,reviewerConfirmation:false,continuationAllowed:v.required===false||state==="PASSED",validation:Object.freeze({valid:typeof v.prerequisiteId==="string"&&typeof v.description==="string",errors:[]})});}
+export const validateFidDeploymentPrerequisite=v=>createFidDeploymentPrerequisite(v).validation;
+export default Object.freeze({createFidDeploymentPrerequisite,validateFidDeploymentPrerequisite});

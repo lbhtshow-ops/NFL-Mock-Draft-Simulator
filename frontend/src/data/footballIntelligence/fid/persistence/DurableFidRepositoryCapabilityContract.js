@@ -1,0 +1,15 @@
+import { DURABLE_FID_ATOMICITY_LEVELS, DURABLE_FID_ATOMICITY_VERIFICATION_STATES, DURABLE_FID_CAPABILITIES, DURABLE_FID_PERSISTENCE_CONTRACT_NAME, DURABLE_FID_PERSISTENCE_CONTRACT_VERSION, DURABLE_FID_PERSISTENCE_SCHEMA_VERSION } from "./durablePersistenceConstants.js";
+
+const isObject = (value) => Boolean(value && typeof value === "object" && !Array.isArray(value));
+export function createRepositoryCapabilityDeclaration(input = {}) {
+  const value = isObject(input) ? input : {}; const errors = [];
+  const capability = Object.values(DURABLE_FID_CAPABILITIES).includes(value.capability) ? value.capability : null;
+  if (!capability) errors.push({ code: "CAPABILITY_REQUIRED", path: "capability" });
+  if (Object.values(value).some((entry) => typeof entry === "function")) errors.push({ code: "EXECUTABLE_CAPABILITY_PROHIBITED", path: "" });
+  const supportedAtomicity = Array.isArray(value.supportedAtomicity) ? value.supportedAtomicity.filter((entry) => Object.values(DURABLE_FID_ATOMICITY_LEVELS).includes(entry)) : [];
+  const atomicityVerification = Object.values(DURABLE_FID_ATOMICITY_VERIFICATION_STATES).includes(value.atomicityVerification) ? value.atomicityVerification : null;
+  return Object.freeze({ contract: DURABLE_FID_PERSISTENCE_CONTRACT_NAME, contractVersion: DURABLE_FID_PERSISTENCE_CONTRACT_VERSION, schemaVersion: DURABLE_FID_PERSISTENCE_SCHEMA_VERSION, capability, declared: typeof value.declared === "boolean" ? value.declared : null, operationName: typeof value.operationName === "string" && value.operationName.trim() ? value.operationName.trim() : null, operationStructurallyExposed: typeof value.operationStructurallyExposed === "boolean" ? value.operationStructurallyExposed : null, conformanceVerified: typeof value.conformanceVerified === "boolean" ? value.conformanceVerified : null, runtimeReadinessVerified: typeof value.runtimeReadinessVerified === "boolean" ? value.runtimeReadinessVerified : null, productionReadinessApproved: typeof value.productionReadinessApproved === "boolean" ? value.productionReadinessApproved : null, asynchronous: typeof value.asynchronous === "boolean" ? value.asynchronous : null, supportedAtomicity, atomicityVerification, idempotencySupported: typeof value.idempotencySupported === "boolean" ? value.idempotencySupported : null, limitations: Array.isArray(value.limitations) ? structuredClone(value.limitations) : [], notes: typeof value.notes === "string" ? value.notes : null, validation: { valid: errors.length === 0, errors, warnings: [], contractVersion: DURABLE_FID_PERSISTENCE_CONTRACT_VERSION, schemaVersion: DURABLE_FID_PERSISTENCE_SCHEMA_VERSION } });
+}
+export const validateRepositoryCapabilityDeclaration = (value) => createRepositoryCapabilityDeclaration(value).validation;
+export const isRepositoryCapabilityDeclaration = (value) => isObject(value) && validateRepositoryCapabilityDeclaration(value).valid;
+export default Object.freeze({ createRepositoryCapabilityDeclaration, validateRepositoryCapabilityDeclaration, isRepositoryCapabilityDeclaration });

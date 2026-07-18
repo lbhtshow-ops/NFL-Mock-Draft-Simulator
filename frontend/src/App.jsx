@@ -5,12 +5,20 @@
 
 // Import necessary libraries and components
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import axios from "axios";
 import Home from "./pages/Home";
 import Draft from "./pages/Draft";
 import Results from "./pages/Results";
 import "./App.css";
+
+const FootballIntelligenceOperationsCenter = lazy(() =>
+  import("./pages/FootballIntelligenceOperationsCenter.jsx")
+);
+
+const footballIntelligenceOperationsEnabled =
+  import.meta.env.DEV ||
+  import.meta.env.VITE_ENABLE_FOOTBALL_INTELLIGENCE_OPS === "true";
 
 // Function to set up the main application routes
 function App() {
@@ -43,10 +51,25 @@ function App() {
         <Route path="/" element={<Home apiURL={apiURL} />} />
         <Route path="/draft/:draftId" element={<Draft apiURL={apiURL} />} />
         <Route path="/results/:draftId" element={<Results apiURL={apiURL} />} />
+        {footballIntelligenceOperationsEnabled && (
+          <Route
+            path="/__dev/football-intelligence"
+            element={
+              <Suspense
+                fallback={
+                  <div role="status">
+                    Loading Football Intelligence Operations Center…
+                  </div>
+                }
+              >
+                <FootballIntelligenceOperationsCenter />
+              </Suspense>
+            }
+          />
+        )}
       </Routes>
     </Router>
   );
 }
 
 export default App;
-

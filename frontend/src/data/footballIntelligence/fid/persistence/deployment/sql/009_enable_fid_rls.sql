@@ -1,0 +1,14 @@
+ALTER TABLE fid.fid_record_revisions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_record_revisions FORCE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_idempotency ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_idempotency FORCE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_batches ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_batches FORCE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_batch_operations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_batch_operations FORCE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_effect_receipts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_effect_receipts FORCE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_audit_events ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_audit_events FORCE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_migrations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE fid.fid_persistence_migrations FORCE ROW LEVEL SECURITY;

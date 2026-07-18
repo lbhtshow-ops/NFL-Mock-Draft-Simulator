@@ -1,0 +1,6 @@
+const obj=v=>v&&typeof v==="object"&&!Array.isArray(v)?v:{};
+export function createSupabaseTestDeploymentPlanStep(input={}){const v=obj(input),valid=Number.isInteger(v.order)&&typeof v.instruction==="string";return Object.freeze({contract:"SupabaseTestDeploymentPlanStep",order:Number.isInteger(v.order)?v.order:null,instruction:typeof v.instruction==="string"?v.instruction:null,manual:true,executable:false,completed:false,validation:Object.freeze({valid,errors:valid?[]:[{code:"PLAN_STEP_REQUIRED"}]})});}
+export const validateSupabaseTestDeploymentPlanStep=v=>createSupabaseTestDeploymentPlanStep(v).validation;
+export function createSupabaseTestDeploymentPlan(input={}){const v=obj(input),steps=Array.isArray(v.steps)?v.steps.map(createSupabaseTestDeploymentPlanStep):[];return Object.freeze({contract:"SupabaseTestDeploymentPlan",steps,executesNothing:true,testOnly:true,productionProhibited:true,executionApproved:false,validation:Object.freeze({valid:steps.length===28&&steps.every(x=>x.validation.valid),errors:steps.length===28?[]:[{code:"TWENTY_EIGHT_STEPS_REQUIRED"}]})});}
+export const validateSupabaseTestDeploymentPlan=v=>createSupabaseTestDeploymentPlan(v).validation;
+export default Object.freeze({createSupabaseTestDeploymentPlanStep,validateSupabaseTestDeploymentPlanStep,createSupabaseTestDeploymentPlan,validateSupabaseTestDeploymentPlan});

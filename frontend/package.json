@@ -4,15 +4,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "lint": "eslint .",
-  "preview": "vite preview",
-  "sync:nfl-rosters": "node scripts/syncNFLVerseRosters.mjs",
-  "sync:nfl-player-stats": "node scripts/syncNFLVersePlayerStats.mjs",
-  "sync:nfl-snap-counts": "node scripts/syncNFLVerseSnapCounts.mjs"
-},
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "sync:nfl-rosters": "node scripts/syncNFLVerseRosters.mjs",
+    "sync:nfl-player-stats": "node scripts/syncNFLVersePlayerStats.mjs",
+    "sync:nfl-snap-counts": "node scripts/syncNFLVerseSnapCounts.mjs"
+  },
   "dependencies": {
+    "@supabase/supabase-js": "^2.110.7",
     "axios": "^1.10.0",
     "html2canvas": "^1.4.1",
     "react": "^19.0.0",

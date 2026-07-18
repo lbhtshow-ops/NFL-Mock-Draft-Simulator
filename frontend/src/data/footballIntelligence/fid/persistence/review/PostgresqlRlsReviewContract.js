@@ -1,0 +1,4 @@
+const obj=v=>v&&typeof v==="object"&&!Array.isArray(v)?v:{};
+export function createPostgresqlRlsReview(input={}){const v=obj(input);return Object.freeze({contract:"PostgresqlRlsReview",tableCount:Number.isInteger(v.tableCount)?v.tableCount:null,policyCount:Number.isInteger(v.policyCount)?v.policyCount:null,restrictiveOnly:v.restrictiveOnly===true,forced:v.forced===true,permissivePolicyCount:Number.isInteger(v.permissivePolicyCount)?v.permissivePolicyCount:0,findings:Array.isArray(v.findings)?structuredClone(v.findings):[],reviewComplete:v.reviewComplete===true,validation:Object.freeze({valid:v.tableCount===7&&v.policyCount===84,errors:[]})});}
+export const validatePostgresqlRlsReview=v=>createPostgresqlRlsReview(v).validation;
+export default Object.freeze({createPostgresqlRlsReview,validatePostgresqlRlsReview});

@@ -1,0 +1,4 @@
+const obj=v=>v&&typeof v==="object"&&!Array.isArray(v)?v:{};
+export function createFidDeploymentOperatorConfirmation(input={}){const v=obj(input);return Object.freeze({contract:"FidDeploymentOperatorConfirmation",confirmationId:typeof v.confirmationId==="string"?v.confirmationId:null,operatorReference:typeof v.operatorReference==="string"?v.operatorReference:null,reviewerReference:typeof v.reviewerReference==="string"?v.reviewerReference:null,statement:typeof v.statement==="string"?v.statement:null,operatorConfirmed:v.operatorConfirmed===true,reviewerConfirmed:v.reviewerConfirmed===true,credentialsStored:false,validation:Object.freeze({valid:typeof v.confirmationId==="string"&&typeof v.statement==="string",errors:[]})});}
+export const validateFidDeploymentOperatorConfirmation=v=>createFidDeploymentOperatorConfirmation(v).validation;
+export default Object.freeze({createFidDeploymentOperatorConfirmation,validateFidDeploymentOperatorConfirmation});

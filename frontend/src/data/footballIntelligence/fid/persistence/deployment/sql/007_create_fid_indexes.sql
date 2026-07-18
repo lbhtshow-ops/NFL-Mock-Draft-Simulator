@@ -1,0 +1,10 @@
+CREATE INDEX fid_record_latest_lookup_idx ON fid.fid_record_revisions USING btree (target_contract ASC, canonical_record_id ASC, record_revision DESC);
+CREATE INDEX fid_record_predecessor_idx ON fid.fid_record_revisions USING btree (predecessor_persistence_id) WHERE predecessor_persistence_id IS NOT NULL;
+CREATE INDEX fid_relationship_source_idx ON fid.fid_record_revisions USING btree (relationship_source_contract, relationship_source_record_id, record_revision) WHERE target_contract = 'FootballRelationship';
+CREATE INDEX fid_relationship_target_idx ON fid.fid_record_revisions USING btree (relationship_target_contract, relationship_target_record_id, record_revision) WHERE target_contract = 'FootballRelationship';
+CREATE INDEX fid_relationship_type_direction_idx ON fid.fid_record_revisions USING btree (relationship_type, relationship_direction) WHERE target_contract = 'FootballRelationship';
+CREATE INDEX fid_idempotency_batch_idx ON fid.fid_persistence_idempotency USING btree (batch_id);
+CREATE INDEX fid_batch_operation_order_idx ON fid.fid_persistence_batch_operations USING btree (batch_id, operation_index);
+CREATE INDEX fid_effect_receipt_batch_idx ON fid.fid_persistence_effect_receipts USING btree (batch_ref, operation_ref);
+CREATE INDEX fid_audit_batch_time_idx ON fid.fid_persistence_audit_events USING btree (batch_ref, occurred_at);
+CREATE INDEX fid_migration_sequence_idx ON fid.fid_persistence_migrations USING btree (migration_sequence);

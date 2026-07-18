@@ -1,0 +1,4 @@
+const obj=v=>v&&typeof v==="object"&&!Array.isArray(v)?v:{};
+export function createPostgresqlPrivilegeReview(input={}){const v=obj(input);return Object.freeze({contract:"PostgresqlPrivilegeReview",revocationFirst:v.revocationFirst===true,serviceRoleExecute:v.serviceRoleExecute===true,browserExecuteDenied:v.browserExecuteDenied===true,functionOwnerTablePrivileges:v.functionOwnerTablePrivileges===true,functionOwnerSchemaUsage:v.functionOwnerSchemaUsage===true,findings:Array.isArray(v.findings)?structuredClone(v.findings):[],reviewComplete:v.reviewComplete===true,validation:Object.freeze({valid:v.reviewComplete===true,errors:[]})});}
+export const validatePostgresqlPrivilegeReview=v=>createPostgresqlPrivilegeReview(v).validation;
+export default Object.freeze({createPostgresqlPrivilegeReview,validatePostgresqlPrivilegeReview});

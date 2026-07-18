@@ -1,0 +1,16 @@
+export const SUPABASE_FID_SCHEMA_CONTRACT_NAME = "SupabaseFidPersistenceSchemaSpecification";
+export const SUPABASE_FID_SCHEMA_CONTRACT_VERSION = "FID-SUPABASE-SCHEMA-1.0.0";
+export const SUPABASE_FID_SCHEMA_VERSION = "FID-SUPABASE-SCHEMA-V1";
+const vocabulary = (...values) => Object.freeze(Object.fromEntries(values.map((value) => [value, value])));
+export const SUPABASE_FID_POSTGRES_TYPES = vocabulary("text", "integer", "bigint", "boolean", "jsonb", "text[]", "timestamptz", "uuid");
+export const SUPABASE_FID_TABLE_ROLES = vocabulary("CANONICAL_RECORD_REVISIONS", "IDEMPOTENCY", "BATCHES", "BATCH_OPERATIONS", "EFFECT_RECEIPTS", "AUDIT_EVENTS", "MIGRATION_METADATA", "REPOSITORY_HEALTH");
+export const SUPABASE_FID_CONSTRAINT_TYPES = vocabulary("PRIMARY_KEY", "UNIQUE", "FOREIGN_KEY", "CHECK", "DEFERRED_VALIDATION");
+export const SUPABASE_FID_INDEX_METHODS = vocabulary("BTREE", "GIN");
+export const SUPABASE_FID_ROLLBACK_CLASSIFICATIONS = vocabulary("FULLY_REVERSIBLE", "STRUCTURALLY_REVERSIBLE_DATA_PRESERVING", "FORWARD_FIX_REQUIRED", "DESTRUCTIVE_ROLLBACK_PROHIBITED", "UNKNOWN");
+export const SUPABASE_FID_MIGRATION_STATUSES = vocabulary("DRAFT", "SPECIFIED", "APPROVAL_REQUIRED", "UNAPPLIED", "APPLIED", "FAILED", "ROLLED_BACK", "UNKNOWN");
+export const SUPABASE_FID_APPROVAL_STATES = vocabulary("NOT_REQUESTED", "REVIEW_REQUIRED", "APPROVED", "REJECTED", "UNKNOWN");
+export const SUPABASE_FID_RLS_ACTORS = vocabulary("ANONYMOUS", "AUTHENTICATED_WEBSITE", "ADMINISTRATIVE_APPLICATION", "TRUSTED_BACKEND", "SERVICE_ROLE", "MIGRATION_OPERATOR");
+export const SUPABASE_FID_RLS_OPERATIONS = vocabulary("SELECT", "INSERT", "UPDATE", "DELETE", "ALL");
+export const SUPABASE_FID_SUPPORTED_CONTRACTS = Object.freeze(["FootballEntity", "PersonProfile", "PlayerProfile", "ProspectProfile", "OrganizationProfile", "TeamProfile", "CoachProfile", "ExecutiveProfile", "ScoutProfile", "FootballRelationship"]);
+export const SUPABASE_FID_CANONICAL_COLUMNS = Object.freeze(["persistence_id", "canonical_record_id", "record_revision", "predecessor_persistence_id", "predecessor_record_id", "predecessor_revision", "target_contract", "contract_version", "schema_version", "persistence_envelope", "record_payload", "source_refs", "evidence_refs", "review_refs", "blocker_refs", "verification", "provenance", "lifecycle", "notes", "extensions", "created_at", "created_by", "request_id", "operation_id", "batch_id", "idempotency_key", "content_hash", "status", "relationship_source_contract", "relationship_source_record_id", "relationship_target_contract", "relationship_target_record_id", "relationship_type", "relationship_direction"]);
+export default Object.freeze({ SUPABASE_FID_SCHEMA_CONTRACT_NAME, SUPABASE_FID_SCHEMA_CONTRACT_VERSION, SUPABASE_FID_SCHEMA_VERSION, SUPABASE_FID_POSTGRES_TYPES, SUPABASE_FID_TABLE_ROLES, SUPABASE_FID_CONSTRAINT_TYPES, SUPABASE_FID_INDEX_METHODS, SUPABASE_FID_ROLLBACK_CLASSIFICATIONS, SUPABASE_FID_MIGRATION_STATUSES, SUPABASE_FID_APPROVAL_STATES, SUPABASE_FID_RLS_ACTORS, SUPABASE_FID_RLS_OPERATIONS, SUPABASE_FID_SUPPORTED_CONTRACTS, SUPABASE_FID_CANONICAL_COLUMNS });

@@ -1,0 +1,5 @@
+import { FID_DEPLOYMENT_FAILURE_CLASSIFICATIONS,FID_DEPLOYMENT_DECISION_TYPES } from "./fidTestDeploymentRunbookConstants.js";
+const obj=v=>v&&typeof v==="object"&&!Array.isArray(v)?v:{};
+export function createFidDeploymentFinding(input={}){const v=obj(input),category=FID_DEPLOYMENT_FAILURE_CLASSIFICATIONS.includes(v.category)?v.category:null,decision=FID_DEPLOYMENT_DECISION_TYPES.includes(v.recommendedNextDecision)?v.recommendedNextDecision:"STOP";return Object.freeze({contract:"FidDeploymentFinding",findingId:typeof v.findingId==="string"?v.findingId:null,migrationId:typeof v.migrationId==="string"?v.migrationId:null,category,evidence:Array.isArray(v.evidence)?structuredClone(v.evidence):[],blocking:v.blocking!==false,recommendedNextDecision:decision,humanReviewRequired:true,automaticRecoveryProhibited:true,resolved:false,validation:Object.freeze({valid:typeof v.findingId==="string"&&category!==null,errors:[]})});}
+export const validateFidDeploymentFinding=v=>createFidDeploymentFinding(v).validation;
+export default Object.freeze({createFidDeploymentFinding,validateFidDeploymentFinding});
