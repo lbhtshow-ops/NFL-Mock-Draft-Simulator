@@ -12,6 +12,7 @@ from .apps.runtime_bootstrap_diagnostics import (
     RUNTIME_BUILD_MARKER,
     collect_bootstrap_diagnostics,
 )
+from .apps.runtime_database_diagnostics import collect_runtime_database_diagnostics
 from .database import SessionLocal, engine
 from fastapi.middleware.cors import CORSMiddleware
 import time
@@ -51,6 +52,11 @@ def health_check():
         "runtime_build_marker": RUNTIME_BUILD_MARKER,
         "bootstrap_implementation": BOOTSTRAP_IMPLEMENTATION,
     }
+
+
+@app.get("/runtime/diagnostics/database")
+def runtime_database_diagnostics(db: Session = Depends(get_db)):
+    return collect_runtime_database_diagnostics(db)
 
 
 @app.get("/runtime/diagnostics/bootstrap")
