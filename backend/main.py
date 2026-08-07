@@ -7,6 +7,11 @@ Main entry point for FastAPI application that serves mock draft simulator. Defin
 from fastapi import FastAPI, Depends, HTTPException, Response
 from sqlalchemy.orm import Session
 from .apps import models, crud, schemas
+from .apps.runtime_bootstrap_diagnostics import (
+    BOOTSTRAP_IMPLEMENTATION,
+    RUNTIME_BUILD_MARKER,
+    collect_bootstrap_diagnostics,
+)
 from .database import SessionLocal, engine
 from fastapi.middleware.cors import CORSMiddleware
 import time
@@ -17,7 +22,7 @@ app = FastAPI()
 # Set up CORS middleware to allow requests from frontend application
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://nfl-mock-draft-simulator.netlify.app", "http://localhost:5173"],
+    allow_origins=["https://nfl-mock-draft-simulator.netlify.app", "http://localhost:5173", "http://localhost:5174"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
@@ -40,7 +45,27 @@ def read_root():
 @app.get("/health")
 @app.head("/health")
 def health_check():
-    return {"status": "healthy", "timestamp": time.time()}
+    return {
+        "status": "healthy",
+        "timestamp": time.time(),
+        "runtime_build_marker": RUNTIME_BUILD_MARKER,
+        "bootstrap_implementation": BOOTSTRAP_IMPLEMENTATION,
+    }
+
+
+@app.get("/runtime/diagnostics/bootstrap")
+def runtime_bootstrap_diagnostics(
+    year: int = 2027,
+    num_rounds: int = 1,
+    db: Session = Depends(get_db),
+):
+    if not 1 <= num_rounds <= 7:
+        raise HTTPException(status_code=400, detail="num_rounds must be between 1 and 7")
+    return collect_bootstrap_diagnostics(
+        db,
+        requested_year=year,
+        num_rounds=num_rounds,
+    )
 
 # API endpoint to create player
 @app.post("/players/", response_model=schemas.PlayerBase)
@@ -57,7 +82,7 @@ def get_player(player_id: int, db: Session = Depends(get_db)):
 
 # API endpoint to retrieve all players from specified year
 @app.get("/players/by_year/", response_model=list[schemas.PlayerBase])
-def get_players(year: int = 2025, db: Session = Depends(get_db)):
+def get_players(year: int = 2027, db: Session = Depends(get_db)):
     return crud.get_players(db=db, year=year)
 
 # API endpoint to update player information
@@ -153,11 +178,21 @@ def delete_draft_pick(draft_pick_id: int, db: Session = Depends(get_db)):
 
 # API endpoint to create mock draft using bootstrap method
 @app.post("/mock_drafts/bootstrap", response_model=schemas.MockDraftBase)
-def create_mock_draft_bootstrap(payload: schemas.MockDraftBootstrapCreate, db: Session = Depends(get_db)):
+def create_mock_draft_bootstrap(
+    payload: schemas.MockDraftBootstrapCreate,
+    response: Response,
+    db: Session = Depends(get_db),
+):
     try:
-        return crud.create_mock_draft_bootstrap(db=db, payload=payload)
+        result = crud.create_mock_draft_bootstrap(db=db, payload=payload)
+        response.headers["X-LBHT-Runtime-Build"] = RUNTIME_BUILD_MARKER
+        response.headers["X-LBHT-Bootstrap-Implementation"] = BOOTSTRAP_IMPLEMENTATION
+        return result
     except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e))
+        raise HTTPException(
+            status_code=400,
+            detail=f"[{BOOTSTRAP_IMPLEMENTATION}] {e}",
+        )
 
 # API endpoint to create mock draft
 @app.post("/mock_drafts", response_model=schemas.MockDraftBase)

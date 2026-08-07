@@ -7,6 +7,13 @@ Defines CRUD operations for players, teams, draft picks, mock drafts, mock draft
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from . import models, schemas
+from .runtime_draft_order import resolve_runtime_draft_order
+from .application_projection_2027 import (
+    PROJECTION_SOURCE,
+    PROJECTION_STATUS,
+    PROJECTION_VERSION,
+    projection_rows,
+)
 
 
 # Create player and add to database
@@ -162,8 +169,57 @@ def delete_draft_pick(db: Session, draft_pick_id: int):
     return None
 
 # Create mock draft with associated user-controlled teams and mock draft picks based on specified number of rounds and year, and add to database
+def _ensure_2027_application_projection_players(db: Session):
+    """Make the bounded 2027 development cohort consumable by the legacy runtime.
+
+    These rows are explicitly an application projection, not canonical FID population.
+    Existing 2027 rows are preserved; only missing cohort names are added.
+    """
+    existing = {
+        player.name: player
+        for player in db.query(models.Player).filter(models.Player.year == 2027).all()
+    }
+
+    added = False
+    for row in projection_rows():
+        if row["name"] in existing:
+            continue
+        db.add(models.Player(**row))
+        added = True
+
+    if added:
+        db.flush()
+
+    return (
+        db.query(models.Player)
+        .filter(models.Player.year == 2027)
+        .order_by(models.Player.rank.asc())
+        .all()
+    )
+
+
+# Create mock draft with associated user-controlled teams and mock draft picks.
+# For the 2027 product-development path, the legacy runtime consumes the bounded
+# repository application projection and a runtime-materialized draft-order template when needed.
 def create_mock_draft_bootstrap(db: Session, payload: schemas.MockDraftBootstrapCreate):
     try:
+        if not 1 <= payload.num_rounds <= 7:
+            raise ValueError("num_rounds must be between 1 and 7")
+        if payload.year not in (2025, 2026, 2027):
+            raise ValueError(f"Unsupported draft year: {payload.year}")
+
+        projection_players = None
+        if payload.year == 2027:
+            projection_players = _ensure_2027_application_projection_players(db)
+            if not projection_players:
+                raise ValueError("2027 application prospect projection is empty")
+
+        order_resolution = resolve_runtime_draft_order(
+            db,
+            requested_year=payload.year,
+            num_rounds=payload.num_rounds,
+        )
+
         db_mock_draft = models.MockDraft(
             name=payload.name,
             num_rounds=payload.num_rounds,
@@ -178,18 +234,22 @@ def create_mock_draft_bootstrap(db: Session, payload: schemas.MockDraftBootstrap
                 team_id=team_id
             ))
 
-        draft_picks = (
-            db.query(models.DraftPick)
-            .filter(
-                models.DraftPick.round <= payload.num_rounds,
-                models.DraftPick.year == payload.year
-            )
-            .order_by(models.DraftPick.pick_number)
-            .all()
-        )
+        draft_picks = list(order_resolution.picks)
 
         if not draft_picks:
-            raise ValueError(f"No draft picks found for year={payload.year}, rounds<={payload.num_rounds}")
+            raise ValueError(
+                f"Runtime draft order is empty for year={payload.year}, "
+                f"rounds<={payload.num_rounds}"
+            )
+
+        preview_limited = False
+        if payload.year == 2027 and projection_players is not None:
+            # Product development is allowed to use the bounded preparation cohort, but
+            # we must not invent unresearched prospects. Limit the runnable session to
+            # the number of currently available 2027 application-projection players.
+            if len(projection_players) < len(draft_picks):
+                preview_limited = True
+                draft_picks = draft_picks[: len(projection_players)]
 
         for pick in draft_picks:
             db.add(models.MockDraftPick(
@@ -201,6 +261,23 @@ def create_mock_draft_bootstrap(db: Session, payload: schemas.MockDraftBootstrap
 
         db.commit()
         db.refresh(db_mock_draft)
+
+        # Transient response metadata. These fields are application/runtime state only
+        # and intentionally do not modify the legacy mock_drafts table.
+        db_mock_draft.runtime_contract_version = payload.runtime_contract_version or "2.1"
+        db_mock_draft.draft_mode = payload.draft_mode or "standard"
+        db_mock_draft.draft_order_source_year = order_resolution.source_year
+        db_mock_draft.draft_order_materialized = order_resolution.materialized
+        db_mock_draft.draft_order_status = order_resolution.status
+        db_mock_draft.preview_limited = preview_limited
+        db_mock_draft.runtime_status = (
+            PROJECTION_STATUS if payload.year == 2027 else "LEGACY_RUNTIME"
+        )
+        if payload.year == 2027:
+            db_mock_draft.prospect_source = PROJECTION_SOURCE
+            db_mock_draft.prospect_projection_version = PROJECTION_VERSION
+            db_mock_draft.prospect_count = len(projection_players or [])
+
         return db_mock_draft
     except Exception:
         db.rollback()

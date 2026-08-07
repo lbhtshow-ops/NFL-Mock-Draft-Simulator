@@ -122,6 +122,8 @@ class MockDraftBootstrapCreate(BaseModel):
     num_rounds: int
     year: int
     user_team_ids: List[int]
+    draft_mode: Optional[str] = "standard"
+    runtime_contract_version: Optional[str] = "2.1"
 
 # Pydantic schema to create MockDraft
 class MockDraftCreate(BaseModel):
@@ -135,6 +137,16 @@ class MockDraftBase(BaseModel):
     name: str
     num_rounds: int
     year: int
+    runtime_contract_version: Optional[str] = "1.0"
+    draft_mode: Optional[str] = "standard"
+    prospect_source: Optional[str] = None
+    prospect_projection_version: Optional[str] = None
+    prospect_count: Optional[int] = None
+    draft_order_source_year: Optional[int] = None
+    draft_order_materialized: Optional[bool] = False
+    draft_order_status: Optional[str] = None
+    preview_limited: Optional[bool] = False
+    runtime_status: Optional[str] = None
 
     class Config:
         from_attributes = True
