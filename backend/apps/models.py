@@ -7,6 +7,7 @@ Defines SQLAlchemy ORM model structures for players, teams, draft picks, mock dr
 from sqlalchemy import Column, Integer, String, ForeignKey, ARRAY
 from sqlalchemy.orm import relationship
 from ..database import Base
+from .application_prospect_reference import create_application_prospect_ref
 
 
 # Define ORM model for Player
@@ -19,6 +20,11 @@ class Player(Base):
     college = Column(String(100), nullable=False)
     rank = Column(Integer, nullable=False)
     year = Column(Integer, nullable=False)
+
+    @property
+    def application_prospect_ref(self):
+        """Stable application bridge reference; not a canonical FID identifier."""
+        return create_application_prospect_ref(year=self.year, name=self.name)
 
 
 # Define ORM model for Team
