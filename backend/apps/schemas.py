@@ -24,6 +24,8 @@ class PlayerBase(BaseModel):
     college: str
     rank: int
     year: int
+    # Deterministic application-layer bridge only; this is not a canonical FID identifier.
+    application_prospect_ref: Optional[str] = None
 
     class Config:
         from_attributes = True
