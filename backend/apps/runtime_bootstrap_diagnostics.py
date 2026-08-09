@@ -12,11 +12,11 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from . import models
-from .application_projection_2027 import (
-    PROJECTION_SOURCE,
-    PROJECTION_STATUS,
-    PROJECTION_VERSION,
-    PROSPECTS_2027,
+from .application_inventory_2027 import (
+    RUNTIME_INVENTORY_SOURCE,
+    RUNTIME_INVENTORY_STATUS,
+    RUNTIME_INVENTORY_VERSION,
+    runtime_inventory_diagnostics,
 )
 from .runtime_draft_order import (
     RUNTIME_ORDER_CONTRACT_VERSION,
@@ -25,8 +25,8 @@ from .runtime_draft_order import (
 )
 
 
-RUNTIME_BUILD_MARKER = "MDS-4F_RUNTIME_BOOTSTRAP_DIAGNOSTICS_1.0"
-BOOTSTRAP_IMPLEMENTATION = "RUNTIME_TEMPLATE_MATERIALIZATION_2.1"
+RUNTIME_BUILD_MARKER = "MDS-5B.3C_RUNTIME_CATALOG_MATERIALIZATION_1.0"
+BOOTSTRAP_IMPLEMENTATION = "APPLICATION_CATALOG_RUNTIME_MATERIALIZATION_3.0"
 
 
 def _draft_pick_counts_by_year(db: Session) -> Dict[str, int]:
@@ -119,12 +119,7 @@ def collect_bootstrap_diagnostics(
         "draft_pick_counts_by_year": _draft_pick_counts_by_year(db),
         "player_counts_by_year": _player_counts_by_year(db),
         "database_2027_player_rows": int(projected_2027_rows),
-        "development_projection": {
-            "status": PROJECTION_STATUS,
-            "source": PROJECTION_SOURCE,
-            "version": PROJECTION_VERSION,
-            "declared_cohort_size": len(PROSPECTS_2027),
-        },
+        "application_prospect_inventory": runtime_inventory_diagnostics(),
         "writes_performed": False,
         "fid_production_persistence_touched": False,
         "ref_sprint_17c_touched": False,

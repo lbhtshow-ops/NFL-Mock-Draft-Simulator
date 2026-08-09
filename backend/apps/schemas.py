@@ -143,6 +143,8 @@ class MockDraftBase(BaseModel):
     draft_mode: Optional[str] = "standard"
     prospect_source: Optional[str] = None
     prospect_projection_version: Optional[str] = None
+    prospect_inventory_version: Optional[str] = None
+    prospect_inventory_status: Optional[str] = None
     prospect_count: Optional[int] = None
     draft_order_source_year: Optional[int] = None
     draft_order_materialized: Optional[bool] = False
