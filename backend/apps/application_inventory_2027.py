@@ -1,13 +1,11 @@
-"""Application/runtime materialization snapshot for the 2027 prospect catalog.
+"""Final available-source application/runtime materialization snapshot for the 2027 prospect catalog.
 
-This module mirrors the currently approved 240-entry Application Prospect Inventory into
-Python so the legacy FastAPI/SQLAlchemy runtime can materialize draftable Player rows.
-It is an application runtime bridge, not canonical FID persistence, not an LBHT Big Board,
-and not Draft Intelligence scoring.
+NFL Draft Buzz currently publishes 336 rows in the referenced overall list. The current
+application prospect reference is name-only inside a draft year, so three lower-priority
+same-name rows are explicitly withheld rather than silently colliding with earlier entries.
 
-Enriched Phase 2A.3C projection rows retain precedence over overlapping base-inventory
-rows. Remaining base-profile prospects are appended in source-provenance order solely to
-produce a deterministic legacy runtime ordering.
+This remains an application runtime bridge: not canonical FID persistence, not an LBHT Big
+Board, and not Draft Intelligence scoring. Enriched Phase 2A.3C rows retain precedence.
 """
 
 from typing import Dict, List, Tuple
@@ -15,13 +13,20 @@ from typing import Dict, List, Tuple
 from .application_projection_2027 import PROSPECTS_2027
 from .application_prospect_reference import create_application_prospect_ref
 
-RUNTIME_INVENTORY_CONTRACT_VERSION = "1.0.0"
-RUNTIME_INVENTORY_VERSION = "2027-application-catalog-240-v1"
+RUNTIME_INVENTORY_CONTRACT_VERSION = "1.1.0"
+RUNTIME_INVENTORY_VERSION = "2027-application-catalog-published-336-materialized-333-v1"
 RUNTIME_INVENTORY_STATUS = "APPLICATION_CATALOG_RUNTIME_MATERIALIZATION"
-RUNTIME_INVENTORY_SOURCE = "APPLICATION_PROSPECT_CATALOG_2027_BASE_240_PLUS_ENRICHED_2A3C"
+RUNTIME_INVENTORY_SOURCE = "APPLICATION_PROSPECT_CATALOG_2027_PUBLISHED_336_MATERIALIZED_333_PLUS_ENRICHED_2A3C"
 RUNTIME_INVENTORY_SOURCE_ORDINAL_AUTHORITY = "PROVENANCE_ONLY_NOT_LBHT_RANK"
 RUNTIME_RANK_AUTHORITY = "LEGACY_RUNTIME_ORDER_ONLY_NOT_LBHT_RANK"
 RUNTIME_INVENTORY_DRAFT_YEAR = 2027
+RUNTIME_INVENTORY_PUBLISHED_SOURCE_COUNT = 336
+
+BASE_INVENTORY_IDENTITY_COLLISION_EXCLUSIONS = (
+    {'source_ordinal': 315, 'name': 'Carter Smith', 'position': 'QB', 'college': 'Indiana', 'reason': 'APPLICATION_REFERENCE_NAME_COLLISION_REQUIRES_DISAMBIGUATED_IDENTITY'},
+    {'source_ordinal': 335, 'name': 'Jamari Johnson', 'position': 'CB', 'college': 'Oregon', 'reason': 'APPLICATION_REFERENCE_NAME_COLLISION_REQUIRES_DISAMBIGUATED_IDENTITY'},
+    {'source_ordinal': 336, 'name': 'Anthony Smith', 'position': 'DL', 'college': 'Minnesota', 'reason': 'APPLICATION_REFERENCE_NAME_COLLISION_REQUIRES_DISAMBIGUATED_IDENTITY'},
+)
 
 BASE_INVENTORY_2027 = (
     {'source_ordinal': 1, 'name': 'Jeremiah Smith', 'position': 'WR', 'college': 'Ohio State'},
@@ -264,6 +269,99 @@ BASE_INVENTORY_2027 = (
     {'source_ordinal': 238, 'name': 'Byrum Brown', 'position': 'QB', 'college': 'Auburn'},
     {'source_ordinal': 239, 'name': 'Sullivan Absher', 'position': 'OG', 'college': 'Notre Dame'},
     {'source_ordinal': 240, 'name': 'Tavion Gadson', 'position': 'DL', 'college': 'Kentucky'},
+    {'source_ordinal': 241, 'name': 'Mario Landino', 'position': 'DL', 'college': 'Indiana'},
+    {'source_ordinal': 242, 'name': 'Bradyn Joiner', 'position': 'C', 'college': 'Purdue'},
+    {'source_ordinal': 243, 'name': 'Jordan Castell', 'position': 'S', 'college': 'Kentucky'},
+    {'source_ordinal': 244, 'name': 'Braylan Shelby', 'position': 'EDGE', 'college': 'USC'},
+    {'source_ordinal': 245, 'name': 'OJ Frederique Jr.', 'position': 'CB', 'college': 'Miami'},
+    {'source_ordinal': 246, 'name': 'Elijah Rushing', 'position': 'EDGE', 'college': 'Oregon'},
+    {'source_ordinal': 247, 'name': 'Isaac Brown', 'position': 'RB', 'college': 'Louisville'},
+    {'source_ordinal': 248, 'name': 'Noah Carter', 'position': 'EDGE', 'college': 'Georgia Tech'},
+    {'source_ordinal': 249, 'name': 'Tunmise Adeleye', 'position': 'EDGE', 'college': 'Syracuse'},
+    {'source_ordinal': 250, 'name': 'Anthony Evans III', 'position': 'WR', 'college': 'Mississippi State'},
+    {'source_ordinal': 251, 'name': 'Desmond Umeozulu', 'position': 'EDGE', 'college': 'Alabama'},
+    {'source_ordinal': 252, 'name': 'Micah Mays Jr.', 'position': 'WR', 'college': 'Wake Forest'},
+    {'source_ordinal': 253, 'name': 'Malachi Nelson', 'position': 'QB', 'college': 'Syracuse'},
+    {'source_ordinal': 254, 'name': 'Monroe Mills', 'position': 'OT', 'college': 'Virginia'},
+    {'source_ordinal': 255, 'name': 'Evan Stewart', 'position': 'WR', 'college': 'Oregon'},
+    {'source_ordinal': 256, 'name': "D'Antre Robinson", 'position': 'DT', 'college': 'Oregon'},
+    {'source_ordinal': 257, 'name': 'Kyle Altuner', 'position': 'C', 'college': 'Virginia Tech'},
+    {'source_ordinal': 258, 'name': 'Marquis Johnson', 'position': 'WR', 'college': 'Missouri'},
+    {'source_ordinal': 259, 'name': 'DeSean Bishop', 'position': 'RB', 'college': 'Tennessee'},
+    {'source_ordinal': 260, 'name': 'Shamar Porter', 'position': 'WR', 'college': 'UConn'},
+    {'source_ordinal': 261, 'name': 'Rico Flores Jr.', 'position': 'WR', 'college': 'Virginia'},
+    {'source_ordinal': 262, 'name': 'DJ Vonnahme', 'position': 'TE', 'college': 'Iowa'},
+    {'source_ordinal': 263, 'name': 'Trey Leckner', 'position': 'TE', 'college': 'Washington State'},
+    {'source_ordinal': 264, 'name': 'Daevin Hobbs', 'position': 'DL', 'college': 'Tennessee'},
+    {'source_ordinal': 265, 'name': 'Thomas Collins', 'position': 'DL', 'college': 'Oregon State'},
+    {'source_ordinal': 266, 'name': 'Rueben Owens II', 'position': 'RB', 'college': 'Texas A&M'},
+    {'source_ordinal': 267, 'name': 'Joe Otting', 'position': 'C', 'college': 'Notre Dame'},
+    {'source_ordinal': 268, 'name': 'Kelby Collins', 'position': 'EDGE', 'college': 'South Carolina'},
+    {'source_ordinal': 269, 'name': 'Amare Campbell', 'position': 'LB', 'college': 'Tennessee'},
+    {'source_ordinal': 270, 'name': 'Xavier Scott', 'position': 'CB', 'college': 'Illinois'},
+    {'source_ordinal': 271, 'name': 'Aaron Scott Jr.', 'position': 'CB', 'college': 'Oregon'},
+    {'source_ordinal': 272, 'name': 'Tree Babalade', 'position': 'OT', 'college': 'Nebraska'},
+    {'source_ordinal': 273, 'name': 'Elliot Washington II', 'position': 'CB', 'college': 'Clemson'},
+    {'source_ordinal': 274, 'name': 'Keon Wylie', 'position': 'LB', 'college': 'Penn State'},
+    {'source_ordinal': 275, 'name': 'Darius Taylor', 'position': 'RB', 'college': 'Minnesota'},
+    {'source_ordinal': 276, 'name': 'Aidan Chiles', 'position': 'QB', 'college': 'Northwestern'},
+    {'source_ordinal': 277, 'name': 'Dorian Thomas', 'position': 'TE', 'college': 'California'},
+    {'source_ordinal': 278, 'name': 'Semaj Morgan', 'position': 'WR', 'college': 'Michigan'},
+    {'source_ordinal': 279, 'name': 'Michael Hershey', 'position': 'C', 'college': 'Maryland'},
+    {'source_ordinal': 280, 'name': 'Jake Johnson', 'position': 'TE', 'college': 'Auburn'},
+    {'source_ordinal': 281, 'name': 'Keyjuan Brown', 'position': 'RB', 'college': 'Louisville'},
+    {'source_ordinal': 282, 'name': 'Kevin Jennings', 'position': 'QB', 'college': 'SMU'},
+    {'source_ordinal': 283, 'name': 'Khalil Barnes', 'position': 'S', 'college': 'Georgia'},
+    {'source_ordinal': 284, 'name': 'DJ McKinney', 'position': 'CB', 'college': 'Notre Dame'},
+    {'source_ordinal': 285, 'name': 'Derek Williams Jr.', 'position': 'S', 'college': 'Texas'},
+    {'source_ordinal': 286, 'name': 'Troy Omeire', 'position': 'WR', 'college': 'New Mexico'},
+    {'source_ordinal': 287, 'name': 'London Humphreys', 'position': 'WR', 'college': 'Georgia'},
+    {'source_ordinal': 288, 'name': 'Jelani Thurman', 'position': 'TE', 'college': 'North Carolina'},
+    {'source_ordinal': 289, 'name': 'Derrick Davis Jr.', 'position': 'RB', 'college': 'Pittsburgh'},
+    {'source_ordinal': 290, 'name': 'Malachi Coleman', 'position': 'WR', 'college': 'Wisconsin'},
+    {'source_ordinal': 291, 'name': 'Quintrevion Wisner', 'position': 'RB', 'college': 'Florida State'},
+    {'source_ordinal': 292, 'name': 'Gentry Williams', 'position': 'CB', 'college': 'Georgia'},
+    {'source_ordinal': 293, 'name': 'Jake Garcia', 'position': 'QB', 'college': 'Michigan'},
+    {'source_ordinal': 294, 'name': 'Quinten Joyner', 'position': 'RB', 'college': 'Texas Tech'},
+    {'source_ordinal': 295, 'name': 'Jaden Rashada', 'position': 'QB', 'college': 'Mississippi State'},
+    {'source_ordinal': 296, 'name': 'Malik Hartford', 'position': 'S', 'college': 'UCLA'},
+    {'source_ordinal': 297, 'name': 'James Peoples', 'position': 'RB', 'college': 'Penn State'},
+    {'source_ordinal': 298, 'name': 'Jaquaize Pettaway', 'position': 'WR', 'college': 'East Carolina'},
+    {'source_ordinal': 299, 'name': 'JK Johnson', 'position': 'CB', 'college': 'Florida Atlantic'},
+    {'source_ordinal': 300, 'name': 'Dante Dowdell', 'position': 'RB', 'college': 'Georgia'},
+    {'source_ordinal': 301, 'name': 'Austin Novosad', 'position': 'QB', 'college': 'Bowling Green'},
+    {'source_ordinal': 302, 'name': 'Laurence Seymore', 'position': 'OG', 'college': 'Texas'},
+    {'source_ordinal': 303, 'name': 'Gavin Sawchuk', 'position': 'RB', 'college': 'Northwestern'},
+    {'source_ordinal': 304, 'name': 'Montravius Lloyd', 'position': 'RB', 'college': 'Bethune-Cookman'},
+    {'source_ordinal': 305, 'name': 'Alex Birchmeier', 'position': 'OG', 'college': 'Liberty'},
+    {'source_ordinal': 306, 'name': 'Sam Huard', 'position': 'QB', 'college': 'USC'},
+    {'source_ordinal': 307, 'name': 'Jayden Limar', 'position': 'RB', 'college': 'Oregon'},
+    {'source_ordinal': 308, 'name': 'Dylan Braithwaite', 'position': 'WR', 'college': 'Rutgers'},
+    {'source_ordinal': 309, 'name': 'Jalen Hale', 'position': 'WR', 'college': 'SMU'},
+    {'source_ordinal': 310, 'name': 'CJ Baxter', 'position': 'RB', 'college': 'Kentucky'},
+    {'source_ordinal': 311, 'name': 'Roderick Robinson II', 'position': 'RB', 'college': 'UAB'},
+    {'source_ordinal': 312, 'name': 'Datrell Jones', 'position': 'RB', 'college': 'Holy Cross'},
+    {'source_ordinal': 313, 'name': 'Nic Anderson', 'position': 'WR', 'college': 'Kentucky'},
+    {'source_ordinal': 314, 'name': 'Riley Williams', 'position': 'TE', 'college': 'Mississippi State'},
+    {'source_ordinal': 316, 'name': 'Jaden Greathouse', 'position': 'WR', 'college': 'Notre Dame'},
+    {'source_ordinal': 317, 'name': 'Kaleb Jackson', 'position': 'RB', 'college': 'North Carolina'},
+    {'source_ordinal': 318, 'name': 'David Oke', 'position': 'DL', 'college': 'Arkansas'},
+    {'source_ordinal': 319, 'name': 'Javien Toviano', 'position': 'S', 'college': 'LSU'},
+    {'source_ordinal': 320, 'name': 'Cam Calhoun', 'position': 'CB', 'college': 'Alabama'},
+    {'source_ordinal': 321, 'name': 'Evan Pryor', 'position': 'RB', 'college': 'Florida'},
+    {'source_ordinal': 322, 'name': 'Chris Johnson Jr.', 'position': 'RB', 'college': 'Clemson'},
+    {'source_ordinal': 323, 'name': 'Dylan Edwards', 'position': 'RB', 'college': 'Kansas'},
+    {'source_ordinal': 324, 'name': 'Jambres Dubar', 'position': 'RB', 'college': 'Boise State'},
+    {'source_ordinal': 325, 'name': "A'Marion Peterson", 'position': 'RB', 'college': 'UTSA'},
+    {'source_ordinal': 326, 'name': 'Rod Moore', 'position': 'S', 'college': 'Michigan'},
+    {'source_ordinal': 327, 'name': 'Jahiem White', 'position': 'RB', 'college': 'North Texas'},
+    {'source_ordinal': 328, 'name': 'Jaden Bray', 'position': 'WR', 'college': 'West Virginia'},
+    {'source_ordinal': 329, 'name': 'Dante Lovett', 'position': 'CB', 'college': 'Virginia Tech'},
+    {'source_ordinal': 330, 'name': 'Isaiah Augustave', 'position': 'RB', 'college': 'South Carolina'},
+    {'source_ordinal': 331, 'name': 'Hank Brown', 'position': 'QB', 'college': 'Iowa'},
+    {'source_ordinal': 332, 'name': 'Max Johnson', 'position': 'QB', 'college': 'Georgia Southern'},
+    {'source_ordinal': 333, 'name': 'Makhi Hughes', 'position': 'RB', 'college': 'Houston'},
+    {'source_ordinal': 334, 'name': 'Braydon Bennett', 'position': 'RB', 'college': 'Eastern Michigan'},
 )
 
 
@@ -272,12 +370,7 @@ def _ref(name: str) -> str:
 
 
 def runtime_inventory_rows() -> List[Dict[str, object]]:
-    """Return the de-duplicated 2027 runtime catalog rows.
-
-    Enriched projection entries are emitted first. Base-profile inventory entries that
-    resolve to the same application reference are skipped. ``rank`` is a legacy runtime
-    sort key only and has no Football Intelligence or LBHT ranking authority.
-    """
+    """Return the de-duplicated 2027 runtime catalog rows."""
     merged: List[Tuple[str, str, str, str, int | None, str]] = []
     seen = set()
 
@@ -286,28 +379,14 @@ def runtime_inventory_rows() -> List[Dict[str, object]]:
         if not application_ref or application_ref in seen:
             continue
         seen.add(application_ref)
-        merged.append((
-            application_ref,
-            prospect["name"],
-            prospect["position"],
-            prospect["college"],
-            None,
-            "ENRICHED_RESEARCH",
-        ))
+        merged.append((application_ref, prospect["name"], prospect["position"], prospect["college"], None, "ENRICHED_RESEARCH"))
 
     for prospect in BASE_INVENTORY_2027:
         application_ref = _ref(prospect["name"])
         if not application_ref or application_ref in seen:
             continue
         seen.add(application_ref)
-        merged.append((
-            application_ref,
-            prospect["name"],
-            prospect["position"],
-            prospect["college"],
-            int(prospect["source_ordinal"]),
-            "BASE_PROFILE",
-        ))
+        merged.append((application_ref, prospect["name"], prospect["position"], prospect["college"], int(prospect["source_ordinal"]), "BASE_PROFILE"))
 
     return [
         {
@@ -338,7 +417,10 @@ def runtime_inventory_diagnostics() -> Dict[str, object]:
         "status": RUNTIME_INVENTORY_STATUS,
         "source": RUNTIME_INVENTORY_SOURCE,
         "draft_year": RUNTIME_INVENTORY_DRAFT_YEAR,
+        "published_source_count": RUNTIME_INVENTORY_PUBLISHED_SOURCE_COUNT,
         "base_source_count": len(BASE_INVENTORY_2027),
+        "excluded_identity_collision_count": len(BASE_INVENTORY_IDENTITY_COLLISION_EXCLUSIONS),
+        "excluded_source_ordinals": [row["source_ordinal"] for row in BASE_INVENTORY_IDENTITY_COLLISION_EXCLUSIONS],
         "enriched_source_count": len(PROSPECTS_2027),
         "runtime_inventory_count": len(rows),
         "enriched_runtime_count": enriched_count,

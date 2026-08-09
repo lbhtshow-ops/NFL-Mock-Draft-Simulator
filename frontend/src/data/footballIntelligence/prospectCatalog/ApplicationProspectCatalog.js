@@ -1,9 +1,14 @@
 import { ApplicationResolverBoundary } from "../fid/prospectDatabase/phase2B/sprint2B_1/ApplicationResolverBoundary.js";
 import { fixtureProspectReferences } from "../fid/prospectDatabase/phase2B/sprint2B_1/FixtureResolver.js";
 import { RESOLUTION_STATUSES } from "../fid/prospectDatabase/phase2B/sprint2B_1/ProspectResolverContract.js";
+import {
+  getApplicationInventoryProspectByIdentity,
+  getApplicationInventoryProspectByRef,
+  listApplicationInventoryProspects,
+} from "./ApplicationProspectInventory.js";
 
 export const APPLICATION_PROSPECT_CATALOG_CONTRACT = "ApplicationProspectCatalog";
-export const APPLICATION_PROSPECT_CATALOG_VERSION = "FIP-APPLICATION-PROSPECT-CATALOG-1.0.0";
+export const APPLICATION_PROSPECT_CATALOG_VERSION = "FIP-APPLICATION-PROSPECT-CATALOG-1.4.0";
 
 export const PROSPECT_INTELLIGENCE_COVERAGE = Object.freeze({
   ENRICHED_RESEARCH: "ENRICHED_RESEARCH",
@@ -108,10 +113,15 @@ const enrichedEntries = Object.freeze(
     .filter(Boolean)
 );
 
-const byApplicationRef = new Map(enrichedEntries.map((entry) => [entry.applicationProspectRef, entry]));
+const inventoryEntries = Object.freeze(listApplicationInventoryProspects());
+const combinedEntryMap = new Map(inventoryEntries.map((entry) => [entry.applicationProspectRef, entry]));
+enrichedEntries.forEach((entry) => combinedEntryMap.set(entry.applicationProspectRef, entry));
+const catalogEntries = Object.freeze([...combinedEntryMap.values()]);
+
+const byApplicationRef = new Map(catalogEntries.map((entry) => [entry.applicationProspectRef, entry]));
 const byFidRef = new Map(enrichedEntries.map((entry) => [entry.fidProspectRef, entry]));
 const byYearAndName = new Map(
-  enrichedEntries.map((entry) => [`${entry.draftYear}:${normalizeName(entry.identity.displayName)}`, entry])
+  catalogEntries.map((entry) => [`${entry.draftYear}:${normalizeName(entry.identity.displayName)}`, entry])
 );
 
 function baseRuntimeEntry(input) {
@@ -150,9 +160,13 @@ function baseRuntimeEntry(input) {
   });
 }
 
-export function listApplicationProspects({ draftYear } = {}) {
-  if (draftYear == null) return enrichedEntries;
-  return Object.freeze(enrichedEntries.filter((entry) => entry.draftYear === Number(draftYear)));
+export function listApplicationProspects({ draftYear, intelligenceCoverage } = {}) {
+  let entries = catalogEntries;
+  if (draftYear != null) entries = entries.filter((entry) => entry.draftYear === Number(draftYear));
+  if (intelligenceCoverage) {
+    entries = entries.filter((entry) => entry.intelligenceCoverage?.level === intelligenceCoverage);
+  }
+  return Object.freeze(entries);
 }
 
 export function getApplicationProspectByRef(reference) {
@@ -165,6 +179,10 @@ export function resolveApplicationProspect(input, { allowRuntimeBaseProfile = tr
 
   const applicationRef = applicationReferenceFromInput(input);
   if (applicationRef && byApplicationRef.has(applicationRef)) return byApplicationRef.get(applicationRef);
+  if (applicationRef) {
+    const inventoryMatch = getApplicationInventoryProspectByRef(applicationRef);
+    if (inventoryMatch) return inventoryMatch;
+  }
 
   const fidRef = fidReferenceFromInput(input);
   if (fidRef && byFidRef.has(fidRef)) return byFidRef.get(fidRef);
@@ -174,6 +192,8 @@ export function resolveApplicationProspect(input, { allowRuntimeBaseProfile = tr
   if (displayName && draftYear) {
     const match = byYearAndName.get(`${draftYear}:${normalizeName(displayName)}`);
     if (match) return match;
+    const inventoryMatch = getApplicationInventoryProspectByIdentity({ draftYear, displayName });
+    if (inventoryMatch) return inventoryMatch;
   }
 
   return allowRuntimeBaseProfile ? baseRuntimeEntry(input) : null;
@@ -183,11 +203,15 @@ export function getApplicationProspectCatalogDiagnostics() {
   return deepFreeze({
     contract: APPLICATION_PROSPECT_CATALOG_CONTRACT,
     contractVersion: APPLICATION_PROSPECT_CATALOG_VERSION,
+    catalogCount: catalogEntries.length,
     enrichedCount: enrichedEntries.length,
-    draftYears: [...new Set(enrichedEntries.map((entry) => entry.draftYear))].sort(),
-    uniqueApplicationReferences: new Set(enrichedEntries.map((entry) => entry.applicationProspectRef)).size,
+    baseInventoryCount: catalogEntries.filter((entry) => entry.intelligenceCoverage?.level === PROSPECT_INTELLIGENCE_COVERAGE.BASE_PROFILE).length,
+    inventorySourceCount: inventoryEntries.length,
+    inventoryOverlapReplacedByEnrichment: inventoryEntries.length + enrichedEntries.length - catalogEntries.length,
+    draftYears: [...new Set(catalogEntries.map((entry) => entry.draftYear))].sort(),
+    uniqueApplicationReferences: new Set(catalogEntries.map((entry) => entry.applicationProspectRef)).size,
     uniqueFidReferences: new Set(enrichedEntries.map((entry) => entry.fidProspectRef)).size,
-    canonicalIdentifierCount: enrichedEntries.filter((entry) => entry.canonicalIdentifier).length,
+    canonicalIdentifierCount: catalogEntries.filter((entry) => entry.canonicalIdentifier).length,
     identityAuthority: "APPLICATION_REFERENCE_NON_CANONICAL",
     resolverBoundary: "ApplicationResolverBoundary",
   });
