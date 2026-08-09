@@ -1,8 +1,8 @@
 """Final available-source application/runtime materialization snapshot for the 2027 prospect catalog.
 
-NFL Draft Buzz currently publishes 336 rows in the referenced overall list. The current
-application prospect reference is name-only inside a draft year, so three lower-priority
-same-name rows are explicitly withheld rather than silently colliding with earlier entries.
+NFL Draft Buzz currently publishes 336 rows in the referenced overall list. MDS-5B.4
+materializes all rows by using explicit source-scoped application discriminators for the three
+same-name collisions. These remain non-canonical application references.
 
 This remains an application runtime bridge: not canonical FID persistence, not an LBHT Big
 Board, and not Draft Intelligence scoring. Enriched Phase 2A.3C rows retain precedence.
@@ -13,19 +13,20 @@ from typing import Dict, List, Tuple
 from .application_projection_2027 import PROSPECTS_2027
 from .application_prospect_reference import create_application_prospect_ref
 
-RUNTIME_INVENTORY_CONTRACT_VERSION = "1.1.0"
-RUNTIME_INVENTORY_VERSION = "2027-application-catalog-published-336-materialized-333-v1"
+RUNTIME_INVENTORY_CONTRACT_VERSION = "1.2.0"
+RUNTIME_INVENTORY_VERSION = "2027-application-catalog-published-336-materialized-336-disambiguated-v1"
 RUNTIME_INVENTORY_STATUS = "APPLICATION_CATALOG_RUNTIME_MATERIALIZATION"
-RUNTIME_INVENTORY_SOURCE = "APPLICATION_PROSPECT_CATALOG_2027_PUBLISHED_336_MATERIALIZED_333_PLUS_ENRICHED_2A3C"
+RUNTIME_INVENTORY_SOURCE = "APPLICATION_PROSPECT_CATALOG_2027_PUBLISHED_336_MATERIALIZED_336_PLUS_ENRICHED_2A3C"
 RUNTIME_INVENTORY_SOURCE_ORDINAL_AUTHORITY = "PROVENANCE_ONLY_NOT_LBHT_RANK"
 RUNTIME_RANK_AUTHORITY = "LEGACY_RUNTIME_ORDER_ONLY_NOT_LBHT_RANK"
 RUNTIME_INVENTORY_DRAFT_YEAR = 2027
 RUNTIME_INVENTORY_PUBLISHED_SOURCE_COUNT = 336
 
-BASE_INVENTORY_IDENTITY_COLLISION_EXCLUSIONS = (
-    {'source_ordinal': 315, 'name': 'Carter Smith', 'position': 'QB', 'college': 'Indiana', 'reason': 'APPLICATION_REFERENCE_NAME_COLLISION_REQUIRES_DISAMBIGUATED_IDENTITY'},
-    {'source_ordinal': 335, 'name': 'Jamari Johnson', 'position': 'CB', 'college': 'Oregon', 'reason': 'APPLICATION_REFERENCE_NAME_COLLISION_REQUIRES_DISAMBIGUATED_IDENTITY'},
-    {'source_ordinal': 336, 'name': 'Anthony Smith', 'position': 'DL', 'college': 'Minnesota', 'reason': 'APPLICATION_REFERENCE_NAME_COLLISION_REQUIRES_DISAMBIGUATED_IDENTITY'},
+BASE_INVENTORY_IDENTITY_COLLISION_EXCLUSIONS = ()
+BASE_INVENTORY_IDENTITY_DISAMBIGUATIONS = (
+    {"source_ordinal": 315, "name": "Carter Smith", "position": "QB", "college": "Indiana", "identity_discriminator": "source-315"},
+    {"source_ordinal": 335, "name": "Jamari Johnson", "position": "CB", "college": "Oregon", "identity_discriminator": "source-335"},
+    {"source_ordinal": 336, "name": "Anthony Smith", "position": "DL", "college": "Minnesota", "identity_discriminator": "source-336"},
 )
 
 BASE_INVENTORY_2027 = (
@@ -343,6 +344,7 @@ BASE_INVENTORY_2027 = (
     {'source_ordinal': 312, 'name': 'Datrell Jones', 'position': 'RB', 'college': 'Holy Cross'},
     {'source_ordinal': 313, 'name': 'Nic Anderson', 'position': 'WR', 'college': 'Kentucky'},
     {'source_ordinal': 314, 'name': 'Riley Williams', 'position': 'TE', 'college': 'Mississippi State'},
+    {'source_ordinal': 315, 'name': 'Carter Smith', 'position': 'QB', 'college': 'Indiana', 'identity_discriminator': 'source-315'},
     {'source_ordinal': 316, 'name': 'Jaden Greathouse', 'position': 'WR', 'college': 'Notre Dame'},
     {'source_ordinal': 317, 'name': 'Kaleb Jackson', 'position': 'RB', 'college': 'North Carolina'},
     {'source_ordinal': 318, 'name': 'David Oke', 'position': 'DL', 'college': 'Arkansas'},
@@ -362,11 +364,13 @@ BASE_INVENTORY_2027 = (
     {'source_ordinal': 332, 'name': 'Max Johnson', 'position': 'QB', 'college': 'Georgia Southern'},
     {'source_ordinal': 333, 'name': 'Makhi Hughes', 'position': 'RB', 'college': 'Houston'},
     {'source_ordinal': 334, 'name': 'Braydon Bennett', 'position': 'RB', 'college': 'Eastern Michigan'},
+    {'source_ordinal': 335, 'name': 'Jamari Johnson', 'position': 'CB', 'college': 'Oregon', 'identity_discriminator': 'source-335'},
+    {'source_ordinal': 336, 'name': 'Anthony Smith', 'position': 'DL', 'college': 'Minnesota', 'identity_discriminator': 'source-336'},
 )
 
 
-def _ref(name: str) -> str:
-    return create_application_prospect_ref(year=RUNTIME_INVENTORY_DRAFT_YEAR, name=name)
+def _ref(name: str, discriminator: str | None = None) -> str:
+    return create_application_prospect_ref(year=RUNTIME_INVENTORY_DRAFT_YEAR, name=name, discriminator=discriminator)
 
 
 def runtime_inventory_rows() -> List[Dict[str, object]]:
@@ -375,14 +379,14 @@ def runtime_inventory_rows() -> List[Dict[str, object]]:
     seen = set()
 
     for prospect in PROSPECTS_2027:
-        application_ref = _ref(prospect["name"])
+        application_ref = _ref(prospect["name"], prospect.get("identity_discriminator"))
         if not application_ref or application_ref in seen:
             continue
         seen.add(application_ref)
         merged.append((application_ref, prospect["name"], prospect["position"], prospect["college"], None, "ENRICHED_RESEARCH"))
 
     for prospect in BASE_INVENTORY_2027:
-        application_ref = _ref(prospect["name"])
+        application_ref = _ref(prospect["name"], prospect.get("identity_discriminator"))
         if not application_ref or application_ref in seen:
             continue
         seen.add(application_ref)
@@ -421,6 +425,8 @@ def runtime_inventory_diagnostics() -> Dict[str, object]:
         "base_source_count": len(BASE_INVENTORY_2027),
         "excluded_identity_collision_count": len(BASE_INVENTORY_IDENTITY_COLLISION_EXCLUSIONS),
         "excluded_source_ordinals": [row["source_ordinal"] for row in BASE_INVENTORY_IDENTITY_COLLISION_EXCLUSIONS],
+        "disambiguated_identity_count": len(BASE_INVENTORY_IDENTITY_DISAMBIGUATIONS),
+        "disambiguated_source_ordinals": [row["source_ordinal"] for row in BASE_INVENTORY_IDENTITY_DISAMBIGUATIONS],
         "enriched_source_count": len(PROSPECTS_2027),
         "runtime_inventory_count": len(rows),
         "enriched_runtime_count": enriched_count,

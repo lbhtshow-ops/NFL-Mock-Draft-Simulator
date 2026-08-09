@@ -1,40 +1,39 @@
-// MDS-5B.3D — final available-source 2027 application inventory expansion.
+// MDS-5B.4 — complete 2027 application inventory with source-scoped identity disambiguation.
 //
 // IMPORTANT:
-// - This is application inventory, not canonical FID persistence.
-// - NFL Draft Buzz currently publishes 336 rows in the referenced 2027 overall listing.
-// - Three lower-priority rows are withheld because the current application-reference convention
-//   is name-only within draft year and those rows collide with earlier same-name entries.
-// - sourceOrdinal preserves external-source provenance only. It is NOT an LBHT Big Board rank,
-//   Draft Intelligence grade, consensus rank, or CPU selection priority.
-// - No source rating, scouting summary, or modeled intelligence is imported.
-// - Enriched FID-backed entries override matching base inventory entries in the catalog.
+// - This is application identity, not canonical FID persistence.
+// - All 336 published source rows are now materialized.
+// - Three same-name rows use explicit source-scoped application discriminators.
+// - sourceOrdinal is provenance only; it is not an LBHT rank or Draft Intelligence score.
+// - Existing non-collision application references remain unchanged.
 
 export const INITIAL_2027_BASE_INVENTORY_SOURCE = Object.freeze({
-  sourceId: "external-reference:nfl-draft-buzz:2027-overall:2026-08-03:published-1-336-materialized-333",
+  sourceId: "external-reference:nfl-draft-buzz:2027-overall:2026-08-03:published-1-336-materialized-336",
   publisher: "NFL Draft Buzz",
   sourceClassification: "PUBLIC_DRAFT_REFERENCE_PROVISIONAL",
   sourceDate: "2026-08-03",
   capturedForApplicationAt: "2026-08-09",
   draftYear: 2027,
-  scope: "PUBLISHED_336_WITH_3_NAME_IDENTITY_COLLISIONS_WITHHELD",
+  scope: "PUBLISHED_336_WITH_3_SOURCE_SCOPED_APPLICATION_IDENTITY_DISAMBIGUATIONS",
   publishedSourceCount: 336,
-  materializedSourceCount: 333,
+  materializedSourceCount: 336,
   rankingAuthority: false,
   intelligenceAuthority: false,
   canonicalAuthority: false,
   notes: [
     "Names, listed positions, and programs are retained as a provisional application inventory source.",
     "External ordering is retained only as sourceOrdinal provenance and must not be presented as an LBHT ranking.",
-    "Three published rows are withheld from materialization because name-only 2027 application references cannot safely distinguish them from earlier same-name entries.",
+    "Three same-name published rows use explicit source-scoped application discriminators so all 336 rows can coexist without changing existing references.",
     "Eligibility, declaration, transfer status, position, and program remain subject to future verification."
   ],
 });
 
-export const INITIAL_2027_BASE_INVENTORY_EXCLUSIONS = Object.freeze([
-  Object.freeze({ sourceOrdinal: 315, displayName: "Carter Smith", position: "QB", program: "Indiana", reason: "APPLICATION_REFERENCE_NAME_COLLISION_REQUIRES_DISAMBIGUATED_IDENTITY" }),
-  Object.freeze({ sourceOrdinal: 335, displayName: "Jamari Johnson", position: "CB", program: "Oregon", reason: "APPLICATION_REFERENCE_NAME_COLLISION_REQUIRES_DISAMBIGUATED_IDENTITY" }),
-  Object.freeze({ sourceOrdinal: 336, displayName: "Anthony Smith", position: "DL", program: "Minnesota", reason: "APPLICATION_REFERENCE_NAME_COLLISION_REQUIRES_DISAMBIGUATED_IDENTITY" }),
+export const INITIAL_2027_BASE_INVENTORY_EXCLUSIONS = Object.freeze([]);
+
+export const INITIAL_2027_BASE_INVENTORY_DISAMBIGUATIONS = Object.freeze([
+  Object.freeze({ sourceOrdinal: 315, displayName: "Carter Smith", position: "QB", program: "Indiana", identityDiscriminator: "source-315" }),
+  Object.freeze({ sourceOrdinal: 335, displayName: "Jamari Johnson", position: "CB", program: "Oregon", identityDiscriminator: "source-335" }),
+  Object.freeze({ sourceOrdinal: 336, displayName: "Anthony Smith", position: "DL", program: "Minnesota", identityDiscriminator: "source-336" }),
 ]);
 
 export const initial2027BaseInventoryRows = Object.freeze([
@@ -352,6 +351,7 @@ export const initial2027BaseInventoryRows = Object.freeze([
   { sourceOrdinal: 312, displayName: "Datrell Jones", position: "RB", program: "Holy Cross" },
   { sourceOrdinal: 313, displayName: "Nic Anderson", position: "WR", program: "Kentucky" },
   { sourceOrdinal: 314, displayName: "Riley Williams", position: "TE", program: "Mississippi State" },
+  { sourceOrdinal: 315, displayName: "Carter Smith", position: "QB", program: "Indiana", identityDiscriminator: "source-315" },
   { sourceOrdinal: 316, displayName: "Jaden Greathouse", position: "WR", program: "Notre Dame" },
   { sourceOrdinal: 317, displayName: "Kaleb Jackson", position: "RB", program: "North Carolina" },
   { sourceOrdinal: 318, displayName: "David Oke", position: "DL", program: "Arkansas" },
@@ -371,4 +371,6 @@ export const initial2027BaseInventoryRows = Object.freeze([
   { sourceOrdinal: 332, displayName: "Max Johnson", position: "QB", program: "Georgia Southern" },
   { sourceOrdinal: 333, displayName: "Makhi Hughes", position: "RB", program: "Houston" },
   { sourceOrdinal: 334, displayName: "Braydon Bennett", position: "RB", program: "Eastern Michigan" },
+  { sourceOrdinal: 335, displayName: "Jamari Johnson", position: "CB", program: "Oregon", identityDiscriminator: "source-335" },
+  { sourceOrdinal: 336, displayName: "Anthony Smith", position: "DL", program: "Minnesota", identityDiscriminator: "source-336" },
 ]);
