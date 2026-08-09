@@ -8,11 +8,11 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 from . import models, schemas
 from .runtime_draft_order import resolve_runtime_draft_order
-from .application_projection_2027 import (
-    PROJECTION_SOURCE,
-    PROJECTION_STATUS,
-    PROJECTION_VERSION,
-    projection_rows,
+from .application_inventory_2027 import (
+    RUNTIME_INVENTORY_SOURCE,
+    RUNTIME_INVENTORY_STATUS,
+    RUNTIME_INVENTORY_VERSION,
+    runtime_inventory_rows,
 )
 
 
@@ -174,38 +174,68 @@ def delete_draft_pick(db: Session, draft_pick_id: int):
     return None
 
 # Create mock draft with associated user-controlled teams and mock draft picks based on specified number of rounds and year, and add to database
-def _ensure_2027_application_projection_players(db: Session):
-    """Make the bounded 2027 development cohort consumable by the legacy runtime.
+def _ensure_2027_application_inventory_players(db: Session):
+    """Materialize the approved application prospect catalog into legacy Player rows.
 
-    These rows are explicitly an application projection, not canonical FID population.
-    Existing 2027 rows are preserved; only missing cohort names are added.
+    This is application/runtime materialization only. It does not create canonical FID
+    prospect identities and does not promote base-profile records into enriched research.
+    Existing rows are updated only for legacy runtime display fields so the materialized
+    runtime matches the approved application catalog snapshot.
     """
-    existing = {
-        player.name: player
-        for player in db.query(models.Player).filter(models.Player.year == 2027).all()
-    }
+    desired_rows = runtime_inventory_rows()
+    desired_by_ref = {row["application_prospect_ref"]: row for row in desired_rows}
 
-    added = False
-    for row in projection_rows():
-        if row["name"] in existing:
-            continue
-        db.add(models.Player(**row))
-        added = True
-
-    if added:
-        db.flush()
-
-    return (
+    existing_players = (
         db.query(models.Player)
         .filter(models.Player.year == 2027)
-        .order_by(models.Player.rank.asc())
         .all()
     )
+    existing_by_ref = {
+        player.application_prospect_ref: player
+        for player in existing_players
+        if player.application_prospect_ref
+    }
+
+    changed = False
+    for application_ref, row in desired_by_ref.items():
+        player = existing_by_ref.get(application_ref)
+        if player is None:
+            db.add(models.Player(
+                name=row["name"],
+                position=row["position"],
+                college=row["college"],
+                rank=row["rank"],
+                year=row["year"],
+            ))
+            changed = True
+            continue
+
+        # Legacy Player fields are a runtime projection. Keep them aligned with the
+        # approved catalog materialization without claiming intelligence authority.
+        for field in ("name", "position", "college", "rank"):
+            if getattr(player, field) != row[field]:
+                setattr(player, field, row[field])
+                changed = True
+
+    if changed:
+        db.flush()
+
+    desired_refs = set(desired_by_ref)
+    materialized = [
+        player
+        for player in db.query(models.Player)
+        .filter(models.Player.year == 2027)
+        .order_by(models.Player.rank.asc(), models.Player.id.asc())
+        .all()
+        if player.application_prospect_ref in desired_refs
+    ]
+    return materialized
 
 
 # Create mock draft with associated user-controlled teams and mock draft picks.
-# For the 2027 product-development path, the legacy runtime consumes the bounded
-# repository application projection and a runtime-materialized draft-order template when needed.
+# For the 2027 product-development path, the legacy runtime consumes the approved
+# Application Prospect Catalog materialization and a runtime-materialized draft-order
+# template when needed.
 def create_mock_draft_bootstrap(db: Session, payload: schemas.MockDraftBootstrapCreate):
     try:
         if not 1 <= payload.num_rounds <= 7:
@@ -213,11 +243,11 @@ def create_mock_draft_bootstrap(db: Session, payload: schemas.MockDraftBootstrap
         if payload.year not in (2025, 2026, 2027):
             raise ValueError(f"Unsupported draft year: {payload.year}")
 
-        projection_players = None
+        inventory_players = None
         if payload.year == 2027:
-            projection_players = _ensure_2027_application_projection_players(db)
-            if not projection_players:
-                raise ValueError("2027 application prospect projection is empty")
+            inventory_players = _ensure_2027_application_inventory_players(db)
+            if not inventory_players:
+                raise ValueError("2027 application prospect runtime inventory is empty")
 
         order_resolution = resolve_runtime_draft_order(
             db,
@@ -248,13 +278,15 @@ def create_mock_draft_bootstrap(db: Session, payload: schemas.MockDraftBootstrap
             )
 
         preview_limited = False
-        if payload.year == 2027 and projection_players is not None:
-            # Product development is allowed to use the bounded preparation cohort, but
-            # we must not invent unresearched prospects. Limit the runnable session to
-            # the number of currently available 2027 application-projection players.
-            if len(projection_players) < len(draft_picks):
+        if payload.year == 2027 and inventory_players is not None:
+            # Draftable inventory and intelligence coverage are intentionally separate.
+            # Base-profile prospects may participate in the runtime without fabricated
+            # Football Intelligence. Until the catalog exceeds the full draft order, the
+            # session is bounded only by actual catalog inventory—not the old 16-player
+            # enrichment cohort.
+            if len(inventory_players) < len(draft_picks):
                 preview_limited = True
-                draft_picks = draft_picks[: len(projection_players)]
+                draft_picks = draft_picks[: len(inventory_players)]
 
         for pick in draft_picks:
             db.add(models.MockDraftPick(
@@ -276,12 +308,14 @@ def create_mock_draft_bootstrap(db: Session, payload: schemas.MockDraftBootstrap
         db_mock_draft.draft_order_status = order_resolution.status
         db_mock_draft.preview_limited = preview_limited
         db_mock_draft.runtime_status = (
-            PROJECTION_STATUS if payload.year == 2027 else "LEGACY_RUNTIME"
+            RUNTIME_INVENTORY_STATUS if payload.year == 2027 else "LEGACY_RUNTIME"
         )
         if payload.year == 2027:
-            db_mock_draft.prospect_source = PROJECTION_SOURCE
-            db_mock_draft.prospect_projection_version = PROJECTION_VERSION
-            db_mock_draft.prospect_count = len(projection_players or [])
+            db_mock_draft.prospect_source = RUNTIME_INVENTORY_SOURCE
+            db_mock_draft.prospect_projection_version = RUNTIME_INVENTORY_VERSION
+            db_mock_draft.prospect_inventory_version = RUNTIME_INVENTORY_VERSION
+            db_mock_draft.prospect_inventory_status = RUNTIME_INVENTORY_STATUS
+            db_mock_draft.prospect_count = len(inventory_players or [])
 
         return db_mock_draft
     except Exception:
