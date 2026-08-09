@@ -1,14 +1,11 @@
 import { ApplicationResolverBoundary } from "../fid/prospectDatabase/phase2B/sprint2B_1/ApplicationResolverBoundary.js";
 import { fixtureProspectReferences } from "../fid/prospectDatabase/phase2B/sprint2B_1/FixtureResolver.js";
 import { RESOLUTION_STATUSES } from "../fid/prospectDatabase/phase2B/sprint2B_1/ProspectResolverContract.js";
-import {
-  getApplicationInventoryProspectByIdentity,
-  getApplicationInventoryProspectByRef,
-  listApplicationInventoryProspects,
-} from "./ApplicationProspectInventory.js";
+import { getApplicationInventoryProspectByRef, listApplicationInventoryProspects } from "./ApplicationProspectInventory.js";
+import { APPLICATION_PROSPECT_RESOLUTION_STATUS, resolveUnifiedApplicationProspect } from "./UnifiedApplicationProspectResolver.js";
 
 export const APPLICATION_PROSPECT_CATALOG_CONTRACT = "ApplicationProspectCatalog";
-export const APPLICATION_PROSPECT_CATALOG_VERSION = "FIP-APPLICATION-PROSPECT-CATALOG-1.4.0";
+export const APPLICATION_PROSPECT_CATALOG_VERSION = "FIP-APPLICATION-PROSPECT-CATALOG-1.5.0";
 
 export const PROSPECT_INTELLIGENCE_COVERAGE = Object.freeze({
   ENRICHED_RESEARCH: "ENRICHED_RESEARCH",
@@ -48,22 +45,12 @@ const prospectName = (input) => String(
   ""
 ).trim();
 
-export function createApplicationProspectRef({ draftYear, displayName } = {}) {
+export function createApplicationProspectRef({ draftYear, displayName, identityDiscriminator } = {}) {
   const year = Number(draftYear);
   const slug = normalizeName(displayName);
+  const suffix = identityDiscriminator ? normalizeName(identityDiscriminator) : "";
   if (!Number.isFinite(year) || !slug) return null;
-  return `app-prospect:${year}:${slug}`;
-}
-
-function fidReferenceFromInput(input) {
-  if (typeof input === "string" && input.startsWith("intake-candidate:")) return input.trim();
-  const candidate = [
-    input?.fidProspectRef,
-    input?.candidateRef,
-    input?.reference,
-    input?.prospectRef,
-  ].find((value) => typeof value === "string" && value.startsWith("intake-candidate:"));
-  return candidate?.trim() || null;
+  return `app-prospect:${year}:${slug}${suffix ? `:${suffix}` : ""}`;
 }
 
 function applicationReferenceFromInput(input) {
@@ -120,9 +107,6 @@ const catalogEntries = Object.freeze([...combinedEntryMap.values()]);
 
 const byApplicationRef = new Map(catalogEntries.map((entry) => [entry.applicationProspectRef, entry]));
 const byFidRef = new Map(enrichedEntries.map((entry) => [entry.fidProspectRef, entry]));
-const byYearAndName = new Map(
-  catalogEntries.map((entry) => [`${entry.draftYear}:${normalizeName(entry.identity.displayName)}`, entry])
-);
 
 function baseRuntimeEntry(input) {
   const displayName = prospectName(input);
@@ -174,28 +158,22 @@ export function getApplicationProspectByRef(reference) {
   return byApplicationRef.get(reference) || byFidRef.get(reference) || null;
 }
 
+export function resolveApplicationProspectResolution(input) {
+  return resolveUnifiedApplicationProspect(input, { entries: catalogEntries, byApplicationRef, byFidRef });
+}
+
 export function resolveApplicationProspect(input, { allowRuntimeBaseProfile = true } = {}) {
   if (!input) return null;
+  const resolution = resolveApplicationProspectResolution(input);
+  if (resolution.status === APPLICATION_PROSPECT_RESOLUTION_STATUS.RESOLVED) return resolution.prospect;
+  // Ambiguous identity must never silently collapse into a fabricated base profile.
+  if (resolution.status === APPLICATION_PROSPECT_RESOLUTION_STATUS.AMBIGUOUS) return null;
 
   const applicationRef = applicationReferenceFromInput(input);
-  if (applicationRef && byApplicationRef.has(applicationRef)) return byApplicationRef.get(applicationRef);
   if (applicationRef) {
     const inventoryMatch = getApplicationInventoryProspectByRef(applicationRef);
     if (inventoryMatch) return inventoryMatch;
   }
-
-  const fidRef = fidReferenceFromInput(input);
-  if (fidRef && byFidRef.has(fidRef)) return byFidRef.get(fidRef);
-
-  const displayName = prospectName(input);
-  const draftYear = normalizeDraftYear(input);
-  if (displayName && draftYear) {
-    const match = byYearAndName.get(`${draftYear}:${normalizeName(displayName)}`);
-    if (match) return match;
-    const inventoryMatch = getApplicationInventoryProspectByIdentity({ draftYear, displayName });
-    if (inventoryMatch) return inventoryMatch;
-  }
-
   return allowRuntimeBaseProfile ? baseRuntimeEntry(input) : null;
 }
 
@@ -214,6 +192,8 @@ export function getApplicationProspectCatalogDiagnostics() {
     canonicalIdentifierCount: catalogEntries.filter((entry) => entry.canonicalIdentifier).length,
     identityAuthority: "APPLICATION_REFERENCE_NON_CANONICAL",
     resolverBoundary: "ApplicationResolverBoundary",
+    applicationResolver: "UnifiedApplicationProspectResolver",
+    ambiguityPolicy: "NO_SILENT_NAME_COLLAPSE",
   });
 }
 
@@ -221,6 +201,7 @@ export default Object.freeze({
   listApplicationProspects,
   getApplicationProspectByRef,
   resolveApplicationProspect,
+  resolveApplicationProspectResolution,
   createApplicationProspectRef,
   getApplicationProspectCatalogDiagnostics,
 });
