@@ -4,10 +4,10 @@ This module owns application/runtime draft-order preparation only. It does not c
 Football Intelligence, does not represent canonical FID persistence, and does not claim
 that a future NFL draft order is finalized.
 
-For a requested draft year with no runtime rows, the latest existing draft-order year is
-used as an explicitly declared development template. Rows are materialized into the
-application database so the legacy relational runtime can reference stable draft_pick IDs
-without requiring operators to pre-seed a future draft year manually.
+For a requested draft year, the latest established draft-order year may be used as an
+explicitly declared development template. Existing requested-year rows are preserved.
+If the requested-year order is only partially materialized, missing requested picks are
+filled from that template so the configured mock-draft length remains authoritative.
 """
 
 from dataclasses import dataclass
@@ -19,9 +19,10 @@ from sqlalchemy.orm import Session
 from . import models
 
 
-RUNTIME_ORDER_CONTRACT_VERSION = "1.0"
+RUNTIME_ORDER_CONTRACT_VERSION = "1.1"
 RUNTIME_ORDER_STATUS = "DEVELOPMENT_TEMPLATE_MATERIALIZED"
 RUNTIME_ORDER_EXISTING_STATUS = "EXISTING_RUNTIME_ORDER"
+RUNTIME_ORDER_COMPLETED_STATUS = "EXISTING_RUNTIME_ORDER_COMPLETED_FROM_TEMPLATE"
 
 
 @dataclass(frozen=True)
@@ -54,35 +55,8 @@ def _latest_template_year(db: Session, requested_year: int):
     )
 
 
-def resolve_runtime_draft_order(
-    db: Session,
-    *,
-    requested_year: int,
-    num_rounds: int,
-) -> RuntimeDraftOrderResolution:
-    """Resolve or materialize runtime draft-pick rows for a mock-draft session.
-
-    Existing requested-year rows always win. If none exist, the latest available draft
-    order is copied as a bounded development template for the requested year. The caller
-    controls transaction commit/rollback.
-    """
-    existing = _existing_requested_picks(db, requested_year, num_rounds)
-    if existing:
-        return RuntimeDraftOrderResolution(
-            requested_year=requested_year,
-            source_year=requested_year,
-            materialized=False,
-            status=RUNTIME_ORDER_EXISTING_STATUS,
-            picks=existing,
-        )
-
-    source_year = _latest_template_year(db, requested_year)
-    if source_year is None:
-        raise ValueError(
-            f"No draft-order template is available for runtime year={requested_year}"
-        )
-
-    template_picks = (
+def _template_picks(db: Session, source_year: int, num_rounds: int):
+    return (
         db.query(models.DraftPick)
         .filter(
             models.DraftPick.year == int(source_year),
@@ -91,14 +65,23 @@ def resolve_runtime_draft_order(
         .order_by(models.DraftPick.pick_number.asc())
         .all()
     )
-    if not template_picks:
-        raise ValueError(
-            f"No draft-order template rows found for source year={source_year}, "
-            f"rounds<={num_rounds}"
-        )
 
+
+def _materialize_missing_requested_picks(
+    db: Session,
+    *,
+    requested_year: int,
+    existing,
+    template_picks,
+):
+    """Preserve existing requested-year picks and add only missing template pick numbers."""
+    existing_numbers = {int(pick.pick_number) for pick in existing}
     materialized = []
+
     for template in template_picks:
+        if int(template.pick_number) in existing_numbers:
+            continue
+
         row = models.DraftPick(
             pick_number=template.pick_number,
             round=template.round,
@@ -109,9 +92,89 @@ def resolve_runtime_draft_order(
         db.add(row)
         materialized.append(row)
 
-    # Assign primary keys so MockDraftPick can safely reference these rows in the same
-    # transaction without committing early.
-    db.flush()
+    if materialized:
+        # Assign primary keys so MockDraftPick can reference the newly completed order
+        # within the same bootstrap transaction without committing early.
+        db.flush()
+
+    return materialized
+
+
+def resolve_runtime_draft_order(
+    db: Session,
+    *,
+    requested_year: int,
+    num_rounds: int,
+) -> RuntimeDraftOrderResolution:
+    """Resolve a complete runtime draft order for the requested mock-draft length.
+
+    Existing requested-year rows are authoritative for rows already materialized, but a
+    partial requested-year order is not treated as a complete order. Missing pick numbers
+    for the requested rounds are materialized from the latest established template year.
+    The caller controls transaction commit/rollback.
+    """
+    existing = _existing_requested_picks(db, requested_year, num_rounds)
+    source_year = _latest_template_year(db, requested_year)
+
+    if source_year is None:
+        if existing:
+            return RuntimeDraftOrderResolution(
+                requested_year=requested_year,
+                source_year=requested_year,
+                materialized=False,
+                status=RUNTIME_ORDER_EXISTING_STATUS,
+                picks=existing,
+            )
+        raise ValueError(
+            f"No draft-order template is available for runtime year={requested_year}"
+        )
+
+    template_picks = _template_picks(db, int(source_year), num_rounds)
+    if not template_picks:
+        if existing:
+            return RuntimeDraftOrderResolution(
+                requested_year=requested_year,
+                source_year=requested_year,
+                materialized=False,
+                status=RUNTIME_ORDER_EXISTING_STATUS,
+                picks=existing,
+            )
+        raise ValueError(
+            f"No draft-order template rows found for source year={source_year}, "
+            f"rounds<={num_rounds}"
+        )
+
+    if existing:
+        materialized = _materialize_missing_requested_picks(
+            db,
+            requested_year=requested_year,
+            existing=existing,
+            template_picks=template_picks,
+        )
+        if not materialized:
+            return RuntimeDraftOrderResolution(
+                requested_year=requested_year,
+                source_year=requested_year,
+                materialized=False,
+                status=RUNTIME_ORDER_EXISTING_STATUS,
+                picks=existing,
+            )
+
+        completed = _existing_requested_picks(db, requested_year, num_rounds)
+        return RuntimeDraftOrderResolution(
+            requested_year=requested_year,
+            source_year=int(source_year),
+            materialized=True,
+            status=RUNTIME_ORDER_COMPLETED_STATUS,
+            picks=completed,
+        )
+
+    materialized = _materialize_missing_requested_picks(
+        db,
+        requested_year=requested_year,
+        existing=[],
+        template_picks=template_picks,
+    )
 
     return RuntimeDraftOrderResolution(
         requested_year=requested_year,

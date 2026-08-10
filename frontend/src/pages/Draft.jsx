@@ -320,11 +320,9 @@ function Draft() {
 
     // Handle manual player selection
     const handleSelectPlayer = async (selectedPlayer) => {
-        // Check if already selecting a player, if draft is paused, if there is no current pick, or if the current pick does not belong to a user-controlled team
+        // Pause freezes the clock and automatic/CPU progression only.
+        // A user-controlled team may still submit its selection while paused.
         if (isSelecting) {
-            return;
-        } else if (paused) {
-            alert("Draft is paused. Please resume before selecting a player.");
             return;
         } else if (!currentPick) {
             alert("No pick is currently on the clock.");
