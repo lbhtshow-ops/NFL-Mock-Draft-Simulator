@@ -1,27 +1,24 @@
+/* eslint-disable no-unused-vars */
 /* 
     * Draft page component. Handles draft process, including player selection, trades, and team management.
 */
 
 
 // Import necessary libraries and components
-import DraftV3 from "./DraftV3";
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useLocation, useParams, useNavigate, Link } from "react-router-dom";
 import Select from "react-select";
 import axios from "axios";
-import { getTeamAIProfile } from "../engines/TeamProfiles";
-import { getPositionValue } from "../engines/PositionValues";
-import { getNeedMultiplier } from "../engines/TeamNeeds";
-import { buildTeamDraftBoard } from "../engines/DraftBoardEngine";
-import { evaluatePlayer } from "../engines/PlayerEvaluationEngine";
-import ProspectIntelligenceCenter from "../components/draftV3/Intelligence/ProspectIntelligenceCenter";
+import { getSportsProspectDecisionDisplay, resolveSportsDraftDecision } from "../data/sportsIntelligence/SportsIntelligenceEngine";
+import { buildDraftableProspectPool } from "../data/footballIntelligence/prospectCatalog/DraftableProspectPool.js";
+import "../styles/draft-operations-restored.css";
+import DraftOperationsCenter from "../components/draftOperations/DraftOperationsCenter";
+import TradeOperationsCenter from "../components/draftOperations/TradeOperationsCenter";
 
 // Function to handle the draft process
 function Draft({ apiURL }) {
     
-return <DraftV3 />;
-
     // Extract draft ID from URL parameters
     const { draftId } = useParams();
 
@@ -43,6 +40,8 @@ return <DraftV3 />;
 
     // Initialize state variables for user-controlled teams
     const [userControlledTeams, setUserControlledTeams] = useState([]);
+    const [teamDirectory, setTeamDirectory] = useState([]);
+    const [referenceDraftPicks, setReferenceDraftPicks] = useState([]);
     
     // Initialize state variables for draft management
     const [isSelecting, setIsSelecting] = useState(false);
@@ -51,6 +50,10 @@ return <DraftV3 />;
     const currentTeam = currentPick ? currentPick.team : null;
 
     const teamLookup = {};
+
+    teamDirectory.forEach((team) => {
+      if (team?.id) teamLookup[team.id] = team;
+    });
 
     picks.forEach(pick => {
       if (pick.team) {
@@ -72,7 +75,8 @@ return <DraftV3 />;
 
     const isUserTurn = currentPick && userControlledTeams.includes(currentPick.team.id);
     const [timeLeft, setTimeLeft] = useState(60);
-    const [autoPickDelay, setAutoPickDelay] = useState(location.state?.autoPickDelay || 1000);
+    const [autoPickDelay, setAutoPickDelay] = useState(location.state?.autoPickDelay || 1400);
+    const [draftMode] = useState(location.state?.draftMode || draft?.draft_mode || "standard");
 
     // Initialize state variables for draft tools
     const [toolsCollapsed, setToolsCollapsed] = useState(window.innerWidth <= 1300);
@@ -89,6 +93,8 @@ return <DraftV3 />;
     const [showConfirmUndoModal, setShowConfirmUndoModal] = useState(false);
     const [showConfirmRestartModal, setShowConfirmRestartModal] = useState(false);
     const [soundsMuted, setSoundsMuted] = useState(false);
+    const [lastCpuDecision, setLastCpuDecision] = useState(null);
+    const [tradeNotice, setTradeNotice] = useState(null);
     const tradeValueChart = {
   2025: {
     1: 3000, 2: 2600, 3: 2200, 4: 1800, 5: 1700, 6: 1600, 7: 1500, 8: 1400,
@@ -129,6 +135,42 @@ return <DraftV3 />;
 };
 
     // Initialize state variables for position filtering and player search
+
+
+    const getPickClockSeconds = (round) => {
+      if (draftMode === "broadcast") {
+        if (round === 1) return 10 * 60;
+        if (round === 2) return 7 * 60;
+        return 5 * 60;
+      }
+      if (draftMode === "express") return 30;
+      if (draftMode === "auto") return 10;
+      return 60;
+    };
+
+    const stableRuntimeHash = (value) => {
+      const text = String(value || "");
+      let hash = 2166136261;
+      for (let index = 0; index < text.length; index += 1) {
+        hash ^= text.charCodeAt(index);
+        hash = Math.imul(hash, 16777619);
+      }
+      return hash >>> 0;
+    };
+
+    const getCpuDelayForMode = (pick = currentPick) => {
+      if (draftMode === "broadcast") {
+        const round = pick?.draft_pick?.round || 1;
+        const ranges = round === 1 ? [45000, 95000] : round === 2 ? [30000, 70000] : [20000, 55000];
+        const seed = `${pick?.id || pick?.draft_pick?.pick_number || "pick"}|${pick?.team?.id || "team"}|${round}`;
+        const normalized = stableRuntimeHash(seed) / 0xffffffff;
+        return Math.round(ranges[0] + (ranges[1] - ranges[0]) * normalized);
+      }
+      if (draftMode === "express") return Math.min(autoPickDelay, 800);
+      if (draftMode === "auto") return 250;
+      return autoPickDelay;
+    };
+
     const [positionFilter, setPositionFilter] = useState({value: "ALL", label: "ALL"});
     const positionOptions = [
         {value: "ALL", label: "ALL"}, 
@@ -149,75 +191,17 @@ return <DraftV3 />;
     const [isSearchHovered, setIsSearchHovered] = useState(false);
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const filteredPlayers = [...players].filter(player => (positionFilter.value === "ALL" || player.position === positionFilter.value) && player.name.toLowerCase().includes(searchQuery.toLowerCase())).sort((a, b) => a.rank - b.rank);
-const selectedPlayerEvaluation = selectedPlayerPreview
-  ? evaluatePlayer(selectedPlayerPreview)
-  : null;
+const getProspectDecisionDisplay = (player) =>
+  getSportsProspectDecisionDisplay(player);
 
-const getProspectGrade = (player) => {
-  if (selectedPlayerPreview?.id === player.id && selectedPlayerEvaluation) {
-    return selectedPlayerEvaluation.estimatedGrade;
-  }
+const getProspectGrade = (player) =>
+  getProspectDecisionDisplay(player)?.grade ?? null;
 
-  return Math.max(60, 97 - Math.floor((player.rank - 1) / 2));
-};
+const getProspectTier = (player) =>
+  getProspectDecisionDisplay(player)?.tier || "Pending";
 
-const getProspectTier = (player) => {
-  if (selectedPlayerPreview?.id === player.id && selectedPlayerEvaluation) {
-    return selectedPlayerEvaluation.tier;
-  }
-
-  if (player.rank <= 5) return "Tier 1";
-  if (player.rank <= 20) return "Tier 2";
-  if (player.rank <= 50) return "Tier 3";
-  return "Tier 4";
-};
-
-const getProspectProjection = (player) => {
-  if (player.rank <= 5) return "Top 5";
-  if (player.rank <= 10) return "Top 10";
-  if (player.rank <= 32) return "Round 1";
-  if (player.rank <= 64) return "Round 2";
-  return "Day 3";
-};
-
-const getTeamPhilosophy = (teamName = "") => {
-  const philosophies = {
-    Ravens: "Build Through Trenches",
-    Eagles: "Explosive Lines & Depth",
-    Chiefs: "Offensive Flexibility",
-    Steelers: "Physical Defense",
-    Lions: "Power Identity",
-    Jets: "Defense & Playmakers",
-    Cardinals: "Acquire Premium Talent",
-  };
-
-  return philosophies[teamName] || "Balanced Roster Build";
-};
-
-const getCompetitiveWindow = (teamName = "") => {
-  const windows = {
-    Chiefs: "Contender",
-    Ravens: "Contender",
-    Eagles: "Contender",
-    Lions: "Contender",
-    Jets: "Win Now",
-    Cardinals: "Building",
-  };
-
-  return windows[teamName] || "Evaluating";
-};
-
-const getDraftStrategy = (teamName = "") => {
-  const strategies = {
-    Cardinals: "Prioritize blue-chip talent and long-term roster value.",
-    Jets: "Add immediate-impact players around a win-now core.",
-    Ravens: "Target premium positions, toughness, and positional value.",
-    Eagles: "Attack trenches and preserve roster depth.",
-    Chiefs: "Maximize offensive flexibility and explosive traits.",
-  };
-
-  return strategies[teamName] || "Balance need, value, and long-term roster construction.";
-};
+const getProspectProjection = (player) =>
+  getProspectDecisionDisplay(player)?.projection || "Pending";
 
     const teamPicks = currentTeam
   ? picks.filter(pick => pick.team.id === currentTeam.id)
@@ -227,92 +211,112 @@ const getTradeAssets = (team) => {
   if (!team || !draft) return [];
 
   const existingPicks = picks.filter(pick => pick.team.id === team.id);
+  const activeDraftPickIds = new Set(picks.map(pick => pick?.draft_pick?.id).filter(Boolean));
 
-  const existingRounds = new Set(
-    existingPicks.map(pick => pick.draft_pick.round)
-  );
+  // Build the current-year capital from the complete reference order, not
+  // from mock_draft_picks. This keeps all seven rounds visible even when the
+  // user is running a one-round mock.
+  const referenceCurrentPicks = referenceDraftPicks
+    .filter((pick) => pick.current_team_id === team.id && !activeDraftPickIds.has(pick.id))
+    .map((pick) => {
+      const pickId = `current-reference-${pick.id}`;
+      const ownerTeam = virtualPickOwners[pickId] || team;
+      return {
+        id: pickId,
+        referenceDraftPickId: pick.id,
+        isReferenceCurrentPick: true,
+        team: ownerTeam,
+        draft_pick: {
+          id: pick.id,
+          round: pick.round,
+          pick_number: pick.pick_number,
+          year: pick.year,
+        },
+        player: null,
+      };
+    })
+    .filter((pick) => pick.team?.id === team.id);
 
-  const generatedCurrentRounds = [1, 2, 3, 4, 5, 6, 7].filter(
-    round => round > draft.num_rounds
-  );
+  // Fallback only if the complete reference order could not be loaded.
+  const existingRounds = new Set(existingPicks.map(pick => pick.draft_pick.round));
+  const generatedCurrentRounds = referenceDraftPicks.length
+    ? []
+    : [1, 2, 3, 4, 5, 6, 7].filter(round => round > draft.num_rounds);
 
-const missingCurrentPicks = generatedCurrentRounds
-  .filter(round => !existingRounds.has(round))
-  .map(round => {
-    const pickId = `current-generated-${team.id}-${round}`;
-    const ownerTeam = virtualPickOwners[pickId] || team;
+  const missingCurrentPicks = generatedCurrentRounds
+    .filter(round => !existingRounds.has(round))
+    .map(round => {
+      const pickId = `current-generated-${team.id}-${round}`;
+      const ownerTeam = virtualPickOwners[pickId] || team;
+      return {
+        id: pickId,
+        isGeneratedCurrentPick: true,
+        team: ownerTeam,
+        draft_pick: { round, pick_number: round * 32 },
+        player: null,
+      };
+    })
+    .filter(pick => pick.team?.id === team.id);
 
-    return {
-      id: pickId,
-      isGeneratedCurrentPick: true,
-      team: ownerTeam,
-      draft_pick: {
-        round,
-        pick_number: round * 32,
-      },
-      player: null,
-    };
-  })
-  .filter(pick => pick.team?.id === team.id);
-
-const futurePicks = [1, 2, 3, 4, 5, 6, 7]
-  .map(round => {
-    const pickId = `future-${team.id}-${round}`;
-    const ownerTeam = virtualPickOwners[pickId] || team;
-
-    return {
-      id: pickId,
-      isFuturePick: true,
-      team: ownerTeam,
-      draft_pick: {
-        round,
-        pick_number: round * 32,
-      },
-      player: null,
-    };
-  })
-  .filter(pick => pick.team?.id === team.id);
+  const futurePicks = [1, 2, 3, 4, 5, 6, 7]
+    .map(round => {
+      const pickId = `future-${team.id}-${round}`;
+      const ownerTeam = virtualPickOwners[pickId] || team;
+      return {
+        id: pickId,
+        isFuturePick: true,
+        team: ownerTeam,
+        draft_pick: { round, pick_number: round * 32 },
+        player: null,
+      };
+    })
+    .filter(pick => pick.team?.id === team.id);
 
   const ownedVirtualPicks = Object.entries(virtualPickOwners)
-  .filter(([pickId, ownerTeam]) => ownerTeam?.id === team.id)
-  .map(([pickId, ownerTeam]) => {
-    const parts = pickId.split("-");
-    const round = Number(parts[parts.length - 1]);
-    const isFuturePick = pickId.startsWith("future-");
+    .filter(([, ownerTeam]) => ownerTeam?.id === team.id)
+    .map(([pickId, ownerTeam]) => {
+      const isFuturePick = pickId.startsWith("future-");
+      const isReferenceCurrentPick = pickId.startsWith("current-reference-");
+      const isGeneratedCurrentPick = pickId.startsWith("current-generated-");
+      const referenceId = isReferenceCurrentPick ? Number(pickId.split("-").at(-1)) : null;
+      const referencePick = isReferenceCurrentPick ? referenceDraftPicks.find((pick) => pick.id === referenceId) : null;
+      const round = referencePick?.round ?? Number(pickId.split("-").at(-1));
+      const pickNumber = referencePick?.pick_number ?? round * 32;
+      return {
+        id: pickId,
+        isFuturePick,
+        isReferenceCurrentPick,
+        isGeneratedCurrentPick,
+        team: ownerTeam,
+        draft_pick: {
+          id: referencePick?.id,
+          round,
+          pick_number: pickNumber,
+          year: referencePick?.year,
+        },
+        player: null,
+      };
+    });
 
-    return {
-      id: pickId,
-      isFuturePick,
-      isGeneratedCurrentPick: pickId.startsWith("current-generated-"),
-      team: ownerTeam,
-      draft_pick: {
-        round,
-        pick_number: round * 32,
-      },
-      player: null,
-    };
-  });
+  const allAssets = [
+    ...existingPicks,
+    ...referenceCurrentPicks,
+    ...missingCurrentPicks,
+    ...futurePicks,
+    ...ownedVirtualPicks,
+  ];
 
-const allAssets = [
-  ...existingPicks,
-  ...missingCurrentPicks,
-  ...futurePicks,
-  ...ownedVirtualPicks
-];
-
-const uniqueAssets = Array.from(
-  new Map(allAssets.map(asset => [asset.id, asset])).values()
-);
-
-return uniqueAssets;
-
-  
+  return Array.from(new Map(allAssets.map(asset => [asset.id, asset])).values())
+    .sort((a, b) => {
+      if (Boolean(a.isFuturePick) !== Boolean(b.isFuturePick)) return a.isFuturePick ? 1 : -1;
+      return (a.draft_pick?.pick_number || 9999) - (b.draft_pick?.pick_number || 9999);
+    });
 };
 
 const tradeTeamPicks = getTradeAssets(tradeTeam);
 
     // Initialize state variables for team management
-    const teamPositionalNeeds = currentTeam ? Object.entries(currentTeam).filter(([key, value]) => key !== "name" && key !== "id" && key !== "year") : [];
+    const teamPositionalNeeds = currentTeam ? Object.entries(currentTeam).filter(([key]) => key !== "name" && key !== "id" && key !== "year") : [];
     
     const getPositionUrgencyColor = (value) => {
         if (value >= 10) return '#9E1111';
@@ -363,10 +367,13 @@ const tradeTeamPicks = getTradeAssets(tradeTeam);
                 if (!draft) return;
 
                 // Fetch draft picks and sort by pick number
-                const [picks_result, user_controlled_teams_result, players_result] = await Promise.all([
+                const referenceYear = Math.max(2026, Number(draft.year || 2026) - 1);
+                const [picks_result, user_controlled_teams_result, players_result, teams_result, draft_capital_result] = await Promise.all([
                     axios.get(`${apiURL}/mock_draft_picks/${draftId}`),
                     axios.get(`${apiURL}/user_controlled_teams/${draftId}`),
-                    axios.get(`${apiURL}/players/by_year/`, { params: { year: draft.year } })
+                    axios.get(`${apiURL}/players/by_year/`, { params: { year: draft.year } }),
+                    axios.get(`${apiURL}/teams/`, { params: { year: referenceYear, limit: 100 } }),
+                    axios.get(`${apiURL}/draft_picks/`, { params: { year: referenceYear, limit: 300 } })
                 ]);
 
                 // Process picks
@@ -405,6 +412,22 @@ const userTeamsData = Array.isArray(user_controlled_teams_result.data)
 
 setUserControlledTeams(userTeamsData.map(team => team.team_id));
 
+// Keep an independent team directory so a user-controlled team remains
+// selectable in Trade Center even when the current development prospect
+// fixture materializes fewer draft picks than the requested draft length.
+const teamsData = Array.isArray(teams_result.data)
+  ? teams_result.data
+  : teams_result.data.teams || teams_result.data.data || [];
+setTeamDirectory(teamsData);
+
+// Keep the complete seven-round reference draft capital independent from
+// the number of rounds selected for this mock. The mock length controls
+// which picks are simulated; it does not redefine a franchise's assets.
+const draftCapitalData = Array.isArray(draft_capital_result.data)
+  ? draft_capital_result.data
+  : draft_capital_result.data.picks || draft_capital_result.data.data || [];
+setReferenceDraftPicks(draftCapitalData);
+
 // Process players
 const playersData = Array.isArray(players_result.data)
   ? players_result.data
@@ -415,8 +438,9 @@ const pickedPlayers = sortedPicks
   .map(pick => pick.player.id);
 
 const availablePlayers = playersData.filter(player => !pickedPlayers.includes(player.id));
+const draftablePlayers = buildDraftableProspectPool(availablePlayers, { draftYear: draft.year });
 
-setPlayers(availablePlayers);
+setPlayers(draftablePlayers);
             } catch (err) {
                 console.error("Failed to fetch additional data:", err);
             }
@@ -493,12 +517,10 @@ setPlayers(availablePlayers);
 
         // Check if the current pick is assigned to a user-controlled team and if it is different from the previous pick
         const isUserPick = userControlledTeams.includes(currentPick.team.id);
-        if (isUserPick && currentPick.id !== previousPickIdRef.current) {
-            // Reset timer to 60 seconds
-            setTimeLeft(60);
+        if (currentPick.id !== previousPickIdRef.current) {
+            setTimeLeft(getPickClockSeconds(currentPick?.draft_pick?.round || 1));
 
-            // Play on-the-clock sound if user has interacted and sounds are not muted
-            if (!soundsMuted && userInteractedRef.current && onTheClockSoundRef.current) {
+            if (isUserPick && !soundsMuted && userInteractedRef.current && onTheClockSoundRef.current) {
                 onTheClockSoundRef.current.currentTime = 0;
                 setTimeout(() => {
                     onTheClockSoundRef.current.play();
@@ -519,19 +541,15 @@ setPlayers(availablePlayers);
             return;
         }
 
-        // Check if user is making the pick
-        if (isUserPick) {
-            // If current pick is a user pick, start a countdown timer
+        const shouldRunVisibleClock = isUserPick || draftMode === "broadcast";
+        if (shouldRunVisibleClock) {
             timerRef.current = setInterval(() => {
-                // Update time left every second
                 setTimeLeft(prev => {
-                    // If paused, clear the timer and return previous value
                     if (paused) {
                         clearInterval(timerRef.current);
                         return prev;
                     }
 
-                    // if time has run out, clear the timer and auto-select player
                     if (prev <= 1) {
                         clearInterval(timerRef.current);
                         if (!autoPickInProgressRef.current.active) {
@@ -542,14 +560,15 @@ setPlayers(availablePlayers);
 
                     return prev - 1;
                 });
-            }, 1000); // Update every second
-        } else if (!currentPick.player && players.length > 0) {
-            // If current pick is not a user pick and there are available players, auto-select a player after a delay
+            }, 1000);
+        }
+
+        if (!isUserPick && !currentPick.player && players.length > 0) {
             timeoutRef.current = setTimeout(() => {
                 if (!autoPickInProgressRef.current.active) {
                     handleAutoSelectPlayer(currentPick);
                 }
-            }, autoPickDelay);
+            }, getCpuDelayForMode(currentPick));
         }
 
         // Cleanup function to clear the timer when component unmounts or dependencies change
@@ -557,7 +576,7 @@ setPlayers(availablePlayers);
             clearInterval(timerRef.current);
             clearTimeout(timeoutRef.current);
         };
-    }, [currentPick?.id, currentPick, players.length, userControlledTeams, paused]);
+    }, [currentPick?.id, currentPick, players.length, userControlledTeams, paused, draftMode, autoPickDelay]);
 
     // Handle user interaction to enable sounds
     useEffect(() => {
@@ -577,17 +596,21 @@ setPlayers(availablePlayers);
     }, []);
 
     // Load draft data if not already loaded
+    useEffect(() => {
+      if (!tradeNotice) return undefined;
+      const timeout = window.setTimeout(() => setTradeNotice(null), 5000);
+      return () => window.clearTimeout(timeout);
+    }, [tradeNotice]);
+
     if (!draft) {
         return <div>Loading draft...</div>;
     }
 
     // Handle manual player selection
     const handleSelectPlayer = async (selectedPlayer) => {
-        // Check if already selecting a player, if draft is paused, if there is no current pick, or if the current pick does not belong to a user-controlled team
+        // Pause freezes the clock and automatic/CPU progression only.
+        // A user-controlled team may still submit its selection while paused.
         if (isSelecting) {
-            return;
-        } else if (paused) {
-            alert("Draft is paused. Please resume before selecting a player.");
             return;
         } else if (!currentPick) {
             alert("No pick is currently on the clock.");
@@ -627,9 +650,9 @@ setPlayers(availablePlayers);
         setIsSelecting(false);
     }
 
-    // Handle player auto-selection
+    // Handle player auto-selection through the Sports Intelligence Engine.
+    // Draft.jsx owns runtime mechanics only; football judgment belongs to the engine layer.
     const handleAutoSelectPlayer = async (pick) => {
-        // Check if there is no current pick, the current pick has already been selected, or if auto-pick is already in progress
         if (!pick || pick.player) {
             autoPickInProgressRef.current = {id: null, active: false};
             return;
@@ -639,51 +662,35 @@ setPlayers(availablePlayers);
 
         autoPickInProgressRef.current = {id: pick.id, active: true};
 
-        const teamAIProfile = getTeamAIProfile(pick.team);
+        const decisionTeamPicks = picks.filter((entry) => entry?.team?.id === pick?.team?.id);
+        const draftDecision = resolveSportsDraftDecision({
+            players,
+            team: pick.team,
+            pick,
+            teamPicks: decisionTeamPicks,
+        });
+        const selectedPlayer = draftDecision?.recommendation?.player || null;
 
-        // Retrieve current team's positional needs and calculate urgency
-        const teamNeeds = {};
-        if (pick.team) {
-            Object.entries(pick.team).forEach(([position, urgency]) => {
-                if (position !== "id" && position !== "name") {
-                    teamNeeds[position.toLowerCase()] = 1 + urgency * 0.2;
-                }
-            });
+        setLastCpuDecision(draftDecision);
+
+        if (!selectedPlayer) {
+            console.warn("Sports Intelligence Engine returned no CPU draft recommendation.", draftDecision);
+            autoPickInProgressRef.current = {id: null, active: false};
+            return;
         }
 
-        // Check which positions have already been drafted by the current team
-        const positionsDrafted = new Set(teamPicks.filter(pick => pick.player).map(pick => pick.player.position.toLowerCase()));
-        
-        // Gather top candidates from big board based on draft round
-        const basePoolSize = pick.draft_pick.round >= 4 ? 40 : 20;
-const bpaBoost = teamAIProfile.bpaPreference >= 8 ? 8 : 0;
-const aggressionBoost = teamAIProfile.aggression >= 8 ? 5 : 0;
-const poolSize = basePoolSize + bpaBoost + aggressionBoost;
-        const candidates = players.slice(0, poolSize);
+        try {
+            await axios.put(`${apiURL}/mock_draft_picks/${pick.id}`, {
+                player_id: selectedPlayer.id
+            });
 
-        const teamDraftBoard = buildTeamDraftBoard({
-  players: candidates,
-  team: pick.team,
-  pick,
-  positionsDrafted,
-});
-
-       const selectedPlayer = teamDraftBoard[0];
-
-        if (selectedPlayer) {
-            try {
-                await axios.put(`${apiURL}/mock_draft_picks/${pick.id}`, {
-                    player_id: selectedPlayer.id
-                });
-
-                const updatedPick = {...pick, player: selectedPlayer};
-                setPicks(prevPicks => prevPicks.map(pick => (pick.id === updatedPick.id ? updatedPick : pick)));
-                setPlayers(prevPlayers => prevPlayers.filter(player => player.id !== selectedPlayer.id));
-            } catch (err) {
-                console.error("Failed to auto-select player: ", err);
-            } finally {
-                autoPickInProgressRef.current = {id: null, active: false};
-            }
+            const updatedPick = {...pick, player: selectedPlayer};
+            setPicks(prevPicks => prevPicks.map(entry => (entry.id === updatedPick.id ? updatedPick : entry)));
+            setPlayers(prevPlayers => prevPlayers.filter(player => player.id !== selectedPlayer.id));
+        } catch (err) {
+            console.error("Failed to auto-select player: ", err);
+        } finally {
+            autoPickInProgressRef.current = {id: null, active: false};
         }
     };
 
@@ -750,7 +757,8 @@ const poolSize = basePoolSize + bpaBoost + aggressionBoost;
 
     // Handle trade partner selection
     const handleSelectTradePartner = (selectedOption) => {
-        setTradePartner(selectedOption.team);
+        const selectedTeam = selectedOption?.team || null;
+        setTradePartner(selectedTeam);
         setTradedPicks(prev => ({ ...prev, tradePartner: [] }));
         setTradeEvaluation(null);
     };
@@ -955,7 +963,8 @@ const evaluateTrade = (userPicks, cpuPicks, tradeValueChart) => {
     tradedPicks.currentTeam.forEach(pickId => {
       if (
         String(pickId).startsWith("future-") ||
-        String(pickId).startsWith("current-generated-")
+        String(pickId).startsWith("current-generated-") ||
+        String(pickId).startsWith("current-reference-")
       ) {
         updated[pickId] = tradePartner;
       }
@@ -964,7 +973,8 @@ const evaluateTrade = (userPicks, cpuPicks, tradeValueChart) => {
     tradedPicks.tradePartner.forEach(pickId => {
       if (
         String(pickId).startsWith("future-") ||
-        String(pickId).startsWith("current-generated-")
+        String(pickId).startsWith("current-generated-") ||
+        String(pickId).startsWith("current-reference-")
       ) {
         updated[pickId] = tradeTeam;
       }
@@ -973,6 +983,13 @@ const evaluateTrade = (userPicks, cpuPicks, tradeValueChart) => {
     return updated;
   });
 
+  const acceptedTradeNotice = {
+    id: Date.now(),
+    title: "Trade accepted",
+    message: `${tradeTeam?.name || "Your team"} and ${tradePartner?.name || "the trade partner"} agreed to the deal.`,
+  };
+  setTradeNotice(acceptedTradeNotice);
+
   setShowTradeModal(false);
   setTradePartner(null);
   setTradedPicks({
@@ -980,7 +997,7 @@ const evaluateTrade = (userPicks, cpuPicks, tradeValueChart) => {
     tradePartner: []
   });
   setTradeEvaluation(null);
-  setTimeLeft(60);
+  setTimeLeft(getPickClockSeconds(currentPick?.draft_pick?.round || 1));
   setPaused(false);
 };
 
@@ -1008,7 +1025,7 @@ const evaluateTrade = (userPicks, cpuPicks, tradeValueChart) => {
         setTradeEvaluation(null);
         setShowTradeModal(false);
         setPaused(false);
-        setTimeLeft(60);
+        setTimeLeft(getPickClockSeconds(currentPick?.draft_pick?.round || 1));
         setPickToUndo(null);
         setShowConfirmUndoModal(false);
 
@@ -1018,7 +1035,7 @@ const evaluateTrade = (userPicks, cpuPicks, tradeValueChart) => {
         try {
             await Promise.allSettled(
                 resetPicks
-                    .filter(pick => !String(pick.id).startsWith("future-") && !String(pick.id).startsWith("current-generated-"))
+                    .filter(pick => !String(pick.id).startsWith("future-") && !String(pick.id).startsWith("current-generated-") && !String(pick.id).startsWith("current-reference-"))
                     .map(pick =>
                         axios.put(`${apiURL}/mock_draft_picks/${pick.id}`, {
                             player_id: null,
@@ -1039,7 +1056,10 @@ const evaluateTrade = (userPicks, cpuPicks, tradeValueChart) => {
                 ? players_result.data
                 : players_result.data.players || players_result.data.data || [];
 
-            setPlayers(playersData.sort((a, b) => a.rank - b.rank));
+            setPlayers(
+                buildDraftableProspectPool(playersData, { draftYear: draft.year })
+                    .sort((a, b) => a.rank - b.rank)
+            );
         } catch (err) {
             console.error("Failed to fetch players:", err);
         }
@@ -1110,20 +1130,124 @@ const evaluateTrade = (userPicks, cpuPicks, tradeValueChart) => {
     });
 
 
-    // Render draft page
-    return (
-     <div className="draft_room_v2">
-           
-                
-            
-            <ProspectIntelligenceCenter
-  player={selectedPlayerPreview}
-  getProspectGrade={getProspectGrade}
-  getProspectTier={getProspectTier}
-  getProspectProjection={getProspectProjection}
-/>
+    const undoLatestPick = async () => {
+      const latestPick = [...picks].reverse().find((pick) => pick.player);
+      if (!latestPick) {
+        alert("No picks have been made yet.");
+        return;
+      }
 
-        </div>
+      if (!window.confirm(`Undo ${latestPick.player.name} to ${latestPick.team.name}?`)) return;
+
+      try {
+        await axios.put(`${apiURL}/mock_draft_picks/${latestPick.id}`, { player_id: null });
+        setPlayers((previous) => [...previous, latestPick.player].sort((a, b) => a.rank - b.rank));
+        setPicks((previous) => previous.map((pick) => pick.id === latestPick.id ? { ...pick, player: null, player_id: null } : pick));
+      } catch (error) {
+        console.error("Failed to undo pick:", error);
+        alert("An error occurred while undoing the pick. Please try again.");
+      }
+    };
+
+    // Render draft operations center
+    return (
+      <>
+        <DraftOperationsCenter
+          draft={draft}
+          picks={picks}
+          players={players}
+          filteredPlayers={filteredPlayers}
+          allPlayers={players}
+          currentPick={currentPick}
+          currentTeam={currentTeam}
+          userControlledTeams={userControlledTeams}
+          teamDirectory={teamDirectory}
+          paused={paused}
+          timeLeft={timeLeft}
+          autoPickDelay={autoPickDelay}
+          soundsMuted={soundsMuted}
+          positionFilter={positionFilter}
+          positionOptions={positionOptions}
+          searchQuery={searchQuery}
+          selectedPlayer={selectedPlayerPreview}
+          isSelecting={isSelecting}
+          onSelectPlayer={handleSelectPlayer}
+          onPreviewPlayer={setSelectedPlayerPreview}
+          onPositionFilterChange={setPositionFilter}
+          onSearchChange={setSearchQuery}
+          onPause={() => setPaused((previous) => !previous)}
+          onUndo={undoLatestPick}
+          onTrade={() => {
+            setActiveTradeTeam(tradeTeam);
+            setShowTradeModal(true);
+            setPaused(true);
+          }}
+          onRestart={() => {
+            if (window.confirm("Restart this draft and clear every selection?")) confirmRestartDraft();
+          }}
+          onAutoPickDelayChange={setAutoPickDelay}
+          onToggleSound={() => setSoundsMuted((previous) => !previous)}
+          draftMode={draftMode}
+          onSimCpuPick={() => {
+            if (currentPick && !isUserTurn && !autoPickInProgressRef.current.active) {
+              handleAutoSelectPlayer(currentPick);
+            }
+          }}
+          getProspectGrade={getProspectGrade}
+          getProspectTier={getProspectTier}
+          getProspectProjection={getProspectProjection}
+          cpuDecision={lastCpuDecision}
+          getTeamDraftCapital={getTradeAssets}
+        />
+
+        {tradeNotice ? (
+          <div className="draft-trade-toast" role="status" aria-live="polite">
+            <div className="draft-trade-toast-icon" aria-hidden="true">✓</div>
+            <div>
+              <strong>{tradeNotice.title}</strong>
+              <span>{tradeNotice.message}</span>
+            </div>
+            <button type="button" onClick={() => setTradeNotice(null)} aria-label="Dismiss trade notification">×</button>
+          </div>
+        ) : null}
+
+        {showTradeModal && (
+          <TradeOperationsCenter
+            draft={draft}
+            tradeTeam={tradeTeam}
+            tradePartner={tradePartner}
+            yourTeamOptions={userControlledTeams
+              .map((teamId) => teamLookup[teamId])
+              .filter(Boolean)
+              .map((team) => ({ value: team.id, label: team.name, team }))
+              .sort((a, b) => a.label.localeCompare(b.label))}
+            partnerOptions={getTradePartnerOptions().sort((a, b) => a.label.localeCompare(b.label))}
+            yourAssets={tradeTeamPicks.filter((pick) => !pick.player)}
+            partnerAssets={tradePartner ? getTradeAssets(tradePartner).filter((pick) => !pick.player) : []}
+            selectedYourAssets={tradedPicks.currentTeam}
+            selectedPartnerAssets={tradedPicks.tradePartner}
+            evaluation={tradeEvaluation}
+            onSelectYourTeam={(option) => {
+              const selectedTeam = option?.team || null;
+              setActiveTradeTeam(selectedTeam);
+              setTradePartner(null);
+              setTradedPicks({ currentTeam: [], tradePartner: [] });
+              setTradeEvaluation(null);
+            }}
+            onSelectPartner={handleSelectTradePartner}
+            onToggleYourAsset={(pickId) => togglePickSelection("currentTeam", pickId)}
+            onTogglePartnerAsset={(pickId) => togglePickSelection("tradePartner", pickId)}
+            onSubmit={submitTrade}
+            onCancel={() => {
+              setShowTradeModal(false);
+              setTradePartner(null);
+              setTradedPicks({ currentTeam: [], tradePartner: [] });
+              setTradeEvaluation(null);
+              setPaused(false);
+            }}
+          />
+        )}
+      </>
     );
 }
 
