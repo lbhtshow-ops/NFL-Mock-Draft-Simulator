@@ -1,7 +1,7 @@
 // src/data/footballIntelligence/scouting/playerTraitProfiles.js
 
-import { createTraitProfile } from "./createTraitProfile";
-import { prospectIds } from "../registry/prospectIds";
+import { createTraitProfile } from "./createTraitProfile.js";
+import { prospectIds } from "../registry/prospectIds.js";
 
 export const playerTraitProfiles = {
   [prospectIds.ARCH_MANNING]: createTraitProfile({

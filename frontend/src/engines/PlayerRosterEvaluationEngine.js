@@ -1,14 +1,14 @@
-import { getPlayerUsageProfile } from "./PlayerUsageIndex";
-import { getPlayerPerformanceProfile } from "./PlayerPerformanceIndex";
-import { getPlayerRecognitionSummary } from "./playerEvaluation/PlayerRecognitionEngine";
-import { evaluateQuarterback } from "./playerEvaluation/positionModels/QuarterbackEvaluationModel";
-import { evaluateRunningBack } from "./playerEvaluation/positionModels/RunningBackEvaluationModel";
-import { evaluateReceiver } from "./playerEvaluation/positionModels/ReceiverEvaluationModel";
-import { evaluateOffensiveLine } from "./playerEvaluation/positionModels/OffensiveLineEvaluationModel";
-import { evaluateDefensiveLine } from "./playerEvaluation/positionModels/DefensiveLineEvaluationModel";
-import { evaluateLinebacker } from "./playerEvaluation/positionModels/LinebackerEvaluationModel";
-import { evaluateSecondary } from "./playerEvaluation/positionModels/SecondaryEvaluationModel";
-import { evaluateSpecialist } from "./playerEvaluation/positionModels/SpecialistEvaluationModel";
+import { getPlayerUsageProfile } from "./PlayerUsageIndex.js";
+import { getPlayerPerformanceProfile } from "./PlayerPerformanceIndex.js";
+import { getPlayerRecognitionSummary } from "./playerEvaluation/PlayerRecognitionEngine.js";
+import { evaluateQuarterback } from "./playerEvaluation/positionModels/QuarterbackEvaluationModel.js";
+import { evaluateRunningBack } from "./playerEvaluation/positionModels/RunningBackEvaluationModel.js";
+import { evaluateReceiver } from "./playerEvaluation/positionModels/ReceiverEvaluationModel.js";
+import { evaluateOffensiveLine } from "./playerEvaluation/positionModels/OffensiveLineEvaluationModel.js";
+import { evaluateDefensiveLine } from "./playerEvaluation/positionModels/DefensiveLineEvaluationModel.js";
+import { evaluateLinebacker } from "./playerEvaluation/positionModels/LinebackerEvaluationModel.js";
+import { evaluateSecondary } from "./playerEvaluation/positionModels/SecondaryEvaluationModel.js";
+import { evaluateSpecialist } from "./playerEvaluation/positionModels/SpecialistEvaluationModel.js";
 
 const positionValueTiers = {
   QB: 8,

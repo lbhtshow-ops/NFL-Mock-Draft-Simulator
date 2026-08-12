@@ -1,6 +1,6 @@
-export { staticRosterImporter } from "./staticRosterImporter";
+export { staticRosterImporter } from "./staticRosterImporter.js";
 
 export {
   nflverseRosterAdapter,
   mapNFLVerseRosterRow,
-} from "./nflverseRosterAdapter";
+} from "./nflverseRosterAdapter.js";

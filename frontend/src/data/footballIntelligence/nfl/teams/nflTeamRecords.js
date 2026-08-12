@@ -1,4 +1,4 @@
-import { createNFLTeamRecord } from "./createNFLTeamRecord";
+import { createNFLTeamRecord } from "./createNFLTeamRecord.js";
 
 export const nflTeamRecords = {
   ARI: createNFLTeamRecord({

@@ -4,7 +4,7 @@ import {
   CAREER_STAGES,
   SAMPLE_STRENGTHS,
   resolvePlayerContext,
-} from "./PlayerContextResolver";
+} from "./PlayerContextResolver.js";
 
 export const PROSPECT_EVIDENCE_ROLES = {
   PRIMARY: "PRIMARY",

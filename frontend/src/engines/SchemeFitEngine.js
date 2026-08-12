@@ -1,15 +1,15 @@
-import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary";
-import schemeFitProfiles from "../data/footballIntelligence/schemes/schemeFitProfiles";
-import defaultSchemeFitProfile from "../data/footballIntelligence/schemes/defaultSchemeFitProfile";
-import { resolvePlayerContext } from "./context/PlayerContextResolver";
-import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine";
+import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary.js";
+import schemeFitProfiles from "../data/footballIntelligence/schemes/schemeFitProfiles.js";
+import defaultSchemeFitProfile from "../data/footballIntelligence/schemes/defaultSchemeFitProfile.js";
+import { resolvePlayerContext } from "./context/PlayerContextResolver.js";
+import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine.js";
 import {
   createIntelligenceResult,
   createUnavailableIntelligenceResult,
   DATA_STATES,
   EVIDENCE_LEVELS,
-} from "./contracts/IntelligenceResultContract";
-import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId";
+} from "./contracts/IntelligenceResultContract.js";
+import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId.js";
 
 const SCHEME_FIT_MODEL_VERSION = "SCHEME-FIT-1.0.0";
 

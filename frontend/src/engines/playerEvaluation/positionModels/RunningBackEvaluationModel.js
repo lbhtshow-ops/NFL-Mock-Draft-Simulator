@@ -1,4 +1,4 @@
-import { getProspectCarryoverEvaluation } from "../ProspectCarryoverEvaluationEngine";
+import { getProspectCarryoverEvaluation } from "../ProspectCarryoverEvaluationEngine.js";
 
 function clampScore(value, minimum = 35, maximum = 95) {
   return Math.max(minimum, Math.min(maximum, Math.round(value)));

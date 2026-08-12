@@ -4,7 +4,7 @@ import {
   getProspectById,
   getProspectByName,
   getProspectByRank,
-} from "./prospects";
+} from "./prospects.js";
 
 /**
  * Resolves any player-like object into a canonical prospect record.
@@ -22,6 +22,23 @@ import {
 export function resolveProspect(player) {
   if (!player) return null;
 
+  const requestedDraftClass = Number(
+    player.draftClass ??
+    player.year ??
+    player.identity?.draftClass ??
+    player.identity?.year ??
+    player.profile?.draftClass ??
+    player.profile?.year ??
+    NaN
+  );
+
+  const classMatches = (prospect) => {
+    if (!prospect) return false;
+    if (!Number.isFinite(requestedDraftClass)) return true;
+    if (!Number.isFinite(Number(prospect.draftClass))) return true;
+    return Number(prospect.draftClass) === requestedDraftClass;
+  };
+
   const candidateIds = [
     player.id,
     player.playerId,
@@ -35,7 +52,7 @@ export function resolveProspect(player) {
 
   for (const id of candidateIds) {
     const match = getProspectById(id);
-    if (match) return match;
+    if (classMatches(match)) return match;
   }
 
   const candidateRanks = [
@@ -47,7 +64,7 @@ export function resolveProspect(player) {
 
   for (const rank of candidateRanks) {
     const match = getProspectByRank(rank);
-    if (match) return match;
+    if (classMatches(match)) return match;
   }
 
   const candidateNames = [
@@ -61,7 +78,7 @@ export function resolveProspect(player) {
 
   for (const name of candidateNames) {
     const match = getProspectByName(name);
-    if (match) return match;
+    if (classMatches(match)) return match;
   }
 
   return null;

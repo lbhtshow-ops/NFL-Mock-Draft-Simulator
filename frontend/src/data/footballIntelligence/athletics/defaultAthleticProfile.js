@@ -1,4 +1,4 @@
-import { createAthleticProfile } from "./createAthleticProfile";
+import { createAthleticProfile } from "./createAthleticProfile.js";
 
 export const defaultAthleticProfile = createAthleticProfile({
   playerId: null,

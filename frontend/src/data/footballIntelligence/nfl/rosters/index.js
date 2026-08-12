@@ -1,16 +1,16 @@
-export { createNFLPlayerRecord } from "./createNFLPlayerRecord";
+export { createNFLPlayerRecord } from "./createNFLPlayerRecord.js";
 
 export {
   nflRosterRecords,
   getNFLRosterByTeam,
-} from "./nflRosterRecords";
+} from "./nflRosterRecords.js";
 
-export { nflPositionGroups } from "./nflPositionGroups";
+export { nflPositionGroups } from "./nflPositionGroups.js";
 
 export {
   normalizeNFLRosterPlayer,
-} from "./normalizeNFLRosterPlayer";
+} from "./normalizeNFLRosterPlayer.js";
 
 export {
   importNFLRosterRecords,
-} from "./importNFLRosterRecords";
+} from "./importNFLRosterRecords.js";

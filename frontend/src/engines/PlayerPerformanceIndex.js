@@ -1,4 +1,4 @@
-import playerStatRows from "../data/footballIntelligence/nfl/rosters/sources/generatedNFLVersePlayerStatsSource.json";
+import playerStatRows from "../data/footballIntelligence/nfl/rosters/sources/generatedNFLVersePlayerStatsSource.json" with { type: "json" };
 
 function normalizeName(name = "") {
   return name

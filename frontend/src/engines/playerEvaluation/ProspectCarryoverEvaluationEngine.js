@@ -1,5 +1,5 @@
-import { resolveProspect } from "../../data/footballIntelligence/registry/resolveProspect";
-import { getFootballPlayerRecord } from "../../data/footballIntelligence/database/footballPlayerRecords";
+import { resolveProspect } from "../../data/footballIntelligence/registry/resolveProspect.js";
+import { getFootballPlayerRecord } from "../../data/footballIntelligence/database/footballPlayerRecords.js";
 
 function getPlayerName(player = {}) {
   return (

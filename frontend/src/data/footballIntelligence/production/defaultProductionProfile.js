@@ -1,4 +1,4 @@
-import { createProductionProfile } from "./createProductionProfile";
+import { createProductionProfile } from "./createProductionProfile.js";
 
 export const defaultProductionProfile = createProductionProfile({
   playerId: null,

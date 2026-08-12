@@ -1,9 +1,9 @@
 import {
   getNFLRosterByTeam,
   nflPositionGroups,
-} from "../data/footballIntelligence/nfl/rosters";
+} from "../data/footballIntelligence/nfl/rosters/index.js";
 
-import { evaluateNFLRosterPlayer } from "./PlayerRosterEvaluationEngine";
+import { evaluateNFLRosterPlayer } from "./PlayerRosterEvaluationEngine.js";
 
 const rosterScoreByTier = {
   elite: 95,

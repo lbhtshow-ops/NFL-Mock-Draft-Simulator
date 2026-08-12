@@ -1,15 +1,15 @@
-import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary";
-import traitScoringRules from "../data/footballIntelligence/scouting/traitScoringRules";
-import playerTraitProfiles from "../data/footballIntelligence/scouting/playerTraitProfiles";
-import { resolvePlayerContext } from "./context/PlayerContextResolver";
-import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine";
+import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary.js";
+import traitScoringRules from "../data/footballIntelligence/scouting/traitScoringRules.js";
+import playerTraitProfiles from "../data/footballIntelligence/scouting/playerTraitProfiles.js";
+import { resolvePlayerContext } from "./context/PlayerContextResolver.js";
+import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine.js";
 import {
   createIntelligenceResult,
   createUnavailableIntelligenceResult,
   DATA_STATES,
   EVIDENCE_LEVELS,
-} from "./contracts/IntelligenceResultContract";
-import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId";
+} from "./contracts/IntelligenceResultContract.js";
+import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId.js";
 
 const PLAYER_TRAIT_MODEL_VERSION = "PLAYER-TRAIT-1.0.0";
 

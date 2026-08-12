@@ -1,4 +1,4 @@
-import { createSchemeFitProfile } from "./createSchemeFitProfile";
+import { createSchemeFitProfile } from "./createSchemeFitProfile.js";
 
 export const defaultSchemeFitProfile = createSchemeFitProfile({
   playerId: null,

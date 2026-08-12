@@ -1,4 +1,4 @@
-import snapCountRows from "../data/footballIntelligence/nfl/rosters/sources/generatedNFLVerseSnapCountsSource.json";
+import snapCountRows from "../data/footballIntelligence/nfl/rosters/sources/generatedNFLVerseSnapCountsSource.json" with { type: "json" };
 
 function normalizeName(name = "") {
   return name

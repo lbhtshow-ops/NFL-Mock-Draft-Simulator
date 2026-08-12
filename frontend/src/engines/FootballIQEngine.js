@@ -1,15 +1,15 @@
-import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary";
-import footballIQProfiles from "../data/footballIntelligence/footballIQ/footballIQProfiles";
-import defaultFootballIQProfile from "../data/footballIntelligence/footballIQ/defaultFootballIQProfile";
-import { resolvePlayerContext } from "./context/PlayerContextResolver";
-import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine";
+import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary.js";
+import footballIQProfiles from "../data/footballIntelligence/footballIQ/footballIQProfiles.js";
+import defaultFootballIQProfile from "../data/footballIntelligence/footballIQ/defaultFootballIQProfile.js";
+import { resolvePlayerContext } from "./context/PlayerContextResolver.js";
+import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine.js";
 import {
   createIntelligenceResult,
   createUnavailableIntelligenceResult,
   DATA_STATES,
   EVIDENCE_LEVELS,
-} from "./contracts/IntelligenceResultContract";
-import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId";
+} from "./contracts/IntelligenceResultContract.js";
+import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId.js";
 
 const FOOTBALL_IQ_MODEL_VERSION = "FOOTBALL-IQ-1.0.0";
 

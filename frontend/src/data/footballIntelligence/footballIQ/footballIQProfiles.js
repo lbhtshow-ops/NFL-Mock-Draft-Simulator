@@ -1,5 +1,5 @@
-import { createFootballIQProfile } from "./createFootballIQProfile";
-import { prospectIds } from "../registry/prospectIds";
+import { createFootballIQProfile } from "./createFootballIQProfile.js";
+import { prospectIds } from "../registry/prospectIds.js";
 
 export const footballIQProfiles = {
   [prospectIds.ARCH_MANNING]: createFootballIQProfile({

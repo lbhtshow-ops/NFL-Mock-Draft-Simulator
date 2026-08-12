@@ -1,5 +1,5 @@
-import { createAthleticProfile } from "./createAthleticProfile";
-import { prospectIds } from "../registry/prospectIds";
+import { createAthleticProfile } from "./createAthleticProfile.js";
+import { prospectIds } from "../registry/prospectIds.js";
 
 export const athleticProfiles = {
   [prospectIds.ARCH_MANNING]: createAthleticProfile({

@@ -1,8 +1,8 @@
 export {
   createNFLTeamRecord,
-} from "./createNFLTeamRecord";
+} from "./createNFLTeamRecord.js";
 
 export {
   nflTeamRecords,
   getNFLTeamRecord,
-} from "./nflTeamRecords";
+} from "./nflTeamRecords.js";

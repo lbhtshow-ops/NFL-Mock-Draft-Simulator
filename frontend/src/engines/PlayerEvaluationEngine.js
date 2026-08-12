@@ -1,18 +1,18 @@
-import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary";
-import { getPlayerTier } from "./PlayerTiers";
-import { assignPlayerArchetype } from "./PlayerArchetypeEngine";
-import { getPlayerComparison } from "./PlayerComparisonEngine";
-import scoutingProfiles from "../data/footballIntelligence/scouting/scoutingProfiles";
-import defaultScoutingProfile from "../data/footballIntelligence/scouting/defaultScoutingProfile";
-import { resolvePlayerContext } from "./context/PlayerContextResolver";
-import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine";
+import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary.js";
+import { getPlayerTier } from "./PlayerTiers.js";
+import { assignPlayerArchetype } from "./PlayerArchetypeEngine.js";
+import { getPlayerComparison } from "./PlayerComparisonEngine.js";
+import scoutingProfiles from "../data/footballIntelligence/scouting/scoutingProfiles.js";
+import defaultScoutingProfile from "../data/footballIntelligence/scouting/defaultScoutingProfile.js";
+import { resolvePlayerContext } from "./context/PlayerContextResolver.js";
+import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine.js";
 import {
   createIntelligenceResult,
   createUnavailableIntelligenceResult,
   DATA_STATES,
   EVIDENCE_LEVELS,
-} from "./contracts/IntelligenceResultContract";
-import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId";
+} from "./contracts/IntelligenceResultContract.js";
+import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId.js";
 
 const PLAYER_EVALUATION_MODEL_VERSION =
   "PLAYER-EVALUATION-PROSPECT-1.0.0";

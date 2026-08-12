@@ -1,4 +1,4 @@
-import { normalizeNFLRosterPlayer } from "./normalizeNFLRosterPlayer";
+import { normalizeNFLRosterPlayer } from "./normalizeNFLRosterPlayer.js";
 
 export function importNFLRosterRecords(rawRoster = []) {
   return rawRoster.reduce((teamRosters, rawPlayer) => {

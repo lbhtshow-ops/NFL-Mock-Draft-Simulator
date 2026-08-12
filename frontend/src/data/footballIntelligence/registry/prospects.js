@@ -1,6 +1,6 @@
 // src/data/footballIntelligence/registry/prospects.js
 
-import { prospectIds } from "./prospectIds";
+import { prospectIds } from "./prospectIds.js";
 
 export const prospects = {
   [prospectIds.ARCH_MANNING]: {

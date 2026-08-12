@@ -1,5 +1,5 @@
-import { createSchemeFitProfile } from "./createSchemeFitProfile";
-import { prospectIds } from "../registry/prospectIds";
+import { createSchemeFitProfile } from "./createSchemeFitProfile.js";
+import { prospectIds } from "../registry/prospectIds.js";
 
 export const schemeFitProfiles = {
   [prospectIds.ARCH_MANNING]: createSchemeFitProfile({

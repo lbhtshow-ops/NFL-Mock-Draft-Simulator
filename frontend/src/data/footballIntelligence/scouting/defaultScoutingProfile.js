@@ -1,4 +1,4 @@
-import { createScoutingProfile } from "./createScoutingProfile";
+import { createScoutingProfile } from "./createScoutingProfile.js";
 
 export const defaultScoutingProfile = createScoutingProfile({
   executiveSummary: "No scouting report available yet.",

@@ -1,4 +1,4 @@
-import { createFootballIQProfile } from "./createFootballIQProfile";
+import { createFootballIQProfile } from "./createFootballIQProfile.js";
 
 export const defaultFootballIQProfile = createFootballIQProfile({
   playerId: null,
