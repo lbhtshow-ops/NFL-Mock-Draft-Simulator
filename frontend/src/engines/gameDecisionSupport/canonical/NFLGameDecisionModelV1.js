@@ -21,10 +21,15 @@ export function getNFLCanonicalGameDecisionModelConfig(){
 
 export function evaluateNFLGameDecisionV1({game={},matchupIntelligence={},generatedAt=null}={}){
   const config=getNFLCanonicalGameDecisionModelConfig();
+  const matchupEdge=Number(matchupIntelligence?.matchupEdge);
+  const evidenceQuality=Number(matchupIntelligence?.evidenceQuality);
+  if(!Number.isFinite(matchupEdge)||!Number.isFinite(evidenceQuality)||evidenceQuality<=0){
+    throw new Error("INSUFFICIENT_CANONICAL_MATCHUP_EVIDENCE: refusing to classify a baseline-only Decision as PRODUCTION_AUTHORITY.");
+  }
   const prediction=predictNFLCandidate(config.modelId,{
     pregame:{
-      matchupEdge:matchupIntelligence.matchupEdge,
-      evidenceQuality:matchupIntelligence.evidenceQuality
+      matchupEdge,
+      evidenceQuality
     }
   },config.parameters);
 
@@ -41,8 +46,8 @@ export function evaluateNFLGameDecisionV1({game={},matchupIntelligence={},genera
       status:"PRODUCTION_AUTHORITY",promotionEvidenceVersion:config.promotionEvidenceVersion
     },
     evidence:{
-      matchupEdge:matchupIntelligence.matchupEdge,
-      evidenceQuality:matchupIntelligence.evidenceQuality
+      matchupEdge,
+      evidenceQuality
     },
     generatedAt
   });

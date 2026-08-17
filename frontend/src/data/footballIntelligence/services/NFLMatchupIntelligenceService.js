@@ -1,14 +1,98 @@
 import {
   getNFLTeamIntelligenceResult,
 } from "../../../engines/teamIntelligence/CanonicalNFLTeamIntelligenceEngine.js";
-
+import {
+  buildNFLTeamStrength,
+} from "../../../engines/teamIntelligence/NFLTeamPriorAndStrengthEngine.js";
+import {
+  buildNFLPerformanceIndexes,
+  getNFLTeamPerformanceEvidenceForSeason,
+  getNFLTeamPerformanceEvidenceRecordsForSeason,
+} from "../nfl/performance/NFLTeamPerformanceEvidenceRegistry.js";
 import {
   evaluateNFLMatchupIntelligence,
 } from "../../../engines/matchupIntelligence/NFLMatchupIntelligenceEngine.js";
-
 import {
   getNFLAdvancedTeamMatchupEvidence,
 } from "../nfl/matchup/NFLAdvancedMatchupEvidenceRegistry.js";
+
+function performanceEvidenceForTargetSeason(team, targetSeason) {
+  const current = getNFLTeamPerformanceEvidenceForSeason(
+    team, targetSeason, { phaseScope: "ALL" }
+  );
+  const record = current || getNFLTeamPerformanceEvidenceForSeason(
+    team, targetSeason - 1, { phaseScope: "ALL" }
+  );
+  if (!record) return null;
+
+  const peers = getNFLTeamPerformanceEvidenceRecordsForSeason(
+    record.season, { phaseScope: "ALL" }
+  );
+  const indexes = buildNFLPerformanceIndexes(record, peers);
+
+  return {
+    sourceSeason: record.season,
+    sourceMode: record.season === targetSeason ? "CURRENT_SEASON" : "PRIOR_SEASON",
+    offense: {
+      epaPerPlay: record.offense?.epaPerPlay ?? null,
+      successRate: record.offense?.successRate ?? null,
+      passEpaPerPlay: record.offense?.passEpaPerPlay ?? null,
+      rushEpaPerPlay: record.offense?.rushEpaPerPlay ?? null,
+    },
+    defense: {
+      epaPerPlay: record.defense?.epaAllowedPerPlay ?? null,
+      successRate: record.defense?.successRateAllowed ?? null,
+      passEpaPerPlay: record.defense?.passEpaAllowedPerPlay ?? null,
+      rushEpaPerPlay: record.defense?.rushEpaAllowedPerPlay ?? null,
+    },
+    recentFormIndex: indexes.recentForm ?? null,
+    specialTeamsIndex: indexes.specialTeams ?? null,
+    provenance: record.provenance || null,
+  };
+}
+
+function canonicalMatchupTeamInput(team, {
+  season,
+  week,
+  availabilityWeek = week,
+  gameType = "REG",
+  availabilityResolver = undefined,
+} = {}) {
+  const base = getNFLTeamIntelligenceResult(team, {
+    season,
+    throughWeek: week,
+  });
+  const strength = buildNFLTeamStrength({
+    team,
+    targetSeason: season,
+    phaseScope: "ALL",
+  });
+  const performance = performanceEvidenceForTargetSeason(team, season);
+  const strengthSource = strength.current || strength.prior || null;
+
+  return {
+    ...base,
+    overallStrength: strength.overallStrength,
+    confidence: strength.confidence,
+    confidenceKnown: strength.confidenceKnown,
+    components: {
+      ...(base.components || {}),
+      offense: strengthSource?.offenseIndex ?? null,
+      defense: strengthSource?.defenseIndex ?? null,
+      specialTeams: strengthSource?.specialTeamsIndex ?? null,
+      recentForm: strengthSource?.recentFormIndex ?? null,
+      opponentAdjusted: strengthSource?.opponentAdjustedIndex ?? null,
+    },
+    performance,
+    matchupRuntimeEvidence: {
+      teamStrength: strength,
+      performance,
+      availabilityWeek,
+      gameType,
+      availabilityResolverConnected: typeof availabilityResolver === "function",
+    },
+  };
+}
 
 export function buildNFLMatchupIntelligenceProfile({
   gameId = null,
@@ -18,57 +102,24 @@ export function buildNFLMatchupIntelligenceProfile({
   homeTeam,
   availabilityWeek = week,
   gameType = "REG",
+  availabilityResolver = undefined,
   context = {},
 } = {}) {
-  const awayIntelligence =
-    getNFLTeamIntelligenceResult(
-      awayTeam,
-      {
-        targetSeason: season,
-        availabilityWeek,
-        gameType,
-      }
-    );
+  const awayIntelligence = canonicalMatchupTeamInput(awayTeam, {
+    season, week, availabilityWeek, gameType, availabilityResolver,
+  });
+  const homeIntelligence = canonicalMatchupTeamInput(homeTeam, {
+    season, week, availabilityWeek, gameType, availabilityResolver,
+  });
 
-  const homeIntelligence =
-    getNFLTeamIntelligenceResult(
-      homeTeam,
-      {
-        targetSeason: season,
-        availabilityWeek,
-        gameType,
-      }
-    );
-
-  const awayAdvanced =
-    getNFLAdvancedTeamMatchupEvidence(
-      awayTeam,
-      {
-        season,
-        throughWeek: week,
-      }
-    );
-
-  const homeAdvanced =
-    getNFLAdvancedTeamMatchupEvidence(
-      homeTeam,
-      {
-        season,
-        throughWeek: week,
-      }
-    );
-
-  const enrichedAway = {
-    ...awayIntelligence,
-    advancedMatchupEvidence:
-      awayAdvanced,
-  };
-
-  const enrichedHome = {
-    ...homeIntelligence,
-    advancedMatchupEvidence:
-      homeAdvanced,
-  };
+  const awayAdvanced = getNFLAdvancedTeamMatchupEvidence(awayTeam, {
+    season,
+    throughWeek: week,
+  });
+  const homeAdvanced = getNFLAdvancedTeamMatchupEvidence(homeTeam, {
+    season,
+    throughWeek: week,
+  });
 
   return evaluateNFLMatchupIntelligence({
     gameId,
@@ -76,12 +127,16 @@ export function buildNFLMatchupIntelligenceProfile({
     week,
     awayTeam,
     homeTeam,
-    awayIntelligence: enrichedAway,
-    homeIntelligence: enrichedHome,
+    awayIntelligence: {
+      ...awayIntelligence,
+      advancedMatchupEvidence: awayAdvanced,
+    },
+    homeIntelligence: {
+      ...homeIntelligence,
+      advancedMatchupEvidence: homeAdvanced,
+    },
     context,
   });
 }
 
-export default {
-  buildNFLMatchupIntelligenceProfile,
-};
+export default { buildNFLMatchupIntelligenceProfile };
