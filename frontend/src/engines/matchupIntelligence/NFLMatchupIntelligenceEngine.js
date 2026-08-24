@@ -11,6 +11,10 @@ import {
   buildNFLGameContext,
 } from "./NFLGameContextEngine.js";
 
+import {
+  resolveNFLAdvancedEarlySeasonMatchupPolicyV1,
+} from "./canonical/NFLAdvancedEarlySeasonMatchupPolicyV1.js";
+
 function finite(value) {
   return typeof value === "number" && Number.isFinite(value);
 }
@@ -200,6 +204,20 @@ function describe({
   };
 }
 
+function teamAvailabilityEvidence(teamIntelligence) {
+  const evidence =
+    Array.isArray(teamIntelligence?.evidence)
+      ? teamIntelligence.evidence
+      : [];
+
+  return (
+    evidence.find(
+      (entry) =>
+        entry?.type === "NFL_PLAYER_AVAILABILITY_IMPACT"
+    ) || null
+  );
+}
+
 export function evaluateNFLMatchupIntelligence({
   gameId = null,
   season = null,
@@ -240,8 +258,19 @@ export function evaluateNFLMatchupIntelligence({
   const gameContext =
     buildNFLGameContext(context);
 
-  // V1 weights are intentionally versioned heuristics, not calibrated
-  // game-outcome coefficients.
+  const advancedEarlySeasonPolicy =
+    resolveNFLAdvancedEarlySeasonMatchupPolicyV1({
+      season,
+      week,
+      homeIntelligence,
+      awayIntelligence,
+    });
+
+  const advancedWeightMultiplier =
+    advancedEarlySeasonPolicy.multiplier;
+
+  // V1 base weights remain unchanged. PI.5 authorizes maturity alignment
+  // only for protectionPressure, explosivePlay, and redZone.
   const matchupEdge =
     weightedAverage([
       {
@@ -262,17 +291,17 @@ export function evaluateNFLMatchupIntelligence({
       {
         key: "protectionPressure",
         value: dimensions.protectionPressure,
-        weight: 0.10,
+        weight: 0.10 * advancedWeightMultiplier,
       },
       {
         key: "explosivePlay",
         value: dimensions.explosivePlay,
-        weight: 0.08,
+        weight: 0.08 * advancedWeightMultiplier,
       },
       {
         key: "redZone",
         value: dimensions.redZone,
-        weight: 0.06,
+        weight: 0.06 * advancedWeightMultiplier,
       },
       {
         key: "recentForm",
@@ -377,6 +406,7 @@ export function evaluateNFLMatchupIntelligence({
     limitations,
 
     sourceTeamIntelligence: {
+      advancedEarlySeasonPolicy,
       home: {
         team:
           homeIntelligence
@@ -388,6 +418,8 @@ export function evaluateNFLMatchupIntelligence({
         confidence:
           homeIntelligence
             ?.confidence ?? null,
+        availabilityEvidence:
+          teamAvailabilityEvidence(homeIntelligence),
       },
       away: {
         team:
@@ -400,6 +432,8 @@ export function evaluateNFLMatchupIntelligence({
         confidence:
           awayIntelligence
             ?.confidence ?? null,
+        availabilityEvidence:
+          teamAvailabilityEvidence(awayIntelligence),
       },
     },
   });
