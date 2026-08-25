@@ -1,4 +1,4 @@
-import { buildNFLAdvancedMatchupDimensions } from "./NFLAdvancedMatchupDimensionEngine.js";
+﻿import { buildNFLAdvancedMatchupDimensions } from "./NFLAdvancedMatchupDimensionEngine.js";
 
 function finite(value) {
   return typeof value === "number" && Number.isFinite(value);
@@ -24,6 +24,9 @@ function inverseDifference(homeAllowed, awayAllowed) {
   // Lower EPA allowed is better, so reverse the direction.
   return clamp(awayAllowed - homeAllowed, -100, 100);
 }
+
+const PASS_EPA_NORMALIZATION_SCALE = 0.20;
+const RUSH_EPA_NORMALIZATION_SCALE = 0.25;
 
 function normalizeEpaDifference(delta, scale = 0.20) {
   if (!finite(delta)) return null;
@@ -97,7 +100,8 @@ export function buildNFLMatchupDimensions({
     finite(homePassMatchup) &&
     finite(awayPassMatchup)
       ? normalizeEpaDifference(
-          homePassMatchup - awayPassMatchup
+          homePassMatchup - awayPassMatchup,
+          PASS_EPA_NORMALIZATION_SCALE
         )
       : null;
 
@@ -115,7 +119,8 @@ export function buildNFLMatchupDimensions({
     finite(homeRushMatchup) &&
     finite(awayRushMatchup)
       ? normalizeEpaDifference(
-          homeRushMatchup - awayRushMatchup
+          homeRushMatchup - awayRushMatchup,
+          RUSH_EPA_NORMALIZATION_SCALE
         )
       : null;
 
@@ -185,3 +190,4 @@ export function buildNFLMatchupDimensions({
 export default {
   buildNFLMatchupDimensions,
 };
+
