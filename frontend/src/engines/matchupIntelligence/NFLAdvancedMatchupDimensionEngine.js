@@ -1,3 +1,8 @@
+import {
+  buildNFLProtectionPressureProductionComponents,
+  buildNFLProtectionPressureProductionDimension,
+} from "./canonical/NFLProtectionPressureProductionMethodologyV1.js";
+
 function finite(value) {
   return typeof value === "number" &&
     Number.isFinite(value);
@@ -136,29 +141,25 @@ export function buildNFLAdvancedMatchupDimensions({
     };
   }
 
+  const protectionComponents =
+    buildNFLProtectionPressureProductionComponents({
+      homeEvidence,
+      awayEvidence,
+    });
+
   const homeProtection =
-    rateMatchup(
-      homeEvidence.offense
-        ?.pressureAllowedRate,
-      awayEvidence.defense
-        ?.pressureGeneratedRate,
-      {
-        defenseIsGenerated: true,
-        scale: 0.15,
-      }
-    );
+    protectionComponents
+      ?.homeProtection ?? null;
 
   const awayProtection =
-    rateMatchup(
-      awayEvidence.offense
-        ?.pressureAllowedRate,
-      homeEvidence.defense
-        ?.pressureGeneratedRate,
-      {
-        defenseIsGenerated: true,
-        scale: 0.15,
-      }
-    );
+    protectionComponents
+      ?.awayProtection ?? null;
+
+  const protectionPressure =
+    buildNFLProtectionPressureProductionDimension({
+      homeEvidence,
+      awayEvidence,
+    });
 
   const homeExplosive =
     average([
@@ -245,11 +246,7 @@ export function buildNFLAdvancedMatchupDimensions({
     });
 
   return {
-    protectionPressure:
-      compare(
-        homeProtection,
-        awayProtection
-      ),
+    protectionPressure,
 
     explosivePlay:
       compare(
