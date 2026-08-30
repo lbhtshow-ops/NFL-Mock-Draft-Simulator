@@ -30,26 +30,45 @@ function environment() {
   };
 }
 
+function cacheKey({ season, week, gameType = "REG", team } = {}) {
+  return `${season}:${week}:${gameType}:${team}`;
+}
+
 export function createFieResearchRepositoryAvailabilityRuntime({
   now = () => new Date().toISOString(),
   ttlMs = DEFAULT_TTL_MS,
   supabase = null,
+  repositoryService = null,
 } = {}) {
+  const injectedRepositoryService =
+    repositoryService && typeof repositoryService.readTeamWeek === "function"
+      ? repositoryService
+      : null;
+
   const configured = environment();
   const client =
-    supabase ||
-    (configured.url && configured.serviceRoleKey
-      ? createClient(configured.url, configured.serviceRoleKey, {
-          auth: {
-            persistSession: false,
-            autoRefreshToken: false,
-          },
-        })
-      : null);
+    injectedRepositoryService
+      ? null
+      : supabase ||
+        (configured.url && configured.serviceRoleKey
+          ? createClient(configured.url, configured.serviceRoleKey, {
+              auth: {
+                persistSession: false,
+                autoRefreshToken: false,
+              },
+            })
+          : null);
 
-  if (!client) {
+  if (!injectedRepositoryService && !client) {
     return {
       configured: false,
+      invalidateTeamAvailability({ season, week, gameType = "REG", team } = {}) {
+        return {
+          status: "NOT_CONFIGURED",
+          invalidated: false,
+          key: cacheKey({ season, week, gameType, team }),
+        };
+      },
       async loadForMatchup() {
         return {
           status: "NOT_CONFIGURED",
@@ -59,19 +78,28 @@ export function createFieResearchRepositoryAvailabilityRuntime({
     };
   }
 
-  const adapter = createSupabaseResearchRepositoryAdapter({
-    supabase: client,
-    options: {
-      adapterName: "SUPABASE_RESEARCH_REPOSITORY_FIE_AVAILABILITY_RUNTIME",
-      allowSoftDelete: true,
-      allowArchive: true,
-      allowHardDelete: false,
-    },
-  });
+  const adapter = injectedRepositoryService
+    ? null
+    : createSupabaseResearchRepositoryAdapter({
+        supabase: client,
+        options: {
+          adapterName: "SUPABASE_RESEARCH_REPOSITORY_FIE_AVAILABILITY_RUNTIME",
+          allowSoftDelete: true,
+          allowArchive: true,
+          allowHardDelete: false,
+        },
+      });
 
-  if (!adapter) {
+  if (!injectedRepositoryService && !adapter) {
     return {
       configured: false,
+      invalidateTeamAvailability({ season, week, gameType = "REG", team } = {}) {
+        return {
+          status: "ADAPTER_UNAVAILABLE",
+          invalidated: false,
+          key: cacheKey({ season, week, gameType, team }),
+        };
+      },
       async loadForMatchup() {
         return {
           status: "ADAPTER_UNAVAILABLE",
@@ -81,11 +109,29 @@ export function createFieResearchRepositoryAvailabilityRuntime({
     };
   }
 
-  const repositoryService = createNFLAvailabilityResearchRepositoryService({ adapter });
+  const resolvedRepositoryService =
+    injectedRepositoryService ||
+    createNFLAvailabilityResearchRepositoryService({ adapter });
   const cache = new Map();
 
+  function invalidateTeamAvailability({
+    season,
+    week,
+    gameType = "REG",
+    team,
+  } = {}) {
+    const key = cacheKey({ season, week, gameType, team });
+    const invalidated = cache.delete(key);
+
+    return {
+      status: invalidated ? "INVALIDATED" : "NOT_CACHED",
+      invalidated,
+      key,
+    };
+  }
+
   async function loadTeam({ season, week, gameType, team }) {
-    const key = `${season}:${week}:${gameType}:${team}`;
+    const key = cacheKey({ season, week, gameType, team });
     const cached = cache.get(key);
     const currentMs = Date.parse(now());
 
@@ -112,7 +158,7 @@ export function createFieResearchRepositoryAvailabilityRuntime({
     }
 
     const projection = await loadNFLAvailabilityEvidenceFromResearchRepository({
-      repositoryService,
+      repositoryService: resolvedRepositoryService,
       season,
       week,
       team,
@@ -148,6 +194,7 @@ export function createFieResearchRepositoryAvailabilityRuntime({
 
   return {
     configured: true,
+    invalidateTeamAvailability,
     async loadForMatchup({
       season,
       week,
