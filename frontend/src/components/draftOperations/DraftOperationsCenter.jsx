@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import ProspectIntelligenceCenter from "../draftV3/Intelligence/ProspectIntelligenceCenter";
 import DraftWire from "./DraftWire";
-import { resolveSportsDraftDecision, resolveSportsDraftWire, resolveSportsProspectIntelligence, resolveSportsTeamIntelligence } from "../../data/sportsIntelligence/SportsIntelligenceEngine";
+import { resolveSportsCanonicalNFLTeamIntelligence, resolveSportsDraftDecision, resolveSportsDraftWire, resolveSportsFIEApplicationContext, resolveSportsProspectIntelligence, resolveSportsTeamIntelligence } from "../../data/sportsIntelligence/SportsIntelligenceEngine";
 import { getNFLRosterByTeam } from "../../data/footballIntelligence/nfl/rosters";
 import { teamProfiles } from "../draftV3/WarRoom/WarRoomData";
 import "../../styles/draft-operations-next.css";
@@ -188,6 +188,22 @@ export default function DraftOperationsCenter({
     warRoomTeam ? { ...warRoomTeam, abbreviation: warRoomTeamAbbreviation || warRoomTeam.abbreviation } : null
   ), [warRoomTeam, warRoomTeamAbbreviation]);
   const sportsTeamIntel = useMemo(() => resolveSportsTeamIntelligence(warRoomTeamContext), [warRoomTeamContext]);
+  const canonicalTeamIntelligence = useMemo(
+    () => resolveSportsCanonicalNFLTeamIntelligence(warRoomTeamContext),
+    [warRoomTeamContext]
+  );
+  const fieApplicationContext = useMemo(
+    () => resolveSportsFIEApplicationContext({
+      teamIntelligence: canonicalTeamIntelligence,
+      draftContext: {
+        pickId: currentPick?.id ?? null,
+        pickNumber: currentPick?.draft_pick?.pick_number ?? null,
+        round: currentPick?.draft_pick?.round ?? null,
+        selectingTeam: warRoomTeamAbbreviation || null,
+      },
+    }),
+    [canonicalTeamIntelligence, currentPick, warRoomTeamAbbreviation]
+  );
   const selectedSportsIntel = useMemo(() => resolveSportsProspectIntelligence(selectedPlayer), [selectedPlayer]);
   const needs = sportsTeamIntel?.needs || { rows: [], sorted: [], coverage: null, engineAvailable: false };
   const teamIntel = {
@@ -320,9 +336,10 @@ export default function DraftOperationsCenter({
       currentTeam,
       currentPick,
       cpuDecision,
+      fieApplicationContext,
       queueCount: queuedPlayers.length,
     }),
-    [draft, currentTeam, currentPick, cpuDecision, queuedPlayers.length]
+    [draft, currentTeam, currentPick, cpuDecision, fieApplicationContext, queuedPlayers.length]
   );
 
   useEffect(() => {

@@ -117,7 +117,7 @@ check("CPU preserves MDS selection ownership", src.decision.includes('mdsDraftSe
 check("CPU still uses MDS DraftBoardEngine", src.decision.includes("buildTeamDraftBoard"));
 check("CPU selected prospect still comes from MDS board", src.decision.includes("const selected = board[0] || null"));
 check("Draft page still consumes MDS recommendation", src.draft.includes("draftDecision?.recommendation?.player || null"));
-check("Draft Operations retains FIE assessment", src.ops.includes("Canonical FIE Team Assessment"));
+check("Draft Operations retains FIE assessment", src.ops.includes("selectedDraftDecision?.canonicalFIE?.state") && src.ops.includes("canonicalTeamIntelligence"));
 check("Draft Operations passes FIE context to Draft Wire", src.ops.includes("fieApplicationContext,"));
 check("Draft Wire consumes FIE application context", src.wire.includes("fieApplicationContext"));
 check("Draft Wire does not directly import canonical engine", !src.wire.includes("CanonicalNFLTeamIntelligenceEngine"));
