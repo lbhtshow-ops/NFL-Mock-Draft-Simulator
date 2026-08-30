@@ -1,13 +1,13 @@
-import peterWoods from "./peterWoods";
-import calebDowns from "./calebDowns";
-import francisMauigoa from "./francisMauigoa";
-import archManning from "./archManning";
-import laNorrisSellers from "./laNorrisSellers";
-import kadynProctor from "./kadynProctor";
-import tjParker from "./tjParker";
-import ruebenBain from "./ruebenBain";
-import jeremiyahLove from "./jeremiyahLove";
-import calebLomu from "./calebLomu";
+import peterWoods from "./peterWoods.js";
+import calebDowns from "./calebDowns.js";
+import francisMauigoa from "./francisMauigoa.js";
+import archManning from "./archManning.js";
+import laNorrisSellers from "./laNorrisSellers.js";
+import kadynProctor from "./kadynProctor.js";
+import tjParker from "./tjParker.js";
+import ruebenBain from "./ruebenBain.js";
+import jeremiyahLove from "./jeremiyahLove.js";
+import calebLomu from "./calebLomu.js";
 
 export const playerRecords = {
   [peterWoods.playerId]: peterWoods,

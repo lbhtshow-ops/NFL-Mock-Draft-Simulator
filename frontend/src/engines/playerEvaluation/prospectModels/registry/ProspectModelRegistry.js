@@ -3,6 +3,9 @@ import {
   isProspectPositionModelResult,
   validateProspectPositionModelResult,
 } from "../ProspectPositionModelContract.js";
+import {
+  quarterbackProspectModelDescriptor,
+} from "../quarterback/QuarterbackProspectModel.js";
 
 export const PROSPECT_MODEL_POSITIONS = Object.freeze({
   QB: "QB",
@@ -870,7 +873,7 @@ export function createProspectModelRegistry(input = {}) {
 }
 
 const productionRegistry = createProspectModelRegistry({
-  descriptors: [],
+  descriptors: [quarterbackProspectModelDescriptor],
 });
 
 export function getProspectModel(position) {

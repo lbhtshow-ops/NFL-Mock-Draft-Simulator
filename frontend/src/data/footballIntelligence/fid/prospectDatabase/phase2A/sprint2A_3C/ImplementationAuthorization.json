@@ -1,0 +1,23 @@
+{
+  "authorizationId": "FID_2027_PREPARATION_COHORT_EVIDENCE_ENRICHMENT_ONE_EXECUTION_2A3C_V1",
+  "version": "1.0.0",
+  "scope": "REPOSITORY_ONLY_SPRINT_2A3C_ENRICHMENT",
+  "lifecycle": "CONSUMED_PERMANENTLY_NON_REUSABLE",
+  "createdAfterReadinessAudit": true,
+  "consumedBy": "FIRST_SPRINT_2A3C_REPOSITORY_MUTATION",
+  "attempts": 1,
+  "executions": 1,
+  "maximumAttempts": 1,
+  "maximumExecutions": 1,
+  "createdAt": "2026-08-03",
+  "consumedAt": "2026-08-03",
+  "allowedRoot": "src/data/footballIntelligence/fid/prospectDatabase/phase2A/sprint2A_3C",
+  "canonicalMappingAuthorized": false,
+  "canonicalIdentifierAuthorized": false,
+  "canonicalProgramAuthorized": false,
+  "promotionAuthorized": false,
+  "persistenceAuthorized": false,
+  "databaseAuthorized": false,
+  "applicationIntegrationAuthorized": false,
+  "refOrSprint17cContinuationAuthorized": false
+}

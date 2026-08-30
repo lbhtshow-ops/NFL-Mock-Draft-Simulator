@@ -1,6 +1,6 @@
 // src/engines/TeamContextEngine.js
 
-import { getTeamContext } from "../data/footballIntelligence/teamContext/teamContextIndex";
+import { getTeamContext } from "../data/footballIntelligence/teamContext/teamContextIndex.js";
 
 const teamNameToId = {
   Ravens: "BAL",

@@ -1,0 +1,25 @@
+export const FID_FUNCTION_OWNER_CAPABILITY_PREFLIGHT_017C26_AUTHORIZATION_REVIEW = Object.freeze({
+  id: "FID_FUNCTION_OWNER_CAPABILITY_PREFLIGHT_EXECUTION_AUTHORIZATION_REVIEW_017C26",
+  version: "17C.26.1",
+  repositoryOnly: true,
+  repository: "C:\\Users\\zeyga\\NFL-Mock-Draft-Simulator-main\\NFL-Mock-Draft-Simulator-main",
+  workingDirectory: "frontend",
+  branch: "main",
+  origin: "https://github.com/lbhtshow-ops/NFL-Mock-Draft-Simulator.git",
+  upstream: "origin/fid-persistence-v1.0.1",
+  authoritativeDatabaseState: "MIGRATION_014_FULLY_ROLLED_BACK",
+  governedMigrationRange: "001-014",
+  migration015Absent: true,
+  amendmentExecuted: false,
+  amendmentAuthorized: false,
+  priorAuthorizationConsumed: true,
+  priorResult: "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_PREFLIGHT_RESULT_INCOMPLETE",
+  priorAclConclusion: "NONE",
+  readiness: "READY_FOR_DASHBOARD_VISIBLE_FID_FUNCTION_OWNER_CAPABILITY_PREFLIGHT_EXECUTION_AUTHORIZATION_REVIEW",
+  aclGovernanceUnits: 261,
+  sqlExecuted: false,
+  databaseConnected: false,
+  status: "READY_FOR_ONE_CONTROLLED_DASHBOARD_VISIBLE_FID_FUNCTION_OWNER_CAPABILITY_PREFLIGHT_EXECUTION",
+});
+
+export default FID_FUNCTION_OWNER_CAPABILITY_PREFLIGHT_017C26_AUTHORIZATION_REVIEW;

@@ -1,0 +1,39 @@
+{
+  "inventoryIdentity": "REF_V1_9_ADDITIVE_INVENTORY",
+  "version": "1.0.0",
+  "predecessorManifestModified": false,
+  "refV1_8BInventoryModified": false,
+  "inventorySelfExcluded": true,
+  "aggregateDerivation": "SHA256_UPPERCASE_HEX_OF_UTF8_JSON_STRINGIFY_ORDERED_ARRAY_OF_RELATIVE_PATH_AND_SHA256",
+  "entries": [
+    {
+      "relativePath": "ArchitectureSecurityDesign.md",
+      "sha256": "D56D4B587D278005AF629FBA257D02EB0498119E9E02E099565C4706D1E43563",
+      "artifactCategory": "DOCUMENTATION",
+      "gitState": "UNTRACKED",
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "FeasibilityReviews.md",
+      "sha256": "2429F14C638EE5C0B49AC217676E6FF3EB6C7FB76912E29BA1BF03339B87AACC",
+      "artifactCategory": "DOCUMENTATION",
+      "gitState": "UNTRACKED",
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "README.md",
+      "sha256": "8D4C4F7AFD2978091AA9784B83F45797855AC97136CE62C81421EDC3F6C28957",
+      "artifactCategory": "DOCUMENTATION_INDEX",
+      "gitState": "UNTRACKED",
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "RepositoryDependencyAudit.md",
+      "sha256": "F02DDB6BD8E998A1792764C707066312B55852DF39063AB9191C2F27C5F4C4EA",
+      "artifactCategory": "DOCUMENTATION",
+      "gitState": "UNTRACKED",
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    }
+  ],
+  "aggregateSha256": "34E26396D28053513A83AEF11853FC1FA36CB0E0F7DAC12F2E6202200F5F3254"
+}

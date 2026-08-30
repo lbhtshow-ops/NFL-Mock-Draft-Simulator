@@ -1,6 +1,6 @@
-import { createFootballPlayerRecord } from "../createFootballPlayerRecord";
+import { createFootballPlayerRecord } from "../createFootballPlayerRecord.js";
 
-import { prospectIds } from "../../registry/prospectIds";
+import { prospectIds } from "../../registry/prospectIds.js";
 
 const playerId = prospectIds.ARCH_MANNING;
 

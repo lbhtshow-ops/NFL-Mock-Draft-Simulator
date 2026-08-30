@@ -1,0 +1,2 @@
+export const FID_ATOMIC_FUNCTION_ACL_OWNER_POLICY_017C47_STATIC_SCENARIOS=Object.freeze(["owner-revoked","redundant-owner-grant","owner-after-check-missing","public-retained","extra-mutation","intermediate-commit","exception-suppression","rpc-invocation","companion-owner-prohibited","multiple-visible-rows","static-optional-metadata","sensitive-output","false-positive-authorization"]);
+export default FID_ATOMIC_FUNCTION_ACL_OWNER_POLICY_017C47_STATIC_SCENARIOS;

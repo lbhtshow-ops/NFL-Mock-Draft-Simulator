@@ -1,0 +1,22 @@
+import crypto from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import audit from "../persistence/deployment/FidAtomicFunctionAclEvidenceBoundary017c62Audit.js";
+
+const deployment=path.resolve(path.dirname(fileURLToPath(import.meta.url)),"../persistence/deployment");
+const review=path.join(deployment,"review"),sqlDir=path.join(deployment,"sql");
+const hash=(file)=>crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex").toUpperCase();
+const protectedFiles=[[path.join(sqlDir,"014_create_fid_identifier_issuance_transaction.sql"),audit.protected.migration014],[path.join(review,"017c54a_fid_atomic_function_acl_corrected_owner_preserving_remediation.sql"),audit.protected.remediation017c54a],[path.join(review,"017c58a_fid_atomic_function_acl_failed_after_state_read_only_reconciliation.sql"),audit.protected.reconciliation017c58a],[path.join(review,"017c60a_fid_atomic_function_acl_transaction_local_rollback_diagnostic.sql"),audit.protected.diagnostic017c60a]];
+const failures=[];
+for(const [file,expected] of protectedFiles)if(hash(file)!==expected)failures.push(`hash:${path.basename(file)}`);
+const migrations=fs.readdirSync(sqlDir).filter(name=>/^\d{3}_.*\.sql$/.test(name)).sort();
+if(migrations.length!==audit.migrationInventory.count||migrations.some((name,index)=>!name.startsWith(`${String(index+1).padStart(3,"0")}_`))||migrations.some(name=>name.startsWith("015_")))failures.push("migration_inventory");
+const classifications=new Set(audit.evidenceMatrix.map(item=>item.classification));
+for(const value of ["PROVEN_FROM_REPOSITORY","PROVEN_FROM_RUNTIME","PROVEN_FROM_DATABASE","INFERRED","UNPROVEN","UNKNOWN"])if(!classifications.has(value))failures.push(`classification:${value}`);
+if(!audit.boundary.reached||audit.boundary.additionalRepositoryWorkExpectedToProvideNewInformation||!audit.minimumRuntimeEvidence)failures.push("boundary");
+if(audit.decisionTree.branches.length<5||audit.decisionTree.branches.some(branch=>![true,false].includes(branch.moreRepositoryWorkCouldEliminate)||!branch.runtimeEvidenceRequired))failures.push("decision_tree");
+if(Object.values(audit.created).some(Boolean)||audit.sqlExecuted||audit.databaseConnected)failures.push("prohibited_action");
+if(audit.status!=="READY_FOR_RUNTIME_EVIDENCE_BOUNDARY_REVIEW")failures.push("status");
+if(failures.length)throw new Error(`17C.62: ${failures.join(",")}`);
+console.log(JSON.stringify({status:audit.status,evidenceConclusions:audit.evidenceMatrix.length,decisionBranches:audit.decisionTree.branches.length,remainingUnknowns:audit.remainingUnknowns.length,protectedHashes:protectedFiles.length,migrations:migrations.length,migration015Absent:true,repositoryEvidenceBoundaryReached:true,additionalRepositoryWorkExpectedToProvideNewInformation:false,sqlExecuted:false,databaseConnected:false}));

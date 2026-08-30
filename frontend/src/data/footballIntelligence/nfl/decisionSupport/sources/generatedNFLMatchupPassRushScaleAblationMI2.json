@@ -1,0 +1,826 @@
+{
+  "contract": "NFLMatchupPassRushScaleAblationMI2",
+  "version": "FIE-MI2-PASS-RUSH-SCALE-ABLATION-1.0.0",
+  "status": "RESEARCH_ONLY",
+  "productionAuthorityGranted": false,
+  "automaticPromotion": false,
+  "generatedAt": "2026-08-25T01:00:09.353Z",
+  "cohort": {
+    "completeHistoricalGames": 2195,
+    "excludedHistoricalGames": 32,
+    "excludedPolicy": "Incomplete interaction evidence is excluded. The known OAK 2018-2019 historical identity/evidence cohort remains excluded."
+  },
+  "canonicalBaseline": {
+    "passScale": 0.2,
+    "rushScale": 0.2,
+    "parityTolerance": 1e-9,
+    "parity": {
+      "checked": 2195,
+      "failures": 0,
+      "maxDifference": 0
+    }
+  },
+  "frozenProductionBoundaries": {
+    "canonicalDecisionModelChanged": false,
+    "productionMatchupEngineChanged": false,
+    "productionMatchupWeightsChanged": false,
+    "evidenceQualityChanged": false,
+    "playerImpactChanged": false,
+    "teamStrengthChanged": false,
+    "pickemChanged": false
+  },
+  "candidates": [
+    {
+      "id": "BASELINE_020_020",
+      "passScale": 0.2,
+      "rushScale": 0.2,
+      "fullSeason": {
+        "sampleSize": 2195,
+        "winnerAccuracy": 0.6195899772209568,
+        "brierScore": 0.22664069234990855,
+        "logLoss": 0.6445219567539222,
+        "marginMAE": 10.364529340737507
+      },
+      "favoriteFlips": 0,
+      "correctedMisses": 0,
+      "introducedMisses": 0,
+      "netCorrectedFavoriteFlips": 0,
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.601593625498008,
+          "brierScore": 0.22369669767407876,
+          "logLoss": 0.6374714561044578,
+          "marginMAE": 10.069733916222102
+        },
+        {
+          "season": 2019,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.5737051792828686,
+          "brierScore": 0.23769090530216877,
+          "logLoss": 0.6676136088983489,
+          "marginMAE": 11.150620432921649
+        },
+        {
+          "season": 2020,
+          "sampleSize": 269,
+          "winnerAccuracy": 0.6356877323420075,
+          "brierScore": 0.22087554842185267,
+          "logLoss": 0.6324611870823256,
+          "marginMAE": 10.132471969275072
+        },
+        {
+          "season": 2021,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.5789473684210527,
+          "brierScore": 0.2346173742052092,
+          "logLoss": 0.6612126996841907,
+          "marginMAE": 11.343296520244001
+        },
+        {
+          "season": 2022,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6654929577464789,
+          "brierScore": 0.22266675647847417,
+          "logLoss": 0.636524173030064,
+          "marginMAE": 9.087869669377794
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6175438596491228,
+          "brierScore": 0.23034970446611347,
+          "logLoss": 0.6526560944723402,
+          "marginMAE": 10.553992335808317
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.656140350877193,
+          "brierScore": 0.21685655225131925,
+          "logLoss": 0.62455459368839,
+          "marginMAE": 10.290029193390108
+        },
+        {
+          "season": 2025,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6210526315789474,
+          "brierScore": 0.22700145678137948,
+          "logLoss": 0.6448903640619946,
+          "marginMAE": 10.329324110015106
+        }
+      ],
+      "deltaVsBaseline": {
+        "winnerAccuracy": 0,
+        "brierScore": 0,
+        "logLoss": 0,
+        "marginMAE": 0
+      }
+    },
+    {
+      "id": "PASS_015_RUSH_020",
+      "passScale": 0.15,
+      "rushScale": 0.2,
+      "fullSeason": {
+        "sampleSize": 2195,
+        "winnerAccuracy": 0.6214123006833713,
+        "brierScore": 0.22677358611450463,
+        "logLoss": 0.6447843534636455,
+        "marginMAE": 10.365506792683938
+      },
+      "favoriteFlips": 28,
+      "correctedMisses": 16,
+      "introducedMisses": 12,
+      "netCorrectedFavoriteFlips": 4,
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.6135458167330677,
+          "brierScore": 0.22370666395185884,
+          "logLoss": 0.6374653537502811,
+          "marginMAE": 10.068205064176121
+        },
+        {
+          "season": 2019,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.5737051792828686,
+          "brierScore": 0.23809771544532163,
+          "logLoss": 0.6684471219050278,
+          "marginMAE": 11.157831710164338
+        },
+        {
+          "season": 2020,
+          "sampleSize": 269,
+          "winnerAccuracy": 0.6282527881040892,
+          "brierScore": 0.22169804601081944,
+          "logLoss": 0.6341533106557014,
+          "marginMAE": 10.158456195671256
+        },
+        {
+          "season": 2021,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.5859649122807018,
+          "brierScore": 0.23452136676627458,
+          "logLoss": 0.6609778150003962,
+          "marginMAE": 11.337723165006416
+        },
+        {
+          "season": 2022,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6690140845070423,
+          "brierScore": 0.22254369108729224,
+          "logLoss": 0.6362812580777955,
+          "marginMAE": 9.087399406681284
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6280701754385964,
+          "brierScore": 0.23040821677233608,
+          "logLoss": 0.6527972386641719,
+          "marginMAE": 10.546024191680772
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6596491228070176,
+          "brierScore": 0.21661394724221064,
+          "logLoss": 0.6240272085657883,
+          "marginMAE": 10.280066357384273
+        },
+        {
+          "season": 2025,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6070175438596491,
+          "brierScore": 0.227284327629506,
+          "logLoss": 0.6454486381301413,
+          "marginMAE": 10.33129516820476
+        }
+      ],
+      "deltaVsBaseline": {
+        "winnerAccuracy": 0.0018223234624145102,
+        "brierScore": 0.00013289376459607594,
+        "logLoss": 0.0002623967097232782,
+        "marginMAE": 0.0009774519464311737
+      }
+    },
+    {
+      "id": "PASS_0175_RUSH_020",
+      "passScale": 0.175,
+      "rushScale": 0.2,
+      "fullSeason": {
+        "sampleSize": 2195,
+        "winnerAccuracy": 0.6223234624145786,
+        "brierScore": 0.22671043784391215,
+        "logLoss": 0.6446611359258556,
+        "marginMAE": 10.365389676584167
+      },
+      "favoriteFlips": 14,
+      "correctedMisses": 10,
+      "introducedMisses": 4,
+      "netCorrectedFavoriteFlips": 6,
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.6095617529880478,
+          "brierScore": 0.22370655883003626,
+          "logLoss": 0.6374694667104844,
+          "marginMAE": 10.068449438817968
+        },
+        {
+          "season": 2019,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.5737051792828686,
+          "brierScore": 0.23790037857846308,
+          "logLoss": 0.6680369563128711,
+          "marginMAE": 11.154148664157184
+        },
+        {
+          "season": 2020,
+          "sampleSize": 269,
+          "winnerAccuracy": 0.6319702602230484,
+          "brierScore": 0.22126666552456278,
+          "logLoss": 0.6332663014410653,
+          "marginMAE": 10.1459508667407
+        },
+        {
+          "season": 2021,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.5824561403508772,
+          "brierScore": 0.23456768686830287,
+          "logLoss": 0.6610976906489179,
+          "marginMAE": 11.340829208206484
+        },
+        {
+          "season": 2022,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6725352112676056,
+          "brierScore": 0.22260300758549795,
+          "logLoss": 0.636408289985155,
+          "marginMAE": 9.087095143580038
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.624561403508772,
+          "brierScore": 0.23037487633304396,
+          "logLoss": 0.6527138582289752,
+          "marginMAE": 10.549746183875403
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6596491228070176,
+          "brierScore": 0.21677780958960813,
+          "logLoss": 0.624386195650509,
+          "marginMAE": 10.287655525715017
+        },
+        {
+          "season": 2025,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6175438596491228,
+          "brierScore": 0.22714307491944913,
+          "logLoss": 0.6451724019100561,
+          "marginMAE": 10.331110879836464
+        }
+      ],
+      "deltaVsBaseline": {
+        "winnerAccuracy": 0.0027334851936218207,
+        "brierScore": 0.00006974549400359797,
+        "logLoss": 0.00013917917193340124,
+        "marginMAE": 0.0008603358466601208
+      }
+    },
+    {
+      "id": "PASS_0225_RUSH_020",
+      "passScale": 0.225,
+      "rushScale": 0.2,
+      "fullSeason": {
+        "sampleSize": 2195,
+        "winnerAccuracy": 0.6177676537585421,
+        "brierScore": 0.226560858509368,
+        "logLoss": 0.6443675151685497,
+        "marginMAE": 10.36345945994881
+      },
+      "favoriteFlips": 14,
+      "correctedMisses": 5,
+      "introducedMisses": 9,
+      "netCorrectedFavoriteFlips": -4,
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.6055776892430279,
+          "brierScore": 0.22357727976012134,
+          "logLoss": 0.6372358779097222,
+          "marginMAE": 10.067874520518712
+        },
+        {
+          "season": 2019,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.5657370517928287,
+          "brierScore": 0.23753726946731718,
+          "logLoss": 0.6673187514036949,
+          "marginMAE": 11.149639967741107
+        },
+        {
+          "season": 2020,
+          "sampleSize": 269,
+          "winnerAccuracy": 0.6319702602230484,
+          "brierScore": 0.22047091669070598,
+          "logLoss": 0.6316376652528463,
+          "marginMAE": 10.117629615686786
+        },
+        {
+          "season": 2021,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.5789473684210527,
+          "brierScore": 0.23460663619296182,
+          "logLoss": 0.6611955487333516,
+          "marginMAE": 11.343610461135565
+        },
+        {
+          "season": 2022,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6654929577464789,
+          "brierScore": 0.2227584449700408,
+          "logLoss": 0.6367126275271309,
+          "marginMAE": 9.090772807462452
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6140350877192983,
+          "brierScore": 0.2302681155234268,
+          "logLoss": 0.6524848165863555,
+          "marginMAE": 10.554794823331758
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6526315789473685,
+          "brierScore": 0.21703198425222522,
+          "logLoss": 0.6249350538146295,
+          "marginMAE": 10.295958147944697
+        },
+        {
+          "season": 2025,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6210526315789474,
+          "brierScore": 0.2268345188057177,
+          "logLoss": 0.6445655130291004,
+          "marginMAE": 10.32765598546641
+        }
+      ],
+      "deltaVsBaseline": {
+        "winnerAccuracy": -0.0018223234624146212,
+        "brierScore": -0.0000798338405405552,
+        "logLoss": -0.00015444158537247787,
+        "marginMAE": -0.001069880788696409
+      }
+    },
+    {
+      "id": "PASS_025_RUSH_020",
+      "passScale": 0.25,
+      "rushScale": 0.2,
+      "fullSeason": {
+        "sampleSize": 2195,
+        "winnerAccuracy": 0.6195899772209568,
+        "brierScore": 0.22650986729321818,
+        "logLoss": 0.6442795304327381,
+        "marginMAE": 10.36277335895968
+      },
+      "favoriteFlips": 28,
+      "correctedMisses": 14,
+      "introducedMisses": 14,
+      "netCorrectedFavoriteFlips": 0,
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.6055776892430279,
+          "brierScore": 0.22339192856712142,
+          "logLoss": 0.6368667965059889,
+          "marginMAE": 10.062822518532485
+        },
+        {
+          "season": 2019,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.5617529880478087,
+          "brierScore": 0.23741720091913213,
+          "logLoss": 0.6670942410470959,
+          "marginMAE": 11.148579935150652
+        },
+        {
+          "season": 2020,
+          "sampleSize": 269,
+          "winnerAccuracy": 0.6468401486988847,
+          "brierScore": 0.220127070846437,
+          "logLoss": 0.6309506037127421,
+          "marginMAE": 10.104430182588299
+        },
+        {
+          "season": 2021,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.5789473684210527,
+          "brierScore": 0.23466264790556998,
+          "logLoss": 0.661333516402903,
+          "marginMAE": 11.34688257136813
+        },
+        {
+          "season": 2022,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6654929577464789,
+          "brierScore": 0.22282456429135847,
+          "logLoss": 0.6368560262374535,
+          "marginMAE": 9.092137403505482
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6140350877192983,
+          "brierScore": 0.23018985213314294,
+          "logLoss": 0.6523091912804384,
+          "marginMAE": 10.555140971817279
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6526315789473685,
+          "brierScore": 0.21729162333260785,
+          "logLoss": 0.6255015582618136,
+          "marginMAE": 10.304188687690157
+        },
+        {
+          "season": 2025,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.624561403508772,
+          "brierScore": 0.22673204817649145,
+          "logLoss": 0.6443874008052713,
+          "marginMAE": 10.32700448958119
+        }
+      ],
+      "deltaVsBaseline": {
+        "winnerAccuracy": 0,
+        "brierScore": -0.0001308250566903757,
+        "logLoss": -0.00024242632118409713,
+        "marginMAE": -0.001755981777826321
+      }
+    },
+    {
+      "id": "PASS_020_RUSH_015",
+      "passScale": 0.2,
+      "rushScale": 0.15,
+      "fullSeason": {
+        "sampleSize": 2195,
+        "winnerAccuracy": 0.6195899772209568,
+        "brierScore": 0.22683308797090068,
+        "logLoss": 0.6449155403489365,
+        "marginMAE": 10.369608420150897
+      },
+      "favoriteFlips": 18,
+      "correctedMisses": 9,
+      "introducedMisses": 9,
+      "netCorrectedFavoriteFlips": 0,
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.6095617529880478,
+          "brierScore": 0.2241263350457813,
+          "logLoss": 0.6383656656616,
+          "marginMAE": 10.08776727329924
+        },
+        {
+          "season": 2019,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.5737051792828686,
+          "brierScore": 0.23776698696411563,
+          "logLoss": 0.6677806908222631,
+          "marginMAE": 11.150765772260701
+        },
+        {
+          "season": 2020,
+          "sampleSize": 269,
+          "winnerAccuracy": 0.6394052044609665,
+          "brierScore": 0.22090608220158614,
+          "logLoss": 0.6325209747869728,
+          "marginMAE": 10.127666293954206
+        },
+        {
+          "season": 2021,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.5754385964912281,
+          "brierScore": 0.23465439235846988,
+          "logLoss": 0.6612758558284606,
+          "marginMAE": 11.340760395900743
+        },
+        {
+          "season": 2022,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6549295774647887,
+          "brierScore": 0.22282339917559504,
+          "logLoss": 0.6367741483155537,
+          "marginMAE": 9.095489350266746
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6210526315789474,
+          "brierScore": 0.23071634794819895,
+          "logLoss": 0.6534390074906212,
+          "marginMAE": 10.561190470031091
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.656140350877193,
+          "brierScore": 0.21710273839141084,
+          "logLoss": 0.625076298940242,
+          "marginMAE": 10.297413853242775
+        },
+        {
+          "season": 2025,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6210526315789474,
+          "brierScore": 0.22720309250735182,
+          "logLoss": 0.6453136631762983,
+          "marginMAE": 10.337328190461289
+        }
+      ],
+      "deltaVsBaseline": {
+        "winnerAccuracy": 0,
+        "brierScore": 0.0001923956209921307,
+        "logLoss": 0.00039358359501429074,
+        "marginMAE": 0.00507907941338992
+      }
+    },
+    {
+      "id": "PASS_020_RUSH_0175",
+      "passScale": 0.2,
+      "rushScale": 0.175,
+      "fullSeason": {
+        "sampleSize": 2195,
+        "winnerAccuracy": 0.6200455580865604,
+        "brierScore": 0.22674645085100226,
+        "logLoss": 0.6447402779848761,
+        "marginMAE": 10.367348404677776
+      },
+      "favoriteFlips": 11,
+      "correctedMisses": 6,
+      "introducedMisses": 5,
+      "netCorrectedFavoriteFlips": 1,
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.6095617529880478,
+          "brierScore": 0.22390131205952046,
+          "logLoss": 0.6378971870594942,
+          "marginMAE": 10.078127286274563
+        },
+        {
+          "season": 2019,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.5776892430278885,
+          "brierScore": 0.2377703976101263,
+          "logLoss": 0.667782563537525,
+          "marginMAE": 11.152053804479527
+        },
+        {
+          "season": 2020,
+          "sampleSize": 269,
+          "winnerAccuracy": 0.6356877323420075,
+          "brierScore": 0.22089561108738398,
+          "logLoss": 0.632498376102318,
+          "marginMAE": 10.13047057586928
+        },
+        {
+          "season": 2021,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.5754385964912281,
+          "brierScore": 0.23462583976574256,
+          "logLoss": 0.661227872670455,
+          "marginMAE": 11.341451252464461
+        },
+        {
+          "season": 2022,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6584507042253521,
+          "brierScore": 0.22273423802980463,
+          "logLoss": 0.6366316171614077,
+          "marginMAE": 9.090720046373505
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6210526315789474,
+          "brierScore": 0.2305199880621513,
+          "logLoss": 0.6530229637707258,
+          "marginMAE": 10.557587815973134
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.656140350877193,
+          "brierScore": 0.21697507954455975,
+          "logLoss": 0.624805744145196,
+          "marginMAE": 10.293812485945796
+        },
+        {
+          "season": 2025,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6210526315789474,
+          "brierScore": 0.22718231195350352,
+          "logLoss": 0.645272718822705,
+          "marginMAE": 10.335896573369274
+        }
+      ],
+      "deltaVsBaseline": {
+        "winnerAccuracy": 0.0004555808656035998,
+        "brierScore": 0.00010575850109370566,
+        "logLoss": 0.00021832123095388845,
+        "marginMAE": 0.0028190639402687623
+      }
+    },
+    {
+      "id": "PASS_020_RUSH_0225",
+      "passScale": 0.2,
+      "rushScale": 0.225,
+      "fullSeason": {
+        "sampleSize": 2195,
+        "winnerAccuracy": 0.6191343963553531,
+        "brierScore": 0.2265333294647918,
+        "logLoss": 0.6443027798059318,
+        "marginMAE": 10.36134745708289
+      },
+      "favoriteFlips": 9,
+      "correctedMisses": 4,
+      "introducedMisses": 5,
+      "netCorrectedFavoriteFlips": -1,
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.601593625498008,
+          "brierScore": 0.22348451763083899,
+          "logLoss": 0.6370266886623365,
+          "marginMAE": 10.061516632952772
+        },
+        {
+          "season": 2019,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.5697211155378487,
+          "brierScore": 0.2376328890294163,
+          "logLoss": 0.6674914018773728,
+          "marginMAE": 11.150314043275687
+        },
+        {
+          "season": 2020,
+          "sampleSize": 269,
+          "winnerAccuracy": 0.6319702602230484,
+          "brierScore": 0.22089434665378224,
+          "logLoss": 0.6325129843194417,
+          "marginMAE": 10.134320474224774
+        },
+        {
+          "season": 2021,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.5754385964912281,
+          "brierScore": 0.23455208454433105,
+          "logLoss": 0.6610790831558203,
+          "marginMAE": 11.342872945219312
+        },
+        {
+          "season": 2022,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6619718309859155,
+          "brierScore": 0.22262781738891876,
+          "logLoss": 0.6364767970927947,
+          "marginMAE": 9.084860287386944
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.624561403508772,
+          "brierScore": 0.23023731648074883,
+          "logLoss": 0.6524155601591759,
+          "marginMAE": 10.55143136255671
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.656140350877193,
+          "brierScore": 0.21670044306702058,
+          "logLoss": 0.6242303351431651,
+          "marginMAE": 10.285216919734355
+        },
+        {
+          "season": 2025,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.624561403508772,
+          "brierScore": 0.2267673829786816,
+          "logLoss": 0.6443983822164813,
+          "marginMAE": 10.32137575276752
+        }
+      ],
+      "deltaVsBaseline": {
+        "winnerAccuracy": -0.0004555808656037108,
+        "brierScore": -0.0001073628851167574,
+        "logLoss": -0.0002191769479904515,
+        "marginMAE": -0.003181883654617579
+      }
+    },
+    {
+      "id": "PASS_020_RUSH_025",
+      "passScale": 0.2,
+      "rushScale": 0.25,
+      "fullSeason": {
+        "sampleSize": 2195,
+        "winnerAccuracy": 0.620501138952164,
+        "brierScore": 0.22644422694182043,
+        "logLoss": 0.6441204355613298,
+        "marginMAE": 10.358593656766525
+      },
+      "favoriteFlips": 20,
+      "correctedMisses": 11,
+      "introducedMisses": 9,
+      "netCorrectedFavoriteFlips": 2,
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.601593625498008,
+          "brierScore": 0.22331348784759308,
+          "logLoss": 0.6366787404660067,
+          "marginMAE": 10.05449252169831
+        },
+        {
+          "season": 2019,
+          "sampleSize": 251,
+          "winnerAccuracy": 0.5697211155378487,
+          "brierScore": 0.23757801318015753,
+          "logLoss": 0.6673759321575142,
+          "marginMAE": 11.15015093336777
+        },
+        {
+          "season": 2020,
+          "sampleSize": 269,
+          "winnerAccuracy": 0.6319702602230484,
+          "brierScore": 0.2208985200371546,
+          "logLoss": 0.632531756976238,
+          "marginMAE": 10.135189053902025
+        },
+        {
+          "season": 2021,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.5789473684210527,
+          "brierScore": 0.23450892168642387,
+          "logLoss": 0.6609842104576167,
+          "marginMAE": 11.342797515666096
+        },
+        {
+          "season": 2022,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6619718309859155,
+          "brierScore": 0.22260587907786183,
+          "logLoss": 0.6364608401660338,
+          "marginMAE": 9.081328758493656
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.624561403508772,
+          "brierScore": 0.2301606191949127,
+          "logLoss": 0.6522486589327309,
+          "marginMAE": 10.549294863343132
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6596491228070176,
+          "brierScore": 0.2165753402525535,
+          "logLoss": 0.6239737326512016,
+          "marginMAE": 10.28125703631603
+        },
+        {
+          "season": 2025,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6280701754385964,
+          "brierScore": 0.22654297792303527,
+          "logLoss": 0.6439187032035626,
+          "marginMAE": 10.315367589829501
+        }
+      ],
+      "deltaVsBaseline": {
+        "winnerAccuracy": 0.0009111617312071996,
+        "brierScore": -0.00019646540808812563,
+        "logLoss": -0.00040152119259240227,
+        "marginMAE": -0.0059356839709820974
+      }
+    }
+  ]
+}

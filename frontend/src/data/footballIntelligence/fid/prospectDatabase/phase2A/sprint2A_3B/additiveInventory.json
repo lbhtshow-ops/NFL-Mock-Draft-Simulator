@@ -1,0 +1,17 @@
+{
+  "inventoryId": "FID_SPRINT_2A3B_ADDITIVE_INVENTORY_V1",
+  "algorithm": "SHA256",
+  "scope": "Sprint 2A.3B files excluding this self-referential inventory",
+  "files": [
+    { "path": "ImplementationAuthorization.json", "sha256": "CEB8320DC43A2529A706EDBCF8E69D4C63E23E351D66D0F8936696CF79C32DCF" },
+    { "path": "index.js", "sha256": "9941D062886F7F3DA70CB12D81CE469B170ABE2508CBD17643036321C9C9CA62" },
+    { "path": "preparationCohort.js", "sha256": "74C375B7D13CF7B1400858E974B94A37E2BF942AC857B69562C2EF38B54EEA2C" },
+    { "path": "README.md", "sha256": "11DB8A67EB1AA82478D8C825D77181CE59F9132BBCF177352D94F544141BC360" },
+    { "path": "repository-audit-and-review.md", "sha256": "DBE8AB125586AB96FBFB893079C38F3E97DC9B18BA0A3D21EF6AD4DABD76C994" },
+    { "path": "runDiagnostics.mjs", "sha256": "C534A181CD41B6709F030AF20A351F87A5EEEDA70D35CCB2B8F108EEFED0CAE6" },
+    { "path": "supportingRecords.js", "sha256": "5F655CF0AA0C719D6892E28EA31E9C8852EF9732C13F175B9EE6A08D05CBF48C" }
+  ],
+  "aggregateMethod": "SHA256 of newline-joined uppercase file hashes in listed order",
+  "aggregate": "E55DE9C1F8AA9845F0FE436A66FA803CAE6BC102A756AA88FE6C6BD3D40404E5",
+  "status": "VERIFIED"
+}

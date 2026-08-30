@@ -1,0 +1,193 @@
+:root {
+  --lbht-ops-bg: #0b1220;
+  --lbht-ops-panel: #162033;
+  --lbht-ops-card: #243248;
+  --lbht-ops-text: #f8fafc;
+  --lbht-ops-secondary: #cbd5e1;
+  --lbht-ops-muted: #94a3b8;
+  --lbht-ops-gold: #f4c542;
+  --lbht-ops-line: rgba(148, 163, 184, 0.18);
+}
+
+.draft_operations_restored {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(36, 50, 72, 0.7), transparent 38%),
+    var(--lbht-ops-bg);
+  color: var(--lbht-ops-text);
+}
+
+.draft_operations_titlebar {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--lbht-ops-line);
+  background: rgba(11, 18, 32, 0.96);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  backdrop-filter: blur(14px);
+}
+
+.draft_operations_brand span,
+.draft_operations_live_status span {
+  display: block;
+  color: var(--lbht-ops-muted);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.draft_operations_brand h1 {
+  margin: 4px 0 0;
+  color: var(--lbht-ops-text);
+  font-size: clamp(1.2rem, 2vw, 1.75rem);
+  line-height: 1.05;
+}
+
+.draft_operations_live_status {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(84px, 1fr));
+  min-width: min(620px, 60vw);
+  background: var(--lbht-ops-panel);
+  border: 1px solid var(--lbht-ops-line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.draft_operations_live_status > div {
+  padding: 10px 14px;
+  border-left: 1px solid var(--lbht-ops-line);
+}
+
+.draft_operations_live_status > div:first-child { border-left: 0; }
+.draft_operations_live_status strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--lbht-ops-text);
+  font-size: 0.92rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.draft_operations_restored .draft_header {
+  background: var(--lbht-ops-panel) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--lbht-ops-line) !important;
+  box-shadow: none !important;
+}
+
+.draft_operations_restored .draft_main {
+  gap: 16px !important;
+  padding: 16px !important;
+  align-items: stretch;
+}
+
+.draft_operations_restored .draft_tools,
+.draft_operations_restored .big_board,
+.draft_operations_restored .team_profile,
+.draft_operations_restored .draft_command_center,
+.draft_operations_restored .player_preview_panel {
+  background: var(--lbht-ops-panel) !important;
+  color: var(--lbht-ops-text) !important;
+  border: 1px solid var(--lbht-ops-line) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18) !important;
+}
+
+.draft_operations_restored .draft_tools_header,
+.draft_operations_restored .big_board_header,
+.draft_operations_restored .war_room_header,
+.draft_operations_restored .player_preview_header {
+  background: transparent !important;
+  color: var(--lbht-ops-text) !important;
+  border-bottom: 1px solid var(--lbht-ops-line) !important;
+  box-shadow: none !important;
+}
+
+.draft_operations_restored button,
+.draft_operations_restored .draft_tool,
+.draft_operations_restored .command_action_btn,
+.draft_operations_restored .select_player_btn {
+  border-radius: 7px !important;
+  box-shadow: none !important;
+  border: 1px solid var(--lbht-ops-line) !important;
+  font-weight: 750;
+}
+
+.draft_operations_restored .draft_tool,
+.draft_operations_restored .command_action_btn {
+  background: var(--lbht-ops-card) !important;
+  color: var(--lbht-ops-text) !important;
+}
+
+.draft_operations_restored .draft_tool:hover,
+.draft_operations_restored .command_action_btn:hover,
+.draft_operations_restored .select_player_btn:hover {
+  border-color: rgba(244, 197, 66, 0.7) !important;
+  transform: translateY(-1px);
+}
+
+.draft_operations_restored .select_player_btn,
+.draft_operations_restored .on_the_clock,
+.draft_operations_restored .current_team_pick {
+  background: var(--lbht-ops-gold) !important;
+  color: #111827 !important;
+}
+
+.draft_operations_restored .players,
+.draft_operations_restored .team_picks,
+.draft_operations_restored .player_preview_traits_list {
+  scrollbar-color: var(--lbht-ops-card) transparent;
+}
+
+.draft_operations_restored .player_background,
+.draft_operations_restored .team_pick,
+.draft_operations_restored .player_preview_intel_card,
+.draft_operations_restored .position_box {
+  border-color: var(--lbht-ops-line) !important;
+  box-shadow: none !important;
+}
+
+.draft_operations_restored .player_background {
+  background: var(--lbht-ops-card) !important;
+  color: var(--lbht-ops-text) !important;
+}
+
+.draft_operations_restored .player_name,
+.draft_operations_restored .team_name,
+.draft_operations_restored .player_preview_section_header,
+.draft_operations_restored .team_picks_list_header {
+  color: var(--lbht-ops-text) !important;
+}
+
+.draft_operations_restored .player_position,
+.draft_operations_restored .player_label,
+.draft_operations_restored .command_label,
+.draft_operations_restored .war_room_label,
+.draft_operations_restored .intel_label,
+.draft_operations_restored .pick_empty {
+  color: var(--lbht-ops-muted) !important;
+}
+
+@media (max-width: 1100px) {
+  .draft_operations_titlebar { flex-direction: column; }
+  .draft_operations_live_status { min-width: 0; width: 100%; }
+}
+
+@media (max-width: 720px) {
+  .draft_operations_titlebar { padding: 14px; gap: 12px; position: static; }
+  .draft_operations_live_status {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .draft_operations_live_status > div {
+    border-left: 0;
+    border-top: 1px solid var(--lbht-ops-line);
+  }
+  .draft_operations_live_status > div:nth-child(-n + 2) { border-top: 0; }
+  .draft_operations_restored .draft_main { padding: 10px !important; gap: 10px !important; }
+}

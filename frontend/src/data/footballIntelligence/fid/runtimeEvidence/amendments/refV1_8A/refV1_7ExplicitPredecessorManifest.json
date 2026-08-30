@@ -1,0 +1,1179 @@
+{
+  "manifestIdentity": "REF_V1_8A_EXPLICIT_REF_V1_7_PREDECESSOR_MANIFEST",
+  "manifestVersion": "1.0.0",
+  "schemaVersion": "1.0.0",
+  "predecessorCount": 68,
+  "aggregateDerivationPolicy": "REF_V1_3_STRUCTURED_CANONICAL_JSON_UTF8_SHA256_UPPERCASE_HEX_PATHS_SORTED_CODE_POINT_STATUS_IDENTITY_BEARING",
+  "manifestAggregateSha256": "951A59A705784157184F5EBA9F4C9C568E39670026AE45F8BEF368A4F43934C3",
+  "originalV1_7AggregateSha256": "778B57736A3BD9ABF2964622E612185A1F45C4A19D2DC85A97150A27BB798A61",
+  "sourceV1_7BaselineRef": "REF_V1_7_PREDECESSOR_BASELINE",
+  "amendmentRef": "REF_V1_8A_BASELINE_SCOPE_AMENDMENT",
+  "nonRetroactiveDisclaimer": "ORIGINAL_MEASUREMENT_PRESERVED_NO_HISTORICAL_GIT_AUTHENTICATION_OR_RETROACTIVE_CUSTODY_CLAIM",
+  "extensibilityPolicy": "FUTURE_FILES_ARE_SEPARATE_ADDITIVE_INVENTORIES_AND_NEVER_IMPLICIT_PREDECESSORS",
+  "verificationPolicy": "VERIFY_ONLY_EXPLICIT_REQUIRED_ENTRIES_AND_REPORT_ADDITIONS_SEPARATELY",
+  "supersessionPolicy": "ORIGINAL_V1_7_MEASUREMENT_RETAINED_OPEN_DIRECTORY_GATE_NOT_FUTURE_EXTENSIBILITY_AUTHORITY",
+  "prohibitedInterpretations": [
+    "ORIGINAL_BASELINE_REWRITTEN",
+    "HISTORICAL_GIT_CUSTODY_ESTABLISHED",
+    "FUTURE_FILES_AUTO_ADDED",
+    "OLD_DIAGNOSTIC_RELABELLED"
+  ],
+  "entries": [
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkAuthenticityModel.md",
+      "sha256": "1E880709E861C208504F3A6D67DAD1BB0036BAE392F898B867997A58FA8FE997",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkAuthorizationModel.md",
+      "sha256": "1F775BEF0945EA0751ACA69C22923FB5F5592C021A25271EF4E6966F967AE2B9",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkChainOfCustodyModel.md",
+      "sha256": "5B636279FC5EC2D84EA41B6FC1944F136862686995C4A35FE29441BB852CCEA4",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkCharter.md",
+      "sha256": "4440BB9CBBA1969BB08401A995EDCA32CB820BA141E92593A5C9406CA35AB4AA",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkDomainModel.md",
+      "sha256": "34F9F12C4963F11EB1A4ADADE0DFAEA1C3E1F437073B552D2BC7CC82687F8BCF",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkExecutionOutcomeAndUncertaintyModel.md",
+      "sha256": "01D9F160E3016E0A75229616621DD45A4EB38E8C9FD9CD80DFC80E5914EBB528",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkFidIntegrationModel.md",
+      "sha256": "76596D6BE20AA656E98194C0660D39E52F5CA8A880796BA25E84078B58B62619",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkGovernanceOwnershipMatrix.md",
+      "sha256": "E40E507E83C4C93DB26EC8379E7EC1441C5224F56C6EA88E707A90D823E9146E",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkGovernedExecutionLifecycle.md",
+      "sha256": "D7EE07922ACCE295FA389EDC6807DB738BBEEFC1E17915FCC14642945BADA661",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkImplementationReadinessGates.md",
+      "sha256": "744F3E763202CF3EAA84A60CE3473BDF135530E06845C2AF69312A94DD1A274C",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkObservationArchitecture.md",
+      "sha256": "4C55BC7FA3A2F7C2AC03F30AD628EE13013D1B98C0628A762EF6416CC2C0194B",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkObservationLayerModel.md",
+      "sha256": "0BC4D9B453152AEC35DA5811202747F43272B15DD89371A1F83B8A3C555174E4",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkObservationSufficiencyModel.md",
+      "sha256": "9DB4C2D7D013D31FA019EFA3886C33FA4A1DF66C637168D4FD04A7106528E9A7",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkProtectedExecutionHistoryModel.md",
+      "sha256": "D1ED6862B2614129D347D1FFA80986807A7DB71CB7CD6AA2B19E832D63C0FE25",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef1Diagnostics.md",
+      "sha256": "2B5D10B49B5243816F2C97C489DFAE9F65BB06558C69A4B89774406D6093450B",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef1Review.md",
+      "sha256": "BC63895AD8057F639649B033C81E177AB4148F9CC7E5330101EB92AB7E90DB89",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef2Diagnostics.md",
+      "sha256": "0E16764B3F55C5895A62713BA781467C1F066ECD4B8FB13733E5D6BC092C6DBE",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef2Review.md",
+      "sha256": "913BAD6FCCBCF25CF38466216AC2B9695020823B40E26BF0528BA447CCD9E941",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef3Diagnostics.md",
+      "sha256": "D9D28C1D0C31176B0D99676F3D66E2ACA22D49A3FEDC68315D88B68540DD41A8",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef3Review.md",
+      "sha256": "6967C2490ED69CC4929BE57F760673F98FB12BD9A29ADD3688CF5D8578CABB2C",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef4Diagnostics.md",
+      "sha256": "3C3799833F84BB78249FBC8B79D6CB8EE114A7222BB2AAF77E0DDBEA53C8B5C7",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef4Review.md",
+      "sha256": "122E5C32B23D65063F8CEF752F2E190DE0B5E5DA083BFCDA0FFDB77CF2AC92C2",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef5Diagnostics.md",
+      "sha256": "DF96711DD1524F94003E5347317E7E0A0F57E698DA95F0A668AB086314D70EF0",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef5Review.md",
+      "sha256": "5E8A42EA396056A115008F0F387BEE44D37ADAEAE3F2A815E79F0444647E0DE9",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef6Diagnostics.md",
+      "sha256": "864D4BA0C722C2F0BF9C5D7A71B45740947F958837B21A1451C5AB49625B6E96",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRef6Review.md",
+      "sha256": "B8F1F047340521B5F79C393957E579818C4875734DAF8A0E5CA7AA31A5140066",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkRelationshipModel.md",
+      "sha256": "3DE166A94DE1CEC8C9724F85A06ABBC5A9E00B7893E9A9FB4394706E1620539D",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkSprint17cTargetUseCase.md",
+      "sha256": "33FF184EB9C4F07883059B13F7E3EE286CD820995895F2156E29450D913B2106",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_1DocumentationDiagnostics.md",
+      "sha256": "173BA3380303BA76FFDD181A0146E8474A1ED2037815B7C78FC572B25F23469D",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_1Review.md",
+      "sha256": "997FDE721C9B85605FE0EB5E4D1A6284A842B2A2F3CED98F2B6F20D114403CA9",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_2PackageBoundary.md",
+      "sha256": "12880294CE965A50DC74FDAC9587F3CE85A2F7BA293302C88FED6CB60D1ADD2F",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_2Review.md",
+      "sha256": "B55637D2D981BA58094249BAFBB9011624F75D5522080E5F61C88387E65F6FE8",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_3AdversarialReview.md",
+      "sha256": "3A6C7DC2CF32C87794DA0880E569C44588877642868063A7B4B6160F103943F5",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_3CanonicalIdentityPolicy.md",
+      "sha256": "5D1480CDDBCDD87A781223570FC004C2DBEB9109CBC7B4D61B4BAB144E5DDD17",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_3Review.md",
+      "sha256": "BC581EC84E09D8BD9EF47FB14D5BA5AA01D44FB0482CE5C0B06E592888652DC7",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_4AdversarialReview.md",
+      "sha256": "3A9D3E5A8070960CC0A0A6C46ECB407DFF611EE807FEFED5D0927E249F4FA069",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_4EvidenceModel.md",
+      "sha256": "220F2EB51CC8B5CCBC80933E28D0B0E8C458DD0FD69B26C8AE08360A7636E680",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_4Review.md",
+      "sha256": "3B1896160CC32F2D66476D52D866D7816E295CA3B00C4AAE12466FB2F875E437",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_5AdversarialReview.md",
+      "sha256": "1ED0AAD4CE28D0A36A1101B3A9F3130122FFF621A8AE294C041E5EADEC5B15D7",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_5LocalController.md",
+      "sha256": "F41FFFA5CC827AD6E9A6DCEB460DED002BA77D9A19D950FC54423E9A9D55B1DE",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_5Review.md",
+      "sha256": "38655829951940BAD3E1CDEA60D1DB67EB56B55674D2F2E2E541489EBBE8F2B3",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1_6RuntimeWitnessBoundary.md",
+      "sha256": "61B7FFDCFD723677F021C020FBEE84ED8336F105BE840FC8C71211BB2157D8E1",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1ArchitectureOptionsAssessment.md",
+      "sha256": "302AC793259280BC72DF69813D78F64520A534CE55DCC93C51496730BB168455",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1CapabilityToRepositoryMapping.md",
+      "sha256": "1BCD1B07EEB0A55D9A191DAA6BCE4044B8FF3FC1324AE19773EA824EEE88F1B2",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1ImplementationSequence.md",
+      "sha256": "1EF1A3D728F9D314596B9CF19B677BD6D4737E44C0B963FE00F445F08EE49A55",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1ModuleAndDependencyPlacement.md",
+      "sha256": "505B8C088DE27AEB2361F02A491B4283D09695D3557D11CA2F102D3279073888",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1RepositoryAndContractAudit.md",
+      "sha256": "59522AE8974C70B08E426AC4F9E0674657BE9B8BCFE2F531285D00C0C818E306",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1ScopeAndCapabilityBoundary.md",
+      "sha256": "170CA245069A3C5717D29E870B917C070C3FE13695CD6BF636C33B6AF08352BE",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1SecurityAndLeastDisclosureDesign.md",
+      "sha256": "73E32C552898DF6BF4F4954AB07F681D6FBD01493DAA463118F238A07CC86B6C",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/docs/runtimeEvidenceFramework/RuntimeEvidenceFrameworkV1SelectedArchitectureDecision.md",
+      "sha256": "F2C0851E1AB32CD5FFE5C8340E060445E9B2920A1B8179166EB374681225650C",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "DOCUMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/canonicalIdentity.js",
+      "sha256": "0D96A47095BF07AC0BFBFD1500E403C618DEB71ABC54AE29AF83091DAAE28EF2",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/contractSupport.js",
+      "sha256": "1C1C47766590A660DFA9DDF686709098FB63F165F098B0FEED78BFDC3A2CBAE7",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/controllerIndex.js",
+      "sha256": "E86203392527BCFBE718F527D4A45D73E497630AB074B109741DDF7E10850AB0",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/deterministicFakeTransport.js",
+      "sha256": "CBAE984F312458721B24512F30F695099DA34AFACE12DA1CFFD9B2BCF96703F3",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/evidenceModel.js",
+      "sha256": "153F50E45EB958316B3F195CFF8A3AEBF596D80C714953B14059D92FBE9539CC",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/index.js",
+      "sha256": "864FEDB941A1FFAA76209C3B67F827024D8DA8D217C6C412ED0213318E77D1EC",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/runRuntimeEvidenceContractDiagnostics.js",
+      "sha256": "A08FC0FE3F6CA3EE56C064332E5D0B1B8A86512B6B2E1CB2A2BE4AF9BD96FA3F",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/runRuntimeEvidenceControllerDiagnostics.js",
+      "sha256": "5F0DCEA931BC85517FC6EAE89A240A058EC65F964BD8C407603E6B0AC6F0C294",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/runRuntimeEvidenceIdentityDiagnostics.js",
+      "sha256": "E174910BB615D2D21F3450B3298803D9D2DF5C65CD672A062D86E2FE68855B9D",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/runRuntimeEvidenceModelDiagnostics.js",
+      "sha256": "9FA20578FB21EF869CD16EB318B0215D10302195C4539F1701D0DFC47542547D",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/runRuntimeWitnessDiagnostics.js",
+      "sha256": "CD13FD0D8CCF1A7E33E916B5951FAA8863D13E1A222B539C2986A7A6BFAEBB29",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/runtimeEvidenceConstants.js",
+      "sha256": "353305F5F4F326ADF5F106A999D3B5A0762D445CCE6D578F4CF3A23D088017A9",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/RuntimeEvidenceContracts.js",
+      "sha256": "5D0DEBE480F323C75DA98EDC6EB7BDC261F3EFB1A857F1A6BC6F4C072B7EF78D",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/runtimeEvidenceController.js",
+      "sha256": "70EA13605E80AB8690A771224548F30EC6A2D1989CCE639A758C5E279260B5ED",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/runtimeEvidenceV1_4Fixtures.js",
+      "sha256": "CC9B99645C41313B8C423AAE5175FB2F86F98735C6254BA5DCCBB7DAD0DF7770",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/runtimeEvidenceV1_5Fixtures.js",
+      "sha256": "1C39E58AFC9A8A0C7C455ECC791BCD0651CC1CB0729DA32F5617D4A9499F13D3",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/runtimeEvidenceV1_6Fixtures.js",
+      "sha256": "51D5998A5334E984E4684C98AF0683FE4F9F08679DAEC7D2FF38025F705D0F79",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/runtimeWitness.js",
+      "sha256": "9238EB4825DDA74C5F773288349597C74F131B0F031168817A200B988E49B48C",
+      "gitStateAtAmendment": "UNTRACKED",
+      "artifactCategory": "IMPLEMENTATION",
+      "predecessorDesignation": "REF_V1_7_PREDECESSOR",
+      "protectedContentRequired": true,
+      "requiredPresence": true,
+      "renameProhibited": true,
+      "substitutionProhibited": true,
+      "contentModificationProhibited": true,
+      "historicalGitCustodyEstablished": false,
+      "limitations": [
+        "CURRENT_FILESYSTEM_BYTES_ONLY",
+        "NO_RETROACTIVE_GIT_CUSTODY"
+      ]
+    }
+  ]
+}

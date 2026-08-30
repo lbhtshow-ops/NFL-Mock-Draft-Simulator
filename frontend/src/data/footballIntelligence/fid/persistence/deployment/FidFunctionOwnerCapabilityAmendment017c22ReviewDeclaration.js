@@ -1,0 +1,14 @@
+export const FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_017C22_REVIEW_DECLARATION = Object.freeze({
+  sprint: "17C.22",
+  reviewOnly: true,
+  correctedMatrixHash: "E92CAE3BAA5F341ACAC12D9800603DFA09FBB04F084BACC0998581EC673F70FC",
+  authoritativeDatabaseState: "MIGRATION_014_FULLY_ROLLED_BACK",
+  protectedArtifactsModified: false,
+  databaseConnectionPermitted: false,
+  sqlExecutionPermitted: false,
+  executionAuthorizationCreated: false,
+  status: "READY_FOR_FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_EXECUTION_AUTHORIZATION_REVIEW",
+  requiredNextSprint: "SPRINT_17C23_FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_EXECUTION_AUTHORIZATION_REVIEW",
+});
+
+export default FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_017C22_REVIEW_DECLARATION;

@@ -1,0 +1,444 @@
+#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import math
+import statistics
+from collections import defaultdict
+from pathlib import Path
+
+CONTRACT_VERSION = "FIE-NFL-PLAYER-IMPACT-FIXED-CANDIDATE-CONFIRMATION-2D4-R4-1.0.0"
+SEASONS = [2020, 2021, 2022, 2023, 2024]
+ALLOWED_VARIANTS = {
+    "R2_FULL",
+    "NO_COUNT",
+    "SEVERITY_ONLY",
+    "POSITION_ONLY",
+    "HIGH_PLUS_ONLY",
+    "VERY_HIGH_ONLY",
+}
+ALLOWED_SCALES = {0.10, 0.20, 0.30, 0.40, 0.50, 0.75, 1.00}
+
+def load_jsonl(path):
+    p = Path(path)
+    if not p.exists():
+        return []
+    return [json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()]
+
+def load_json(path):
+    p = Path(path)
+    if not p.exists():
+        return None
+    return json.loads(p.read_text(encoding="utf-8"))
+
+def finite(v):
+    return isinstance(v,(int,float)) and not isinstance(v,bool) and math.isfinite(float(v))
+
+def mean(xs):
+    xs=[float(x) for x in xs if finite(x)]
+    return statistics.mean(xs) if xs else None
+
+def percentile(xs,p):
+    xs=sorted(float(x) for x in xs if finite(x))
+    if not xs: return None
+    i=(len(xs)-1)*p
+    lo=int(math.floor(i)); hi=int(math.ceil(i))
+    if lo==hi: return xs[lo]
+    return xs[lo]+(xs[hi]-xs[lo])*(i-lo)
+
+def mae(xs): return mean([abs(x) for x in xs])
+
+def rmse(xs):
+    xs=[float(x) for x in xs if finite(x)]
+    return math.sqrt(mean([x*x for x in xs])) if xs else None
+
+def pos_group(pos):
+    p=str(pos or "UNKNOWN").upper()
+    if p in {"C","G","OG","T","OT","OL","IOL"}: return "OL"
+    if p in {"CB","S","FS","SS","DB","SAF"}: return "SECONDARY"
+    if p in {"DE","DT","NT","DL","EDGE"}: return "DL_EDGE"
+    if p in {"LB","ILB","OLB","MLB"}: return "LB"
+    if p in {"RB","HB","FB"}: return "RB"
+    if p in {"K","P","LS","ST"}: return "SPECIALISTS"
+    return p
+
+def key_effect(row):
+    t=row.get("treated") or {}
+    return (t.get("season"),t.get("week"),t.get("gameId"),t.get("team"))
+
+def key_obs(row):
+    i=row.get("identity") or {}
+    return (i.get("season"),i.get("week"),i.get("gameId"),i.get("team"))
+
+def effect_value(row):
+    v=(row.get("effect") or {}).get("treatedMinusControlResidual")
+    return float(v) if finite(v) else None
+
+def loss_gap(obs):
+    p=obs.get("pregame") or {}
+    pc=p.get("playerCaliber"); rc=p.get("replacementCaliber")
+    if finite(pc) and finite(rc):
+        return max(0.0,float(pc)-float(rc))
+    d=p.get("expectedReplacementDelta")
+    return max(0.0,float(d)) if finite(d) else None
+
+def severity(x):
+    if not finite(x): return "UNKNOWN"
+    if x >= 15: return "VERY_HIGH"
+    if x >= 8: return "HIGH"
+    if x >= 3: return "MODERATE"
+    return "LOW"
+
+def count_bucket(n):
+    if n >= 3: return "THREE_PLUS"
+    if n == 2: return "TWO"
+    return "ONE"
+
+def features(observations):
+    positions=sorted({pos_group((o.get("identity") or {}).get("position")) for o in observations})
+    gaps=[loss_gap(o) for o in observations]
+    gaps=[g for g in gaps if finite(g)]
+    qb="QB" in positions
+    return {
+        "countBucket":count_bucket(len(observations)),
+        "primaryPositionGroup":"QB" if qb else (positions[0] if len(positions)==1 else "MULTI"),
+        "severityBucket":severity(max(gaps) if gaps else None),
+        "qbPresent":qb,
+    }
+
+def keys(f,variant):
+    p=f["primaryPositionGroup"]; s=f["severityBucket"]; c=f["countBucket"]
+    if variant=="R2_FULL":
+        return [("EXACT",p,s,c),("POSITION_SEVERITY",p,s),("SEVERITY",s),("POSITION",p),("GLOBAL",)]
+    if variant=="NO_COUNT":
+        return [("POSITION_SEVERITY",p,s),("SEVERITY",s),("POSITION",p),("GLOBAL",)]
+    if variant=="SEVERITY_ONLY":
+        return [("SEVERITY",s),("GLOBAL",)]
+    if variant=="POSITION_ONLY":
+        return [("POSITION",p),("GLOBAL",)]
+    if variant=="HIGH_PLUS_ONLY":
+        return [("SEVERITY",s),("GLOBAL",)] if s in {"HIGH","VERY_HIGH"} else [("ZERO",)]
+    if variant=="VERY_HIGH_ONLY":
+        return [("SEVERITY","VERY_HIGH"),("GLOBAL",)] if s=="VERY_HIGH" else [("ZERO",)]
+    raise ValueError(variant)
+
+MIN_N={"EXACT":12,"POSITION_SEVERITY":15,"SEVERITY":25,"POSITION":25,"GLOBAL":1}
+
+def fit(train,variant):
+    lookup=defaultdict(list)
+    effects=[r["effect"] for r in train]
+    lo=percentile(effects,.05)
+    hi=percentile(effects,.95)
+    for r in train:
+        for k in keys(r["features"],variant):
+            if k[0]!="ZERO":
+                lookup[k].append(r["effect"])
+    return lookup,lo,hi
+
+def predict(row,lookup,lo,hi,variant):
+    for k in keys(row["features"],variant):
+        if k[0]=="ZERO":
+            return 0.0,k[0],0
+        vals=lookup.get(k,[])
+        if len(vals)>=MIN_N[k[0]]:
+            pred=mean(vals)
+            return max(lo,min(hi,pred)),k[0],len(vals)
+    return None,"NONE",0
+
+def winner_correct(pred,actual):
+    if pred==0 or actual==0:
+        return None
+    return (pred>0)==(actual>0)
+
+def metrics(records):
+    be=[r["baselineError"] for r in records]
+    ce=[r["candidateError"] for r in records]
+    bw=[r["baselineWinnerCorrect"] for r in records if r["baselineWinnerCorrect"] is not None]
+    cw=[r["candidateWinnerCorrect"] for r in records if r["candidateWinnerCorrect"] is not None]
+    return {
+        "rows":len(records),
+        "baselineMAE":mae(be),
+        "candidateMAE":mae(ce),
+        "maeDelta":mae(ce)-mae(be),
+        "baselineRMSE":rmse(be),
+        "candidateRMSE":rmse(ce),
+        "rmseDelta":rmse(ce)-rmse(be),
+        "baselineWinnerAccuracy":sum(bw)/len(bw) if bw else None,
+        "candidateWinnerAccuracy":sum(cw)/len(cw) if cw else None,
+        "winnerAccuracyDelta":(sum(cw)/len(cw)-sum(bw)/len(bw)) if bw and cw else None,
+        "baselineLargeErrors14Plus":sum(abs(x)>=14 for x in be),
+        "candidateLargeErrors14Plus":sum(abs(x)>=14 for x in ce),
+        "largeErrorDelta":sum(abs(x)>=14 for x in ce)-sum(abs(x)>=14 for x in be),
+        "favoriteFlips":sum(r["favoriteFlip"] for r in records),
+        "meanAppliedDelta":mean([r["appliedDelta"] for r in records]),
+        "meanAbsoluteAppliedDelta":mean([abs(r["appliedDelta"]) for r in records]),
+    }
+
+def close(a,b,tol=1e-9):
+    if a is None or b is None:
+        return a is None and b is None
+    return abs(float(a)-float(b)) <= tol
+
+def metric_reconciliation(replay,selected):
+    keys_to_check=[
+        "rows",
+        "baselineMAE",
+        "candidateMAE",
+        "maeDelta",
+        "baselineRMSE",
+        "candidateRMSE",
+        "rmseDelta",
+        "baselineWinnerAccuracy",
+        "candidateWinnerAccuracy",
+        "winnerAccuracyDelta",
+        "baselineLargeErrors14Plus",
+        "candidateLargeErrors14Plus",
+        "largeErrorDelta",
+        "favoriteFlips",
+        "meanAppliedDelta",
+        "meanAbsoluteAppliedDelta",
+    ]
+    mismatches={}
+    for k in keys_to_check:
+        rv=replay.get(k); sv=selected.get(k)
+        ok=(rv==sv) if isinstance(rv,int) and isinstance(sv,int) else close(rv,sv)
+        if not ok:
+            mismatches[k]={"replay":rv,"selected":sv}
+    return mismatches
+
+def main():
+    ap=argparse.ArgumentParser()
+    ap.add_argument("--r3-selected",default="data/calibration/historical/expansion-2020-2021/player-impact/player-impact-candidate-2d4-r3-selected-v1.json")
+    ap.add_argument("--legacy-effects",default="data/calibration/historical/v1/historical-availability-matched-att-effects-v1.jsonl")
+    ap.add_argument("--expansion-effects",default="data/calibration/historical/expansion-2020-2021/player-impact/matched-att/historical-availability-matched-att-effects-2020-2021-v1.jsonl")
+    ap.add_argument("--legacy-observations",default="data/calibration/historical/v1/historical-availability-impact-calibration-observations-v1.jsonl")
+    ap.add_argument("--expansion-observations",default="data/calibration/historical/expansion-2020-2021/player-impact/matched-att/historical-availability-impact-calibration-observations-2020-2021-v1.jsonl")
+    ap.add_argument("--legacy-outcomes",default="data/calibration/historical/v1/historical-availability-matched-outcomes-v1.jsonl")
+    ap.add_argument("--expansion-outcomes",default="data/calibration/historical/expansion-2020-2021/player-impact/matched-att/historical-availability-matched-outcomes-2020-2021-v1.jsonl")
+    ap.add_argument("--report",default="data/calibration/historical/expansion-2020-2021/player-impact/player-impact-fixed-candidate-confirmation-2d4-r4-v1.json")
+    ap.add_argument("--handoff",default="data/calibration/historical/expansion-2020-2021/player-impact/pickem-sprint2b-player-impact-handoff-v1.json")
+    args=ap.parse_args()
+
+    r3=load_json(args.r3_selected)
+    if not r3:
+        print(json.dumps({"contractVersion":CONTRACT_VERSION,"decision":"BLOCKED_R3_SELECTED_ARTIFACT_MISSING"},indent=2))
+        raise SystemExit(2)
+
+    selected=r3.get("selected")
+    if not selected:
+        print(json.dumps({"contractVersion":CONTRACT_VERSION,"decision":"BLOCKED_R3_SELECTED_CANDIDATE_NULL","r3Decision":r3.get("decision")},indent=2))
+        raise SystemExit(3)
+
+    variant=selected.get("variant")
+    scale=selected.get("scale")
+    if variant not in ALLOWED_VARIANTS or not finite(scale) or float(scale) not in ALLOWED_SCALES:
+        print(json.dumps({"contractVersion":CONTRACT_VERSION,"decision":"BLOCKED_R3_SELECTED_CANDIDATE_OUTSIDE_FROZEN_FAMILY","variant":variant,"scale":scale},indent=2))
+        raise SystemExit(4)
+    scale=float(scale)
+
+    effects=load_jsonl(args.legacy_effects)+load_jsonl(args.expansion_effects)
+    observations=load_jsonl(args.legacy_observations)+load_jsonl(args.expansion_observations)
+    outcomes=load_jsonl(args.legacy_outcomes)+load_jsonl(args.expansion_outcomes)
+
+    obs_map=defaultdict(list)
+    for o in observations:
+        obs_map[key_obs(o)].append(o)
+    out_map={r.get("pairId"):r for r in outcomes if r.get("pairId")}
+
+    rows=[]
+    for e in effects:
+        ev=effect_value(e)
+        os=obs_map.get(key_effect(e),[])
+        out=out_map.get(e.get("pairId"))
+        if ev is None or not os or not out:
+            continue
+        tout=(out.get("treated") or {}).get("outcome") or {}
+        base=tout.get("expectedTeamMargin")
+        actual=tout.get("actualTeamMargin")
+        if not finite(base) or not finite(actual):
+            continue
+        t=e.get("treated") or {}
+        rows.append({
+            "pairId":e.get("pairId"),
+            "season":t.get("season"),
+            "effect":ev,
+            "baselineExpectedTeamMargin":float(base),
+            "actualTeamMargin":float(actual),
+            "features":features(os),
+        })
+
+    if len(rows)!=720:
+        print(json.dumps({"contractVersion":CONTRACT_VERSION,"decision":"BLOCKED_R4_JOIN_NOT_720","joinedRows":len(rows)},indent=2))
+        raise SystemExit(5)
+
+    predictions=[]
+    folds={}
+    for holdout in SEASONS:
+        train=[r for r in rows if r["season"]!=holdout]
+        test=[r for r in rows if r["season"]==holdout]
+        lookup,lo,hi=fit(train,variant)
+        fold=[]
+        for r in test:
+            raw,mode,n=predict(r,lookup,lo,hi,variant)
+            if raw is None:
+                continue
+            applied=raw*scale
+            candidate_margin=r["baselineExpectedTeamMargin"]+applied
+            rec={**r,
+                 "rawCandidateImpact":raw,
+                 "scale":scale,
+                 "appliedDelta":applied,
+                 "resolutionMode":mode,
+                 "trainingStratumN":n,
+                 "candidateExpectedTeamMargin":candidate_margin,
+                 "baselineError":r["actualTeamMargin"]-r["baselineExpectedTeamMargin"],
+                 "candidateError":r["actualTeamMargin"]-candidate_margin,
+                 "baselineWinnerCorrect":winner_correct(r["baselineExpectedTeamMargin"],r["actualTeamMargin"]),
+                 "candidateWinnerCorrect":winner_correct(candidate_margin,r["actualTeamMargin"]),
+                 "favoriteFlip":(r["baselineExpectedTeamMargin"]>0)!=(candidate_margin>0)}
+            fold.append(rec)
+            predictions.append(rec)
+        folds[str(holdout)]=metrics(fold)
+
+    replay=metrics(predictions)
+    selected_metrics=selected.get("metrics") or {}
+    mismatches=metric_reconciliation(replay,selected_metrics)
+
+    season_stability={
+        "maeNonWorseWithin015":sum(
+            1 for f in folds.values()
+            if f["candidateMAE"] <= f["baselineMAE"] + 0.15
+        ),
+        "rmseNonWorseWithin020":sum(
+            1 for f in folds.values()
+            if f["candidateRMSE"] <= f["baselineRMSE"] + 0.20
+        ),
+    }
+
+    aggregate_gate=(
+        replay["candidateMAE"] <= replay["baselineMAE"] and
+        replay["candidateRMSE"] <= replay["baselineRMSE"] and
+        replay["candidateWinnerAccuracy"] >= replay["baselineWinnerAccuracy"] - 0.005 and
+        replay["candidateLargeErrors14Plus"] <= replay["baselineLargeErrors14Plus"]
+    )
+    stability_gate=(
+        season_stability["maeNonWorseWithin015"] >= 4 and
+        season_stability["rmseNonWorseWithin020"] >= 4
+    )
+
+    selected_hash=hashlib.sha256(
+        json.dumps(
+            {"variant":variant,"scale":scale,"metrics":selected_metrics},
+            sort_keys=True,
+            separators=(",",":"),
+        ).encode("utf-8")
+    ).hexdigest()
+
+    checks={
+        "r3SelectedCandidatePresent":True,
+        "candidateVariantFrozen":variant in ALLOWED_VARIANTS,
+        "candidateScaleFrozen":scale in ALLOWED_SCALES,
+        "all720RowsReplayed":len(predictions)==720,
+        "allFiveSeasonsReplayed":all(folds[str(s)]["rows"]>0 for s in SEASONS),
+        "exactR3MetricReproduction":len(mismatches)==0,
+        "aggregatePromotionGateStillPasses":aggregate_gate,
+        "seasonStabilityStillPasses":stability_gate,
+        "noNewCandidateSearch":True,
+        "noParameterRetuning":True,
+    }
+    failures=[k for k,v in checks.items() if not v]
+
+    decision=(
+        "PLAYER_IMPACT_R4_FIXED_CANDIDATE_CONFIRMED_PICKEM_HANDOFF_READY"
+        if not failures else
+        "PLAYER_IMPACT_R4_CONFIRMATION_FAILED_REMAIN_SHADOW_ONLY"
+    )
+
+    handoff={
+        "contractVersion":"FIE-PICKEM-SPRINT2B-PLAYER-IMPACT-HANDOFF-1.0.0",
+        "sourceSprint":"2D.4-R4",
+        "status":"READY_FOR_PICKEM_COORDINATION" if not failures else "NOT_READY",
+        "selectedCandidate":{
+            "variant":variant,
+            "scale":scale,
+            "candidateHash":selected_hash,
+            "validationRows":len(predictions),
+            "validationSeasons":SEASONS,
+            "metrics":replay,
+            "seasonStability":season_stability,
+        },
+        "canonicalOwnership":{
+            "footballReasoningOwner":"FIE",
+            "playerImpactOwner":"FIE",
+            "teamStrengthOwner":"FIE",
+            "matchupIntelligenceOwner":"FIE",
+            "pickemIndependentInjuryWeightsAllowed":False,
+        },
+        "integrationBoundary":{
+            "pickemConsumesCanonicalDecisionAPI":True,
+            "pickemMayReimplementPlayerImpact":False,
+            "pickemMayCreateIndependentInjuryWeights":False,
+            "productionActivationImplicitlyAuthorizedByHandoff":False,
+        },
+        "productionAuthorization":{
+            "playerImpact":False,
+            "teamStrengthMutation":False,
+            "decisionModelMutation":False,
+            "note":"R4 confirms the fixed candidate for coordinated shadow/integration validation. Production activation remains a separate explicit governed promotion action.",
+        },
+    }
+
+    report={
+        "contractVersion":CONTRACT_VERSION,
+        "sprint":"2D.4-R4",
+        "mode":"FIXED_CANDIDATE_DETERMINISTIC_CONFIRMATION",
+        "decision":decision,
+        "frozenCandidate":{
+            "variant":variant,
+            "scale":scale,
+            "candidateHash":selected_hash,
+            "r3Decision":r3.get("decision"),
+            "r3PassesPromotionCandidateGate":selected.get("passesPromotionCandidateGate"),
+        },
+        "confirmation":{
+            "replayMetrics":replay,
+            "r3SelectedMetrics":selected_metrics,
+            "metricMismatches":mismatches,
+            "folds":folds,
+            "seasonStability":season_stability,
+        },
+        "checks":checks,
+        "failures":failures,
+        "nextAction":{
+            "reopenHistoricalConstruction":False,
+            "searchAdditionalCandidates":False,
+            "retuneCandidate":False,
+            "pickemCoordinationHandoffAuthorized":not failures,
+            "productionPlayerImpactAuthorized":False,
+            "productionTeamStrengthAuthorized":False,
+        },
+        "safeguards":{
+            "historicalArtifactsMutated":False,
+            "r3SelectedArtifactMutated":False,
+            "candidateVariantChanged":False,
+            "candidateScaleChanged":False,
+            "canonicalShadowIntegrationMutated":False,
+            "teamStrengthMutated":False,
+            "matchupIntelligenceMutated":False,
+            "decisionModelMutated":False,
+            "pickemMutated":False,
+        },
+    }
+
+    Path(args.report).parent.mkdir(parents=True,exist_ok=True)
+    Path(args.report).write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
+    Path(args.handoff).parent.mkdir(parents=True,exist_ok=True)
+    Path(args.handoff).write_text(json.dumps(handoff,indent=2)+"\n",encoding="utf-8")
+    print(json.dumps(report,indent=2))
+    print("\n=== PICKEM COORDINATION HANDOFF ===")
+    print(json.dumps(handoff,indent=2))
+
+if __name__=="__main__":
+    main()

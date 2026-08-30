@@ -4,9 +4,12 @@ import {
   INITIAL_2027_BASE_INVENTORY_DISAMBIGUATIONS,
   initial2027BaseInventoryRows,
 } from "./initial2027BaseInventory.js";
+import { getProspectDataQualityRecord, PROSPECT_DATA_QUALITY_STATUS } from "./ProspectDataQualityRegistry.js";
+import { applyVerifiedIdentity, verifyApplicationProspect } from "../verification/ProspectVerificationEngine.js";
+
 
 export const APPLICATION_PROSPECT_INVENTORY_CONTRACT = "ApplicationProspectInventory";
-export const APPLICATION_PROSPECT_INVENTORY_VERSION = "FIP-APPLICATION-PROSPECT-INVENTORY-1.4.0";
+export const APPLICATION_PROSPECT_INVENTORY_VERSION = "FIP-APPLICATION-PROSPECT-INVENTORY-1.7.0";
 
 const normalizeRefName = (value = "") => String(value).trim().toLowerCase().normalize("NFKD")
   .replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
@@ -33,8 +36,8 @@ export function createApplicationInventoryEntry(row, source = INITIAL_2027_BASE_
   const identityDiscriminator = row?.identityDiscriminator || null;
   const applicationProspectRef = createInventoryApplicationProspectRef({ draftYear, displayName, identityDiscriminator });
   if (!applicationProspectRef || !displayName || !Number.isFinite(draftYear)) return null;
-
-  return deepFreeze({
+  const dataQuality = getProspectDataQualityRecord(applicationProspectRef);
+  const baseEntry = {
     contract: APPLICATION_PROSPECT_INVENTORY_CONTRACT,
     contractVersion: APPLICATION_PROSPECT_INVENTORY_VERSION,
     applicationProspectRef,
@@ -58,6 +61,12 @@ export function createApplicationInventoryEntry(row, source = INITIAL_2027_BASE_
       sourceOrdinalAuthority: "PROVENANCE_ONLY_NOT_LBHT_RANK",
       verificationStatus: "BASE_FACTS_REVIEW_REQUIRED",
     },
+    dataQuality: dataQuality || {
+      status: PROSPECT_DATA_QUALITY_STATUS.UNREVIEWED,
+      severity: null,
+      reasonCodes: [],
+      disposition: "BASE_FACTS_REVIEW_REQUIRED",
+    },
     normalizedProspectView: null,
     intelligenceCoverage: {
       level: "BASE_PROFILE", available: false, sourceClassification: "APPLICATION_BASE_INVENTORY",
@@ -69,7 +78,16 @@ export function createApplicationInventoryEntry(row, source = INITIAL_2027_BASE_
     },
     identityAuthority: "APPLICATION_REFERENCE_NON_CANONICAL",
     canonicalIdentifier: null,
-  });
+  };
+
+  baseEntry.inventoryMetadata.sourceReportedIdentity = {
+    displayName,
+    position: normalizePosition(row?.position),
+    program: row?.program || null,
+  };
+  const verification = verifyApplicationProspect(baseEntry);
+  baseEntry.verification = verification;
+  return applyVerifiedIdentity(deepFreeze(baseEntry));
 }
 
 const initialEntries = Object.freeze(initial2027BaseInventoryRows.map((row) => createApplicationInventoryEntry(row)).filter(Boolean));
@@ -110,6 +128,11 @@ export function getApplicationProspectInventoryDiagnostics() {
     uniqueApplicationReferences: new Set(refs).size,
     uniqueSourceOrdinals: new Set(sourceOrdinals).size,
     canonicalIdentifierCount: initialEntries.filter((entry) => entry.canonicalIdentifier).length,
+    dataQualityReviewRequiredCount: initialEntries.filter((entry) => entry.dataQuality?.status === PROSPECT_DATA_QUALITY_STATUS.REVIEW_REQUIRED).length,
+    dataQualityVerifiedCount: initialEntries.filter((entry) => entry.dataQuality?.status === PROSPECT_DATA_QUALITY_STATUS.VERIFIED).length,
+    verificationVerifiedCount: initialEntries.filter((entry) => entry.verification?.status === "VERIFIED").length,
+    verificationSourceReportedCount: initialEntries.filter((entry) => entry.verification?.status === "SOURCE_REPORTED").length,
+    footballIntelligenceVerificationEligibleCount: initialEntries.filter((entry) => entry.verification?.footballIntelligenceEligible).length,
     publishedSourceCount: INITIAL_2027_BASE_INVENTORY_SOURCE.publishedSourceCount,
     materializedSourceCount: INITIAL_2027_BASE_INVENTORY_SOURCE.materializedSourceCount,
     excludedIdentityCollisionCount: INITIAL_2027_BASE_INVENTORY_EXCLUSIONS.length,

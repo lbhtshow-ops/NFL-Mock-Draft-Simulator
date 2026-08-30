@@ -1,0 +1,19 @@
+{
+  "authorizationIdentity": "REF_V1_12_REAL_COMPOSITION_FAKE_PROVIDER_REPOSITORY_IMPLEMENTATION_ONE_EXECUTION_V1",
+  "status": "CONSUMED_PERMANENTLY_NON_REUSABLE",
+  "repository": "https://github.com/lbhtshow-ops/NFL-Mock-Draft-Simulator.git",
+  "branch": "main",
+  "expectedHead": "f9f8272e8ea868534c9fbc36cf174769367fc6a1",
+  "nodeOnlySourceLocation": "frontend/src/data/footballIntelligence/fid/runtimeEvidence/v1_12/node/",
+  "maximumAttempts": 1,
+  "maximumExecutions": 1,
+  "readinessGatesPassed": 30,
+  "statusAtCreation": "ACTIVE_UNCONSUMED",
+  "attemptCount": 1,
+  "executionCount": 1,
+  "consumedBy": "FIRST_REF_V1_12_IMPLEMENTATION_MUTATION",
+  "consumptionRule": "CONSUMED_PERMANENTLY_NON_REUSABLE_WHEN_FIRST_REF_V1_12_IMPLEMENTATION_FILE_IS_CREATED_OR_MODIFIED_REGARDLESS_OF_OUTCOME",
+  "scope": "Repository-only Node composition using deterministic fake target, credential, and pg Client providers",
+  "allowsLiveEndpointCredentialsDnsTcpTlsDatabaseSqlRoleMigrationRetry": false,
+  "mandatoryStop": true
+}

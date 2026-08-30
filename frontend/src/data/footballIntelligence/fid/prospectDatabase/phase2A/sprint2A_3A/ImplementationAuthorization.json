@@ -1,0 +1,17 @@
+{
+  "authorizationId": "FID_PROSPECT_PROFILE_PREPARATION_BOUNDARY_DECLARATION_IMPLEMENTATION_ONE_EXECUTION_2A3A_V1",
+  "repository": "C:/Users/zeyga/NFL-Mock-Draft-Simulator-main/NFL-Mock-Draft-Simulator-main",
+  "branch": "main",
+  "expectedHead": "f9f8272e8ea868534c9fbc36cf174769367fc6a1",
+  "architecture": "SEPARATE_PROSPECT_PROFILE_PREPARATION_RECORD",
+  "contractName": "ProspectProfilePreparationRecord",
+  "location": "frontend/src/data/footballIntelligence/fid/prospectDatabase/phase2A/sprint2A_3A/",
+  "lifecycle": "CONSUMED_PERMANENTLY_NON_REUSABLE",
+  "maximumAttempts": 1,
+  "maximumExecutions": 1,
+  "attempts": 1,
+  "executions": 1,
+  "scope": "DECLARATION_ONLY",
+  "allowedFiles": ["frontend/src/data/footballIntelligence/fid/prospectDatabase/phase2A/sprint2A_3A/"],
+  "prohibited": ["COHORT_CONSTRUCTION", "CANONICAL_PROFILE_CONSTRUCTION", "IDENTIFIER_ISSUANCE", "PROMOTION", "PERSISTENCE", "APPLICATION_INTEGRATION", "SQL", "DATABASE", "MIGRATION", "PACKAGE_MUTATION", "RETRY"]
+}

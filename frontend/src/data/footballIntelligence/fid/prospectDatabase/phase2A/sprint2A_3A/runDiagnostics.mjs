@@ -1,0 +1,26 @@
+import assert from "node:assert/strict";
+import { createProspectProfilePreparationRecord, syntheticProspectProfilePreparationRecord } from "./index.js";
+import { validateProspectProfile } from "../../../contracts/ProspectProfileContract.js";
+
+const base = { ...syntheticProspectProfilePreparationRecord };
+delete base.validation;
+const invalid = (patch, code) => { const result = createProspectProfilePreparationRecord({ ...base, ...patch }); assert.equal(result.validation.valid, false); assert(result.validation.errors.some((error) => error.code === code), `${code} not found`); };
+assert.equal(syntheticProspectProfilePreparationRecord.validation.valid, true);
+assert.equal(Object.isFrozen(syntheticProspectProfilePreparationRecord), true);
+assert.equal(validateProspectProfile(syntheticProspectProfilePreparationRecord).valid, false);
+invalid({ preparationRecordRef: "Synthetic Player" }, "INVALID_PREPARATION_IDENTITY");
+invalid({ profileId: "candidate:synthetic:alpha" }, "CANONICAL_IDENTITY_PROHIBITED");
+invalid({ profileId: "6b43ebf6-f45a-4dc8-8b55-dafc006455de" }, "CANONICAL_IDENTITY_PROHIBITED");
+invalid({ entityRef: "legacy-simulator-1" }, "CANONICAL_IDENTITY_PROHIBITED");
+invalid({ intakeCandidateRef: "" }, "MISSING_REQUIRED_FIELD");
+invalid({ sourceRefs: ["source:a", "source:a"] }, "DUPLICATE_REFERENCE");
+invalid({ lifecycle: "PROMOTED" }, "INVALID_LIFECYCLE");
+invalid({ promotion: { readiness: "READY", authorized: true } }, "PROMOTION_AUTHORIZATION_PROHIBITED");
+invalid({ persistence: { readiness: "READY", authorized: false } }, "PERSISTENCE_CLAIM_PROHIBITED");
+invalid({ availability: { ...base.availability, liveDraftRoom: true } }, "LIVE_AVAILABILITY_PROHIBITED");
+invalid({ extensions: { profileId: "fake" } }, "EXTENSION_OVERRIDE_PROHIBITED");
+invalid({ callback: () => true }, "EXECUTABLE_FIELD_PROHIBITED");
+invalid({ credential: "nope" }, "SENSITIVE_FIELD_PROHIBITED");
+const circular = { ...base }; circular.extensions = {}; circular.extensions.self = circular;
+assert.equal(createProspectProfilePreparationRecord(circular).validation.errors.some((error) => error.code === "CIRCULAR_VALUE_PROHIBITED"), true);
+console.log(JSON.stringify({ suite: "Sprint2A3AProspectProfilePreparationBoundary", total: 16, passed: 16, failed: 0, fixtureValid: true, canonicalProfileValid: false, promotionExecuted: false, persistenceExecuted: false, cohortRecordsConstructed: 0 }, null, 2));

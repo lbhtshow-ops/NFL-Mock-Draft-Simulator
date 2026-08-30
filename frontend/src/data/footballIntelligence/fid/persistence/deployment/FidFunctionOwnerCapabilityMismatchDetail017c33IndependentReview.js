@@ -1,0 +1,28 @@
+export const FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_017C33_INDEPENDENT_REVIEW = Object.freeze({
+  id: "FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_DIAGNOSTIC_INDEPENDENT_REVIEW_017C33",
+  version: "17C.33.1",
+  repositoryOnly: true,
+  targetPath: "frontend/src/data/footballIntelligence/fid/persistence/deployment/review/017c32_fid_function_owner_capability_mismatch_detail_correction.sql",
+  targetSha256: "9A3A4E4583721182F3DE3A68B5DB29BECD6A120310CBE4C700850CC202D9A10D",
+  predecessorPath: "frontend/src/data/footballIntelligence/fid/persistence/deployment/review/017c30_fid_function_owner_capability_mismatch_detail_read_only_diagnostic.sql",
+  predecessorSha256: "A9882BBA3AD98B4EC608FB741672ABCFCAFB1F99CC863DEE83F39C8F35061468",
+  authoritativeDatabaseState: "MIGRATION_014_FULLY_ROLLED_BACK",
+  capturedMismatchCount: 5,
+  aclObjectBoundUnits: 260,
+  aclInventoryUnits: 1,
+  blockingFindings: Object.freeze(["INCOMPLETE_TARGET_AND_ENVIRONMENT_BINDING"]),
+  missingBindings: Object.freeze(["organization", "project_name", "region"]),
+  parser: Object.freeze({ requested: "pglast v8.4", availableInCurrentInterpreter: false, blockingFindingIndependentOfParser: true }),
+  authorization017c23Consumed: true,
+  authorization017c26Consumed: true,
+  authorization017c29Consumed: true,
+  retryAuthorized: false,
+  diagnosticExecutionAuthorized: false,
+  authorizationCreated: false,
+  sqlExecuted: false,
+  databaseConnected: false,
+  status: "FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_DIAGNOSTIC_ADDITIONAL_CORRECTION_REQUIRED",
+  requiredNextAction: "ADD_EXACT_ORGANIZATION_PROJECT_NAME_AND_REGION_BINDING_WITHOUT_WEAKENING_EXISTING_BINDINGS",
+});
+
+export default FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_017C33_INDEPENDENT_REVIEW;

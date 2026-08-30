@@ -1,0 +1,355 @@
+{
+  "contract": "NFLDecisionModelValidationReport",
+  "version": "1.0.0",
+  "status": "RESEARCH_ONLY",
+  "holdoutSeasons": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "indistinguishableCandidates": [
+    {
+      "candidateA": "MATCHUP_EDGE_LINEAR",
+      "candidateB": "MATCHUP_EDGE_LOGISTIC",
+      "holdoutsCompared": 7
+    }
+  ],
+  "promotionGates": [
+    {
+      "contract": "NFLDecisionModelPromotionGateResult",
+      "version": "1.0.0",
+      "candidateId": "MATCHUP_EDGE_LINEAR",
+      "status": "HOLD_RESEARCH_ONLY",
+      "authoritative": false,
+      "automaticPromotion": false,
+      "summary": {
+        "candidateId": "MATCHUP_EDGE_LINEAR",
+        "baselineId": "BASELINE_HOME_FIELD",
+        "holdoutSeasons": 7,
+        "rows": [
+          {
+            "season": 2019,
+            "accuracyGain": 0.059925093632958726,
+            "brierGain": 0.014800263166670907,
+            "logLossGain": 0.030409865230341726,
+            "marginMAEGain": 0.42368512031742966
+          },
+          {
+            "season": 2020,
+            "accuracyGain": 0.14126394052044605,
+            "brierGain": 0.034126121907476326,
+            "logLossGain": 0.07165021695820961,
+            "marginMAEGain": 0.9893104784579876
+          },
+          {
+            "season": 2021,
+            "accuracyGain": 0.09473684210526312,
+            "brierGain": 0.016692650527912606,
+            "logLossGain": 0.03411933704441872,
+            "marginMAEGain": 0.7893720620719673
+          },
+          {
+            "season": 2022,
+            "accuracyGain": 0.09154929577464788,
+            "brierGain": 0.023627602402186587,
+            "logLossGain": 0.04904377107922353,
+            "marginMAEGain": 0.5189767081658196
+          },
+          {
+            "season": 2023,
+            "accuracyGain": 0.05964912280701762,
+            "brierGain": 0.014230009553862527,
+            "logLossGain": 0.029313516978418663,
+            "marginMAEGain": 0.5702159332190035
+          },
+          {
+            "season": 2024,
+            "accuracyGain": 0.11228070175438598,
+            "brierGain": 0.03370533117299729,
+            "logLossGain": 0.07023790736554325,
+            "marginMAEGain": 0.9517569734988136
+          },
+          {
+            "season": 2025,
+            "accuracyGain": 0.08070175438596494,
+            "brierGain": 0.024044316904540536,
+            "logLossGain": 0.051064139341165604,
+            "marginMAEGain": 0.7338233215110055
+          }
+        ],
+        "aggregate": {
+          "meanAccuracyGain": 0.09144382156866919,
+          "accuracyGainStdDev": 0.029002298830417172,
+          "seasonsBeatingBaselineAccuracy": 1,
+          "seasonsBeatingBaselineBrier": 1,
+          "seasonsBeatingBaselineLogLoss": 1,
+          "seasonsBeatingBaselineMarginMAE": 1
+        }
+      },
+      "indistinguishable": [
+        {
+          "candidateA": "MATCHUP_EDGE_LINEAR",
+          "candidateB": "MATCHUP_EDGE_LOGISTIC",
+          "holdoutsCompared": 7
+        }
+      ],
+      "checks": [
+        {
+          "name": "minimum-holdout-seasons",
+          "passed": true
+        },
+        {
+          "name": "aggregate-accuracy-gain",
+          "passed": true
+        },
+        {
+          "name": "seasonal-accuracy-consistency",
+          "passed": true
+        },
+        {
+          "name": "seasonal-brier-consistency",
+          "passed": true
+        },
+        {
+          "name": "seasonal-logloss-consistency",
+          "passed": true
+        },
+        {
+          "name": "accuracy-gain-stability",
+          "passed": true
+        },
+        {
+          "name": "empirical-distinctness",
+          "passed": false
+        }
+      ],
+      "failedChecks": [
+        "empirical-distinctness"
+      ],
+      "note": "Eligibility never grants production authority automatically."
+    },
+    {
+      "contract": "NFLDecisionModelPromotionGateResult",
+      "version": "1.0.0",
+      "candidateId": "MATCHUP_EDGE_LOGISTIC",
+      "status": "HOLD_RESEARCH_ONLY",
+      "authoritative": false,
+      "automaticPromotion": false,
+      "summary": {
+        "candidateId": "MATCHUP_EDGE_LOGISTIC",
+        "baselineId": "BASELINE_HOME_FIELD",
+        "holdoutSeasons": 7,
+        "rows": [
+          {
+            "season": 2019,
+            "accuracyGain": 0.059925093632958726,
+            "brierGain": 0.014800263166670907,
+            "logLossGain": 0.030409865230341726,
+            "marginMAEGain": 0.42368512031742966
+          },
+          {
+            "season": 2020,
+            "accuracyGain": 0.14126394052044605,
+            "brierGain": 0.034126121907476326,
+            "logLossGain": 0.07165021695820961,
+            "marginMAEGain": 0.9893104784579876
+          },
+          {
+            "season": 2021,
+            "accuracyGain": 0.09473684210526312,
+            "brierGain": 0.016692650527912606,
+            "logLossGain": 0.03411933704441872,
+            "marginMAEGain": 0.7893720620719673
+          },
+          {
+            "season": 2022,
+            "accuracyGain": 0.09154929577464788,
+            "brierGain": 0.023627602402186587,
+            "logLossGain": 0.04904377107922353,
+            "marginMAEGain": 0.5189767081658196
+          },
+          {
+            "season": 2023,
+            "accuracyGain": 0.05964912280701762,
+            "brierGain": 0.014230009553862527,
+            "logLossGain": 0.029313516978418663,
+            "marginMAEGain": 0.5702159332190035
+          },
+          {
+            "season": 2024,
+            "accuracyGain": 0.11228070175438598,
+            "brierGain": 0.03370533117299729,
+            "logLossGain": 0.07023790736554325,
+            "marginMAEGain": 0.9517569734988136
+          },
+          {
+            "season": 2025,
+            "accuracyGain": 0.08070175438596494,
+            "brierGain": 0.024044316904540536,
+            "logLossGain": 0.051064139341165604,
+            "marginMAEGain": 0.7338233215110055
+          }
+        ],
+        "aggregate": {
+          "meanAccuracyGain": 0.09144382156866919,
+          "accuracyGainStdDev": 0.029002298830417172,
+          "seasonsBeatingBaselineAccuracy": 1,
+          "seasonsBeatingBaselineBrier": 1,
+          "seasonsBeatingBaselineLogLoss": 1,
+          "seasonsBeatingBaselineMarginMAE": 1
+        }
+      },
+      "indistinguishable": [
+        {
+          "candidateA": "MATCHUP_EDGE_LINEAR",
+          "candidateB": "MATCHUP_EDGE_LOGISTIC",
+          "holdoutsCompared": 7
+        }
+      ],
+      "checks": [
+        {
+          "name": "minimum-holdout-seasons",
+          "passed": true
+        },
+        {
+          "name": "aggregate-accuracy-gain",
+          "passed": true
+        },
+        {
+          "name": "seasonal-accuracy-consistency",
+          "passed": true
+        },
+        {
+          "name": "seasonal-brier-consistency",
+          "passed": true
+        },
+        {
+          "name": "seasonal-logloss-consistency",
+          "passed": true
+        },
+        {
+          "name": "accuracy-gain-stability",
+          "passed": true
+        },
+        {
+          "name": "empirical-distinctness",
+          "passed": false
+        }
+      ],
+      "failedChecks": [
+        "empirical-distinctness"
+      ],
+      "note": "Eligibility never grants production authority automatically."
+    },
+    {
+      "contract": "NFLDecisionModelPromotionGateResult",
+      "version": "1.0.0",
+      "candidateId": "QUALITY_WEIGHTED_MATCHUP",
+      "status": "PROMOTION_ELIGIBLE",
+      "authoritative": false,
+      "automaticPromotion": false,
+      "summary": {
+        "candidateId": "QUALITY_WEIGHTED_MATCHUP",
+        "baselineId": "BASELINE_HOME_FIELD",
+        "holdoutSeasons": 7,
+        "rows": [
+          {
+            "season": 2019,
+            "accuracyGain": 0.07116104868913853,
+            "brierGain": 0.013546951532156237,
+            "logLossGain": 0.027841229291581282,
+            "marginMAEGain": 0.3896438988873161
+          },
+          {
+            "season": 2020,
+            "accuracyGain": 0.15613382899628253,
+            "brierGain": 0.029957766291036053,
+            "logLossGain": 0.06241415474586698,
+            "marginMAEGain": 0.8853416556816374
+          },
+          {
+            "season": 2021,
+            "accuracyGain": 0.07368421052631569,
+            "brierGain": 0.01643352472533527,
+            "logLossGain": 0.0338610767146732,
+            "marginMAEGain": 0.7036302097000071
+          },
+          {
+            "season": 2022,
+            "accuracyGain": 0.10563380281690138,
+            "brierGain": 0.023010115451538665,
+            "logLossGain": 0.04769605208239813,
+            "marginMAEGain": 0.5312249676785736
+          },
+          {
+            "season": 2023,
+            "accuracyGain": 0.04561403508771933,
+            "brierGain": 0.015236028918603761,
+            "logLossGain": 0.03159163091051431,
+            "marginMAEGain": 0.5778194884893058
+          },
+          {
+            "season": 2024,
+            "accuracyGain": 0.11228070175438598,
+            "brierGain": 0.031044665588981335,
+            "logLossGain": 0.06433214450746805,
+            "marginMAEGain": 0.8617353168605142
+          },
+          {
+            "season": 2025,
+            "accuracyGain": 0.08771929824561409,
+            "brierGain": 0.02283468498894206,
+            "logLossGain": 0.04795011131366245,
+            "marginMAEGain": 0.6751223821163563
+          }
+        ],
+        "aggregate": {
+          "meanAccuracyGain": 0.09317527515947965,
+          "accuracyGainStdDev": 0.035684680996322035,
+          "seasonsBeatingBaselineAccuracy": 1,
+          "seasonsBeatingBaselineBrier": 1,
+          "seasonsBeatingBaselineLogLoss": 1,
+          "seasonsBeatingBaselineMarginMAE": 1
+        }
+      },
+      "indistinguishable": [],
+      "checks": [
+        {
+          "name": "minimum-holdout-seasons",
+          "passed": true
+        },
+        {
+          "name": "aggregate-accuracy-gain",
+          "passed": true
+        },
+        {
+          "name": "seasonal-accuracy-consistency",
+          "passed": true
+        },
+        {
+          "name": "seasonal-brier-consistency",
+          "passed": true
+        },
+        {
+          "name": "seasonal-logloss-consistency",
+          "passed": true
+        },
+        {
+          "name": "accuracy-gain-stability",
+          "passed": true
+        },
+        {
+          "name": "empirical-distinctness",
+          "passed": true
+        }
+      ],
+      "failedChecks": [],
+      "note": "Eligibility never grants production authority automatically."
+    }
+  ],
+  "productionAuthorityGranted": false
+}

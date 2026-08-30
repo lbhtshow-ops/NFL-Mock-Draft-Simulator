@@ -1,0 +1,4 @@
+export const FID_ATOMIC_FUNCTION_ACL_FAILED_REMEDIATION_017C49_STATIC_SCENARIOS=Object.freeze([
+  Object.freeze({name:"positive",change:null,expectedFailure:null}),Object.freeze({name:"not-read-only",change:["BEGIN TRANSACTION READ ONLY;","BEGIN;"],expectedFailure:"reconciliation:one_read_only_row"}),Object.freeze({name:"grant-injected",change:["COMMIT;","GRANT EXECUTE ON FUNCTION x() TO y;\nCOMMIT;"],expectedFailure:"reconciliation:mutation_or_role_change"}),Object.freeze({name:"static-optional-metadata",change:["EXECUTE pg_catalog.format('SELECT count(*) FROM %s","SELECT count(*) FROM fid.fid_persistence_migrations WHERE"],expectedFailure:"reconciliation:optional_metadata_guard"}),Object.freeze({name:"details-removed",change:["failed_baseline_predicates","removed_detail_field"],expectedFailure:"reconciliation:missing:failed_baseline_predicates"})
+]);
+export default FID_ATOMIC_FUNCTION_ACL_FAILED_REMEDIATION_017C49_STATIC_SCENARIOS;

@@ -1,0 +1,5 @@
+export const PG_TIMEOUT_PHASES = Object.freeze(["CONNECT", "BEFORE_SUBMISSION", "AFTER_SUBMISSION", "ROLLBACK", "END"]);
+export function createTimeoutCancellationState(declarations = {}) {
+  let cancelled = false;
+  return Object.freeze({ declarations: Object.freeze({ connectTimeoutMs: declarations.connectTimeoutMs ?? null, queryTimeoutMs: declarations.queryTimeoutMs ?? null, statementTimeoutDeclarationMs: declarations.statementTimeoutDeclarationMs ?? null, lockTimeoutDeclarationMs: declarations.lockTimeoutDeclarationMs ?? null, idleInTransactionTimeoutDeclarationMs: declarations.idleInTransactionTimeoutDeclarationMs ?? null, controllerTimeoutMs: declarations.controllerTimeoutMs ?? null, cancellationTimeoutMs: declarations.cancellationTimeoutMs ?? null, endTimeoutMs: declarations.endTimeoutMs ?? null }), requestCancellation() { cancelled = true; return Object.freeze({ requested: true, serverAcknowledged: false, externalContinuationUnresolved: true }); }, isCancelled() { return cancelled; } });
+}

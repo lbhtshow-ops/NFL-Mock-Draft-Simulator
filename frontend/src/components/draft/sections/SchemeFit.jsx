@@ -30,8 +30,8 @@ function TextList({ items = [] }) {
   );
 }
 
-export default function SchemeFit({ player }) {
-  const prospectIntelligence = buildProspectIntelligence(player);
+export default function SchemeFit({ player, intelligence }) {
+  const prospectIntelligence = intelligence || buildProspectIntelligence(player);
 
   const schemeFitSummary =
     prospectIntelligence?.schemeFit ||

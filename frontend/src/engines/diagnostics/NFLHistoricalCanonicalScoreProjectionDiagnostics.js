@@ -1,0 +1,55 @@
+import assert from "node:assert/strict";
+import {
+ projectHistoricalStatusScore,
+ projectHistoricalExperienceScore,
+ projectHistoricalUsageScore,
+ projectHistoricalProductionScore,
+ projectHistoricalRecognitionScore,
+ projectHistoricalCanonicalContextScores,
+ flattenHistoricalPerformanceProfile,
+} from "../playerEvaluation/nfl/HistoricalCanonicalNFLScoreProjectionService.js";
+import {getNFLHistoricalCanonicalScoreProjectionGovernance as get} from "../teamIntelligence/strength/calibration/index.js";
+const g=get();
+const checks={
+ contract:g.contractVersion==="FIE-NFL-HISTORICAL-CANONICAL-SCORE-PROJECTION-GOVERNANCE-1.0.0",
+ formulaParity:g.canonicalFormulaParityRequired===true,
+ missingStatusNull:projectHistoricalStatusScore({status:null})===null,
+ active72:projectHistoricalStatusScore({status:"ACT"})===72,
+ reserve55:projectHistoricalStatusScore({status:"RES"})===55,
+ practice48:projectHistoricalStatusScore({status:"PRACTICE SQUAD"})===48,
+ knownOther50:projectHistoricalStatusScore({status:"OUT"})===50,
+ missingExperienceNull:projectHistoricalExperienceScore({experience:null})===null,
+ exp0_58:projectHistoricalExperienceScore({experience:0})===58,
+ exp3_64:projectHistoricalExperienceScore({experience:3})===64,
+ exp8_70:projectHistoricalExperienceScore({experience:8})===70,
+ usage900_92:projectHistoricalUsageScore({usageProfile:{available:true,totalSnaps:900,gamesTracked:10,maxWeeklySnapShare:.8}})===92,
+ usage700_86:projectHistoricalUsageScore({usageProfile:{available:true,totalSnaps:700}})===86,
+ usage500_80:projectHistoricalUsageScore({usageProfile:{available:true,totalSnaps:500}})===80,
+ usage300_72:projectHistoricalUsageScore({usageProfile:{available:true,totalSnaps:300}})===72,
+ usage150_64:projectHistoricalUsageScore({usageProfile:{available:true,totalSnaps:150}})===64,
+ usageShare60:projectHistoricalUsageScore({usageProfile:{available:true,totalSnaps:100,gamesTracked:8,maxWeeklySnapShare:.5}})===60,
+ usageAny55:projectHistoricalUsageScore({usageProfile:{available:true,totalSnaps:10,gamesTracked:1}})===55,
+ usageZero48:projectHistoricalUsageScore({usageProfile:{available:true,totalSnaps:0,gamesTracked:2}})===48,
+ usageMissingNull:projectHistoricalUsageScore({usageProfile:null})===null,
+ qbFormula:projectHistoricalProductionScore({position:"QB",performanceProfile:{available:true,passingYards:1200,passingTDs:10,interceptions:5}})===77,
+ rbFormula:projectHistoricalProductionScore({position:"RB",performanceProfile:{available:true,rushingYards:800,rushingTDs:5,receptions:24}})===75,
+ wrFormula:projectHistoricalProductionScore({position:"WR",performanceProfile:{available:true,receivingYards:900,receivingTDs:5,receptions:50}})===77,
+ defenseFormula:projectHistoricalProductionScore({position:"EDGE",performanceProfile:{available:true,sacks:5,tackles:60,defensiveInterceptions:1}})===74,
+ unsupportedProductionNull:projectHistoricalProductionScore({position:"OT",performanceProfile:{available:true}})===null,
+ recognitionNull:projectHistoricalRecognitionScore({recognitionSummary:null})===null,
+ recognitionProjection:projectHistoricalRecognitionScore({recognitionSummary:{available:true,score:84}})===84,
+ totalsFlatten:flattenHistoricalPerformanceProfile({available:true,gamesTracked:3,totals:{passingYards:750,passingTDs:6}}).passingYards===750,
+ completeProjection:projectHistoricalCanonicalContextScores({position:"QB",historicalStatus:"ACT",historicalExperience:4,usageProfile:{available:true,totalSnaps:500},performanceProfile:{available:true,passingYards:1200,passingTDs:10,interceptions:5}}).experienceScore===70,
+ noCurrentUsage:g.currentUsageIndexAllowed===false,
+ noCurrentPerformance:g.currentPerformanceIndexAllowed===false,
+ noCurrentRecognition:g.currentRecognitionLookupAllowed===false,
+ noCarryover:g.prospectCarryoverAllowed===false,
+ noControlled:g.controlledPositionModelExecutionAuthorized===false,
+ noFull606:g.full606ScoringAuthorized===false,
+ noCalibration:g.calibrationAuthorized===false,
+ noWeights:g.learnedWeightsAuthorized===false,
+ noMutation:g.datasetMutationAuthorized===false,
+};
+const bad=Object.entries(checks).filter(([,v])=>!v);
+console.log(JSON.stringify({suite:"NFL Historical Canonical Score Projections",contractVersion:g.contractVersion,status:bad.length?"FAIL":"PASS",passed:Object.keys(checks).length-bad.length,failed:bad.length,checks},null,2));
+assert.equal(bad.length,0);

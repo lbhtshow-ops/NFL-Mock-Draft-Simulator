@@ -25,33 +25,29 @@ function Home({ apiURL }) {
     // Initialize state variables for draft settings
     const [name, setName] = useState("");
     const [numRounds, setNumRounds] = useState(1);
-    const [year, setYear] = useState(2026);
-    const [autoPickDelay, setAutoPickDelay] = useState(1000);
-    const [soundsMuted, setSoundsMuted] = useState(false);
-    const [yearDropdownInteracted, setYearDropdownInteracted] = useState(false);
+    const [year, setYear] = useState(2027);
+    const [autoPickDelay, setAutoPickDelay] = useState(1400);
+    const [draftMode, setDraftMode] = useState("standard");
+    const [, setYearDropdownInteracted] = useState(false);
 
     // Initialize state variables for team selection
     const [teamsLoading, setTeamsLoading] = useState(true);
     const [teamsError, setTeamsError] = useState("");
     const [teams, setTeams] = useState([]);
     const [selectedTeams, setSelectedTeams] = useState([]);
-    const [showSelectTeamModal, setShowSelectTeamModal] = useState(false);
 
     // Initialize state variables for draft creation status
     const [loading, setLoading] = useState(false);
-    const [loadingStartTime, setLoadingStartTime] = useState(null);
     const [dots, setDots] = useState("");
     const [error, setError] = useState("");
 
-    // Initialize state for dark mode (commented out for now)
-    const [darkMode, setDarkMode] = useState(false);
     
     // Fetch teams from the API when the component mounts
     useEffect(() => {
         const fetchTeams = async () => {
             setTeamsLoading(true);
             setTeamsError("");
-            setLoadingStartTime(Date.now());
+            const requestStartedAt = Date.now();
 
             try {
                 // Create an abort controller for timeout
@@ -60,8 +56,10 @@ function Home({ apiURL }) {
                     controller.abort();
                 }, 45000); // 45 second timeout
 
-                const response = await axios.get(`${apiURL}/teams`, {
-                    params: { year: year },
+                // NFL team selection is draft-class independent.
+                // Prospect/draft-year filtering happens when the draft is created and loaded,
+                // not when loading the 32 team control options.
+                const response = await axios.get(`${apiURL}/teams/`, {
                     signal: controller.signal,
                     timeout: 45000,
                     headers: {
@@ -78,7 +76,7 @@ const teamsData = Array.isArray(response.data)
 
 setTeams(teamsData);
 
-const loadTime = Date.now() - loadingStartTime;
+const loadTime = Date.now() - requestStartedAt;
 console.log(`Teams loaded in ${loadTime}ms`);
 
             } catch (err) {
@@ -97,7 +95,7 @@ console.log(`Teams loaded in ${loadTime}ms`);
         };
 
         fetchTeams();
-    }, [apiURL, year]);
+    }, [apiURL]);
 
     useEffect(() => {
         if (loading) {
@@ -136,8 +134,9 @@ console.log(`Teams loaded in ${loadTime}ms`);
 const handleResetSettings = () => {
   setName("");
   setNumRounds(1);
-  setYear(2026);
+  setYear(2027);
   setAutoPickDelay(1400);
+  setDraftMode("standard");
   setSelectedTeams([]);
   setYearDropdownInteracted(false);
 };
@@ -154,14 +153,17 @@ const handleResetSettings = () => {
                 name: name || "Mock Draft",
                 num_rounds: numRounds,
                 year: year,
-                user_team_ids: selectedTeams
+                user_team_ids: selectedTeams,
+                draft_mode: draftMode,
+                runtime_contract_version: "2.1"
             });
             const createdDraft = result.data;
 
             // Navigate to the created draft page with the created draft data
-            navigate(`/draft/${createdDraft.id}`, { state: { createdDraft, autoPickDelay } });
+            navigate(`/draft/${createdDraft.id}`, { state: { createdDraft, autoPickDelay, draftMode } });
         } catch (err) {
-            setError("Failed to create mock draft.");
+            const detail = err?.response?.data?.detail;
+            setError(detail ? `Failed to create mock draft: ${detail}` : "Failed to create mock draft.");
         } finally {
             setLoading(false);
         }
@@ -182,6 +184,8 @@ const handleResetSettings = () => {
   setYearDropdownInteracted={setYearDropdownInteracted}
   autoPickDelay={autoPickDelay}
   setAutoPickDelay={setAutoPickDelay}
+  draftMode={draftMode}
+  setDraftMode={setDraftMode}
   numRounds={numRounds}
   setNumRounds={setNumRounds}
   loading={loading}

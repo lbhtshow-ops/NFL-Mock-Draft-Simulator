@@ -1,0 +1,19 @@
+{
+  "contract": "NFLHistoricalReplayManifest",
+  "version": "NFL-HISTORICAL-REPLAY-MANIFEST-1.0.0",
+  "range": {
+    "startSeason": 2018,
+    "endSeason": 2025
+  },
+  "counts": {
+    "games": 2227,
+    "snapshots": 2227,
+    "exclusions": 0
+  },
+  "hashes": {
+    "games": "97c65f536282612b50028cefa3919442b02c7e6f89c01837a31f2704efffb1f2",
+    "snapshots": "ef178802f63a54e970e7dd69ff3d1130d2a2ca0d61223684bc2e52356c14dd6e",
+    "exclusions": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "generatedAt": "2026-08-11T06:07:11.711Z"
+}

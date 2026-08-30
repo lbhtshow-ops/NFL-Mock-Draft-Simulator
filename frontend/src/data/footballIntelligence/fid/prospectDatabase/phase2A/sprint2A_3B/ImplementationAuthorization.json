@@ -1,0 +1,14 @@
+{
+  "authorizationId": "FID_2027_SUPPORTING_RECORDS_AND_PREPARATION_COHORT_ONE_EXECUTION_2A3B_V1",
+  "scope": "REPOSITORY_ONLY_DECLARATION_CONSTRUCTION",
+  "lifecycle": "CONSUMED_PERMANENTLY_NON_REUSABLE",
+  "maximumAttempts": 1,
+  "maximumExecutions": 1,
+  "attempts": 1,
+  "executions": 1,
+  "consumedBy": "Creation of this Sprint 2A.3B implementation authorization",
+  "readinessGateCount": 22,
+  "readinessGatesPassed": 22,
+  "allowedLocation": "frontend/src/data/footballIntelligence/fid/prospectDatabase/phase2A/sprint2A_3B/",
+  "prohibited": ["CANONICAL_IDENTIFIER", "CANONICAL_PROFILE", "CANONICAL_PROGRAM", "PROMOTION", "PERSISTENCE", "DATABASE", "SQL", "MIGRATION", "RESOLVER", "SIMULATOR", "BIG_BOARD", "DRAFT_ROOM", "DRAFT_RESULTS", "REF", "SPRINT_17C", "PACKAGE_MUTATION", "RETRY"]
+}

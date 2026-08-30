@@ -1,5 +1,6 @@
 import React from "react";
 import LBHTCard from "../ui/LBHTCard";
+import "../../styles/draft-modes.css";
 
 function DraftConfigurationPanel({
   year,
@@ -8,6 +9,8 @@ function DraftConfigurationPanel({
   setYearDropdownInteracted,
   autoPickDelay,
   setAutoPickDelay,
+  draftMode,
+  setDraftMode,
   numRounds,
   setNumRounds,
   loading,
@@ -24,6 +27,30 @@ function DraftConfigurationPanel({
   ];
 
   const roundOptions = [1, 2, 3, 4, 5, 6, 7];
+
+  const draftModes = [
+    {
+      id: "broadcast",
+      label: "Broadcast",
+      description: "Full draft-night pacing, live pick clocks, trades, and manual CPU simulation.",
+    },
+    {
+      id: "standard",
+      label: "Standard",
+      description: "Balanced pacing for the complete draft experience.",
+    },
+    {
+      id: "express",
+      label: "Express",
+      description: "Faster CPU decisions and shorter user clocks.",
+    },
+    {
+      id: "auto",
+      label: "Auto",
+      description: "Hands-off simulation with the fastest CPU pacing.",
+    },
+  ];
+
 
   const handleYearChange = (event) => {
     setYear(Number(event.target.value));
@@ -61,6 +88,23 @@ function DraftConfigurationPanel({
                 onClick={() => setNumRounds(round)}
               >
                 {round}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="draft_configuration_group">
+          <span className="draft_configuration_label">Draft Mode</span>
+          <div className="draft_mode_grid">
+            {draftModes.map((mode) => (
+              <button
+                key={mode.id}
+                type="button"
+                className={draftMode === mode.id ? "active" : ""}
+                onClick={() => setDraftMode(mode.id)}
+              >
+                <strong>{mode.label}</strong>
+                <span>{mode.description}</span>
               </button>
             ))}
           </div>

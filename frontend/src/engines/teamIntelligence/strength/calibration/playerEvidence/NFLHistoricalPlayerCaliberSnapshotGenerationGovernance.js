@@ -1,0 +1,30 @@
+export const NFL_HISTORICAL_PLAYER_CALIBER_SNAPSHOT_GENERATION_GOVERNANCE=Object.freeze({
+  contractVersion:"FIE-NFL-HISTORICAL-PLAYER-CALIBER-SNAPSHOT-GENERATION-GOVERNANCE-1.0.0",
+  sprint:"9D.1C2B2C3",
+  canonicalNFLPlayerEvaluatorRequired:true,
+  historicalInputAdapterRequired:true,
+  targetAsOfRequired:true,
+  kickoffRequired:true,
+  evidenceMustPrecedeAsOf:true,
+  currentPlayerStateAllowed:false,
+  currentRatingBackfillAllowed:false,
+  currentSeasonFutureWeeksAllowed:false,
+  targetWeekGamePerformanceAllowed:false,
+  futureSeasonEvidenceAllowed:false,
+  exactCanonicalPlayerIdRequired:true,
+  weeklyHistoricalPerformanceEvidenceAllowed:true,
+  historicalUsageEvidenceAllowed:true,
+  historicalRecognitionEvidenceAllowed:true,
+  unavailableIfCanonicalHistoricalEvaluatorMissing:true,
+  unavailableIfEvidenceInsufficient:true,
+  availableSnapshotRequiresCanonicalEvaluation:true,
+  confidenceRequiredForAvailableSnapshot:true,
+  modelVersionRequiredForAvailableSnapshot:true,
+  provenanceRequiredForAvailableSnapshot:true,
+  calibrationAuthorized:false,
+  learnedWeightsAuthorized:false,
+  datasetMutationAuthorized:false,
+});
+export function getNFLHistoricalPlayerCaliberSnapshotGenerationGovernance(){
+  return NFL_HISTORICAL_PLAYER_CALIBER_SNAPSHOT_GENERATION_GOVERNANCE;
+}

@@ -1,0 +1,18 @@
+{
+  "fixtureOnly": true,
+  "executableSql": false,
+  "artifactIdentityReference": "ref:artifact:sprint17c:future-exact-identity-required",
+  "newAuthorizationRequired": true,
+  "expectedProjectReference": "ahmorpzcaapvoymiqlkv",
+  "expectedEnvironment": "DEDICATED_NON_PRODUCTION_TEST",
+  "endpointReference": "fake:direct:ahmorpzcaapvoymiqlkv",
+  "roleReference": "ref:role:fake-ref-executor",
+  "credentialProviderReference": "ref:provider:fake-credential-v1-12",
+  "tlsPolicyReference": "ref:tls:official-supabase-ca-review-required",
+  "clientCount": 1,
+  "transactionCount": 1,
+  "transactionPolicy": "EXPLICIT_ROLLBACK",
+  "persistentState": "UNRESOLVED",
+  "livePlatformFacts": "UNRESOLVED",
+  "rootCauseConclusion": null
+}

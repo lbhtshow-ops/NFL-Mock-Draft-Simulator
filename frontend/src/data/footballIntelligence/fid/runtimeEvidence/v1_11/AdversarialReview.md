@@ -1,0 +1,5 @@
+# Adversarial review
+
+The review rejects all challenged shortcuts: declarations are not endpoint proof; no password or URI is documented; API keys are not database credentials; operator claims are not database observations; session pooling is not direct and transaction pooling is insufficient; IPv6-only feasibility is not assumed; TLS validation cannot be disabled and CA source cannot be guessed; `postgres` is not selected for convenience; `fid_function_owner` remains NOLOGIN; the dedicated role receives no broad authority; execution, owner, admin, and final `service_role` ACL identities remain distinct; memberships cannot silently change effective EXECUTE; no SECURITY DEFINER helper is casually created; PID is correlation-only; timeout/cancel/close do not prove stop or rollback; endpoint/credential proof does not authorize SQL; consumed Sprint 17C authority remains closed.
+
+Residual limitations are endpoint/port/address reachability, official CA policy, credential mechanism implementation, role existence/privileges, owner-preserving mutation authority, pooler behavior, and all live session/transaction observations.

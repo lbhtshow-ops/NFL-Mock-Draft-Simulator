@@ -1,0 +1,1 @@
+export { CANONICAL_PROSPECT_IDENTIFIER_GENERATOR_PORT_V1_2, createRuntimeGovernanceGenerationInvocationV1_2, bindGeneratedCandidateToGovernanceV1_2, createPreTransactionRuntimeGovernanceBindingV1_1, createRuntimeGovernanceCompositionV1_2 } from "./runtime/governance-v1_2.js";

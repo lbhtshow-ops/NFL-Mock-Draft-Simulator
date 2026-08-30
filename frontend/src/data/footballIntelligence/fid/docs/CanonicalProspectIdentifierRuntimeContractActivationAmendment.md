@@ -1,0 +1,15 @@
+# Canonical Prospect Identifier Runtime Contract Activation Amendment
+
+Sprint 15 stopped because the immutable 1.0.0 entropy result, generation result, generator port, and entropy-provider port intentionally prohibited successful runtime values and binding. Duplicating those contracts inside the Supabase package would have created competing ownership. This amendment preserves every historical file and adds explicit 1.1.0 successors for the future non-production server path.
+
+The entropy runtime result uses direct `Uint8Array` ownership transfer. It requires exactly 16 bytes under `CANONICAL_PROSPECT_IDENTIFIER_ENTROPY_OUTPUT_SIZE_POLICY@1.1.0`, remains byte-oriented, and is consumed by one governed encoder before prompt reference release. JavaScript cannot make a typed array physically non-serializable, so serialization, logging, snapshots, persistence, audit inclusion, extension inclusion, errors, caching, replay storage, and cloning are prohibited by contract and boundary validation. No zeroization guarantee is claimed. Failure results cannot contain entropy, partial bytes, or raw source errors.
+
+`PROSPECT_IDENTIFIER_GENERATION_RUNTIME_RESULT@1.1.0` can carry a defensively structured generated candidate at runtime. It classifies that value as sensitive pre-issuance operational data: it may transit governed runtime components and the future transaction boundary but not general logs or snapshots. Generation claims no uniqueness, collision check, reservation, issuance, ledger write, identity, record, or persistence. A generated value becomes canonical only after future governed issuance succeeds.
+
+Both canonical ports receive explicit 1.1.0 successors with status `SPECIFIED_IMPLEMENTATION_BINDABLE_NON_PRODUCTION`. Bindability is distinct from implementation, validation, registration, binding, availability, invocation, and production approval; all remain false. Existing adapter/provider lifecycle vocabularies and inactive registration models already distinguish the necessary stages, so no descriptor successor, registration successor, or registry is created.
+
+Version 1.0.0 remains immutable, exported, and valid for declaration-only diagnostics. It cannot carry runtime entropy or candidates. Server composition must explicitly select compatible 1.1.0 port/result pairs. Automatic conversion, downgrade, fallback, negotiation, lossy conversion, and mixed versions without declared compatibility are prohibited. Existing snapshots remain unchanged.
+
+The amendment preserves Sprint 4–14 ownership and binds the approved Supabase Edge Deno host, Web Crypto capability category, 16-byte output policy, Base64URL encoding policy, and trusted runtime-boundary design. It grants implementation eligibility but no execution permission. No implementation, registration, binding, invocation, entropy, encoding, candidate, persistence, or production activation exists.
+
+Readiness is restored to `READY_FOR_CANONICAL_PROSPECT_IDENTIFIER_TRUSTED_RUNTIME_NON_PRODUCTION_IMPLEMENTATION`. The exact next action is **Resume Canonical Prospect Identifier Trusted Runtime Non-Production Implementation**.

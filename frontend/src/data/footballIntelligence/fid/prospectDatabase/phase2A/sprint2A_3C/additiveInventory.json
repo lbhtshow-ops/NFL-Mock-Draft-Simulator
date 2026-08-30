@@ -1,0 +1,17 @@
+{
+  "inventoryId": "FID_SPRINT_2A3C_ADDITIVE_INVENTORY_V1",
+  "algorithm": "SHA256",
+  "scope": "Sprint 2A.3C files excluding this self-referential inventory",
+  "files": [
+    { "path": "enrichmentData.js", "sha256": "ABD14CE089509B07011E673C320E42D7E60CF425987BFD530384C0D7B3BDD2F3", "gitState": "UNTRACKED" },
+    { "path": "ImplementationAuthorization.json", "sha256": "C85C9522465017492C517E3A3EC77C101FB08EBF73F62D426ADFE383A48190B1", "gitState": "UNTRACKED" },
+    { "path": "index.js", "sha256": "F7279DE03CEED8ABBE48098F25E23A65FB21423A9441D87CC7E985A4986D0F5B", "gitState": "UNTRACKED" },
+    { "path": "README.md", "sha256": "A63458427CB5EAA07AC0C5AD745A8E176F41D7104FA22CCC074C013CDC14408E", "gitState": "UNTRACKED" },
+    { "path": "repository-audit-and-review.md", "sha256": "E425B8148CC5C428205B3497C29D99F3CD4819E12700C9417F991F86DA13E0F1", "gitState": "UNTRACKED" },
+    { "path": "reviews.js", "sha256": "75711922C1725DAD5BF636AAC3F3D8A342B4EC738166FCB8A9CF7495DF64AE9F", "gitState": "UNTRACKED" },
+    { "path": "runDiagnostics.mjs", "sha256": "401B946DD748985EC5EF69ABF89A201184A0BE317B423262E1D7FBD22322367A", "gitState": "UNTRACKED" }
+  ],
+  "aggregateMethod": "SHA256 of newline-joined uppercase file hashes in listed order",
+  "aggregate": "F341CFF8A94BCDC245FF7FF0F662EBA0AD855D78F27F647DF26EA7E6BA457AA5",
+  "status": "VERIFIED"
+}

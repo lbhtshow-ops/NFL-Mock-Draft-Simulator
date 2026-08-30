@@ -1,0 +1,587 @@
+{
+  "contract": "NFLAdvancedEarlySeasonAblationPI2",
+  "version": "1.0.0",
+  "status": "RESEARCH_ONLY",
+  "productionAuthorityGranted": false,
+  "automaticPromotion": false,
+  "generatedAt": "2026-08-25T00:48:08.123Z",
+  "canonicalModel": {
+    "modelId": "QUALITY_WEIGHTED_MATCHUP",
+    "modelVersion": "NFL-GAME-DECISION-MODEL-V1.0.0",
+    "parameters": {
+      "homeFieldPoints": 1.25,
+      "edgeScale": 0.25,
+      "probabilityScale": 6.5
+    }
+  },
+  "records": {
+    "historicalDecisionRecords": 2227,
+    "historicalSnapshots": 2227,
+    "comparable": 2219
+  },
+  "baselineParity": {
+    "compared": 2219,
+    "matchupEdgeMaxAbsoluteDifference": 0,
+    "evidenceQualityMaxAbsoluteDifference": 0,
+    "mismatchesOverTolerance": 0,
+    "tolerance": 1e-9
+  },
+  "methodology": {
+    "baseline": "Existing historical replay evidence is recomputed through the current canonical Matchup Intelligence engine.",
+    "currentOnly": "CURRENT_ONLY_ADVANCED removes only team advanced evidence whose evidence.season is less than game.season.",
+    "week1Ablation": "NO_ADVANCED_WEEK_1 removes advanced evidence in Week 1, where the existing historical replay uses prior-season advanced evidence because no current-season sample exists.",
+    "earlyAblation": "NO_ADVANCED_WEEKS_1_4 removes all advanced evidence in Weeks 1-4 to measure total early-season advanced contribution.",
+    "protectionPressure": "No special promotion assumption is made for protectionPressure; the experiment evaluates the canonical dimensions as generated.",
+    "note": "This experiment changes research replay inputs only. It does not change production Matchup weights, Team Strength, Decision Model parameters, or runtime evidence."
+  },
+  "variants": [
+    {
+      "variantId": "BASELINE_RECOMPUTED",
+      "description": "Recompute the historical snapshot with its original advanced evidence unchanged.",
+      "windows": [
+        {
+          "window": "WEEK_1",
+          "sampleSize": 125,
+          "winnerAccuracy": 0.64,
+          "brierScore": 0.23017758431399923,
+          "logLoss": 0.6522909970398995,
+          "marginMAE": 10.169709577931403,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 0,
+          "correctedMisses": 0,
+          "introducedMisses": 0,
+          "netCorrectedFavoriteFlips": 0
+        },
+        {
+          "window": "WEEKS_1_2",
+          "sampleSize": 252,
+          "winnerAccuracy": 0.6309523809523809,
+          "brierScore": 0.2313193390913796,
+          "logLoss": 0.6550985088564393,
+          "marginMAE": 9.728514628490155,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 0,
+          "correctedMisses": 0,
+          "introducedMisses": 0,
+          "netCorrectedFavoriteFlips": 0
+        },
+        {
+          "window": "WEEKS_1_4",
+          "sampleSize": 503,
+          "winnerAccuracy": 0.6123260437375746,
+          "brierScore": 0.2334977013405177,
+          "logLoss": 0.6594557813253594,
+          "marginMAE": 10.175815049599308,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 0,
+          "correctedMisses": 0,
+          "introducedMisses": 0,
+          "netCorrectedFavoriteFlips": 0
+        },
+        {
+          "window": "WEEKS_1_6",
+          "sampleSize": 736,
+          "winnerAccuracy": 0.5883152173913043,
+          "brierScore": 0.23611114645406667,
+          "logLoss": 0.6644786122669588,
+          "marginMAE": 10.319055486747887,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 0,
+          "correctedMisses": 0,
+          "introducedMisses": 0,
+          "netCorrectedFavoriteFlips": 0
+        },
+        {
+          "window": "FULL_SEASON",
+          "sampleSize": 2219,
+          "winnerAccuracy": 0.6210004506534474,
+          "brierScore": 0.22672368914637284,
+          "logLoss": 0.6447130765925526,
+          "marginMAE": 10.422600677021892,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 0,
+          "correctedMisses": 0,
+          "introducedMisses": 0,
+          "netCorrectedFavoriteFlips": 0
+        }
+      ],
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 265,
+          "winnerAccuracy": 0.6037735849056604,
+          "brierScore": 0.22490744453180747,
+          "logLoss": 0.6400932609751455,
+          "marginMAE": 10.326094528964733
+        },
+        {
+          "season": 2019,
+          "sampleSize": 266,
+          "winnerAccuracy": 0.5789473684210527,
+          "brierScore": 0.23769510788320322,
+          "logLoss": 0.6676730089058857,
+          "marginMAE": 11.192851580321266
+        },
+        {
+          "season": 2020,
+          "sampleSize": 268,
+          "winnerAccuracy": 0.6380597014925373,
+          "brierScore": 0.220505011536868,
+          "logLoss": 0.6317078655228165,
+          "marginMAE": 10.163854535152678
+        },
+        {
+          "season": 2021,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.5809859154929577,
+          "brierScore": 0.2342867482139474,
+          "logLoss": 0.6605431961454231,
+          "marginMAE": 11.376491310505116
+        },
+        {
+          "season": 2022,
+          "sampleSize": 282,
+          "winnerAccuracy": 0.6666666666666666,
+          "brierScore": 0.22249433626592932,
+          "logLoss": 0.6361727879741148,
+          "marginMAE": 9.130752126097976
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6175438596491228,
+          "brierScore": 0.23034970446611347,
+          "logLoss": 0.6526560944723402,
+          "marginMAE": 10.553992335808317
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.656140350877193,
+          "brierScore": 0.21685655225131925,
+          "logLoss": 0.62455459368839,
+          "marginMAE": 10.290029193390108
+        },
+        {
+          "season": 2025,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6232394366197183,
+          "brierScore": 0.2269103138797118,
+          "logLoss": 0.6447001212379243,
+          "marginMAE": 10.365431509805806
+        }
+      ]
+    },
+    {
+      "variantId": "CURRENT_ONLY_ADVANCED",
+      "description": "Remove only advanced evidence whose evidence season is prior to the game season.",
+      "windows": [
+        {
+          "window": "WEEK_1",
+          "sampleSize": 125,
+          "winnerAccuracy": 0.624,
+          "brierScore": 0.2292622335170963,
+          "logLoss": 0.6502961773545073,
+          "marginMAE": 10.136216007039648,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 4,
+          "correctedMisses": 1,
+          "introducedMisses": 3,
+          "netCorrectedFavoriteFlips": -2
+        },
+        {
+          "window": "WEEKS_1_2",
+          "sampleSize": 252,
+          "winnerAccuracy": 0.623015873015873,
+          "brierScore": 0.23086529603736036,
+          "logLoss": 0.6541090149648753,
+          "marginMAE": 9.711900754039878,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 4,
+          "correctedMisses": 1,
+          "introducedMisses": 3,
+          "netCorrectedFavoriteFlips": -2
+        },
+        {
+          "window": "WEEKS_1_4",
+          "sampleSize": 503,
+          "winnerAccuracy": 0.6083499005964215,
+          "brierScore": 0.23327022847846426,
+          "logLoss": 0.6589600507872398,
+          "marginMAE": 10.167491597588432,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 4,
+          "correctedMisses": 1,
+          "introducedMisses": 3,
+          "netCorrectedFavoriteFlips": -2
+        },
+        {
+          "window": "WEEKS_1_6",
+          "sampleSize": 736,
+          "winnerAccuracy": 0.5855978260869565,
+          "brierScore": 0.2359556860605709,
+          "logLoss": 0.6641398181627821,
+          "marginMAE": 10.313367040604584,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 4,
+          "correctedMisses": 1,
+          "introducedMisses": 3,
+          "netCorrectedFavoriteFlips": -2
+        },
+        {
+          "window": "FULL_SEASON",
+          "sampleSize": 2219,
+          "winnerAccuracy": 0.6200991437584498,
+          "brierScore": 0.22667212589733585,
+          "logLoss": 0.6446007050465077,
+          "marginMAE": 10.420713927872958,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 4,
+          "correctedMisses": 1,
+          "introducedMisses": 3,
+          "netCorrectedFavoriteFlips": -2
+        }
+      ],
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 265,
+          "winnerAccuracy": 0.6,
+          "brierScore": 0.22492407323539507,
+          "logLoss": 0.6401032065778883,
+          "marginMAE": 10.324493907358693
+        },
+        {
+          "season": 2019,
+          "sampleSize": 266,
+          "winnerAccuracy": 0.5789473684210527,
+          "brierScore": 0.23746949999453862,
+          "logLoss": 0.6672191079353439,
+          "marginMAE": 11.191010100050914
+        },
+        {
+          "season": 2020,
+          "sampleSize": 268,
+          "winnerAccuracy": 0.6343283582089553,
+          "brierScore": 0.22050352116747374,
+          "logLoss": 0.6316941770004512,
+          "marginMAE": 10.15911479996197
+        },
+        {
+          "season": 2021,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.5809859154929577,
+          "brierScore": 0.23424914366272376,
+          "logLoss": 0.6604577016588984,
+          "marginMAE": 11.375899786014392
+        },
+        {
+          "season": 2022,
+          "sampleSize": 282,
+          "winnerAccuracy": 0.6702127659574468,
+          "brierScore": 0.2224502604254358,
+          "logLoss": 0.6360721334941143,
+          "marginMAE": 9.127686518621433
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6175438596491228,
+          "brierScore": 0.23014107235791179,
+          "logLoss": 0.6522143790987106,
+          "marginMAE": 10.55134887532834
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.656140350877193,
+          "brierScore": 0.21683039527623502,
+          "logLoss": 0.6245085277210647,
+          "marginMAE": 10.28672434935579
+        },
+        {
+          "season": 2025,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6197183098591549,
+          "brierScore": 0.22702161539246551,
+          "logLoss": 0.6449258283381444,
+          "marginMAE": 10.367985425994116
+        }
+      ]
+    },
+    {
+      "variantId": "NO_ADVANCED_WEEK_1",
+      "description": "Remove all advanced evidence for Week 1 only.",
+      "windows": [
+        {
+          "window": "WEEK_1",
+          "sampleSize": 125,
+          "winnerAccuracy": 0.624,
+          "brierScore": 0.2292622335170963,
+          "logLoss": 0.6502961773545073,
+          "marginMAE": 10.136216007039648,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 4,
+          "correctedMisses": 1,
+          "introducedMisses": 3,
+          "netCorrectedFavoriteFlips": -2
+        },
+        {
+          "window": "WEEKS_1_2",
+          "sampleSize": 252,
+          "winnerAccuracy": 0.623015873015873,
+          "brierScore": 0.23086529603736036,
+          "logLoss": 0.6541090149648753,
+          "marginMAE": 9.711900754039878,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 4,
+          "correctedMisses": 1,
+          "introducedMisses": 3,
+          "netCorrectedFavoriteFlips": -2
+        },
+        {
+          "window": "WEEKS_1_4",
+          "sampleSize": 503,
+          "winnerAccuracy": 0.6083499005964215,
+          "brierScore": 0.23327022847846426,
+          "logLoss": 0.6589600507872398,
+          "marginMAE": 10.167491597588432,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 4,
+          "correctedMisses": 1,
+          "introducedMisses": 3,
+          "netCorrectedFavoriteFlips": -2
+        },
+        {
+          "window": "WEEKS_1_6",
+          "sampleSize": 736,
+          "winnerAccuracy": 0.5855978260869565,
+          "brierScore": 0.2359556860605709,
+          "logLoss": 0.6641398181627821,
+          "marginMAE": 10.313367040604584,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 4,
+          "correctedMisses": 1,
+          "introducedMisses": 3,
+          "netCorrectedFavoriteFlips": -2
+        },
+        {
+          "window": "FULL_SEASON",
+          "sampleSize": 2219,
+          "winnerAccuracy": 0.6200991437584498,
+          "brierScore": 0.22667212589733585,
+          "logLoss": 0.6446007050465077,
+          "marginMAE": 10.420713927872958,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 4,
+          "correctedMisses": 1,
+          "introducedMisses": 3,
+          "netCorrectedFavoriteFlips": -2
+        }
+      ],
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 265,
+          "winnerAccuracy": 0.6,
+          "brierScore": 0.22492407323539507,
+          "logLoss": 0.6401032065778883,
+          "marginMAE": 10.324493907358693
+        },
+        {
+          "season": 2019,
+          "sampleSize": 266,
+          "winnerAccuracy": 0.5789473684210527,
+          "brierScore": 0.23746949999453862,
+          "logLoss": 0.6672191079353439,
+          "marginMAE": 11.191010100050914
+        },
+        {
+          "season": 2020,
+          "sampleSize": 268,
+          "winnerAccuracy": 0.6343283582089553,
+          "brierScore": 0.22050352116747374,
+          "logLoss": 0.6316941770004512,
+          "marginMAE": 10.15911479996197
+        },
+        {
+          "season": 2021,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.5809859154929577,
+          "brierScore": 0.23424914366272376,
+          "logLoss": 0.6604577016588984,
+          "marginMAE": 11.375899786014392
+        },
+        {
+          "season": 2022,
+          "sampleSize": 282,
+          "winnerAccuracy": 0.6702127659574468,
+          "brierScore": 0.2224502604254358,
+          "logLoss": 0.6360721334941143,
+          "marginMAE": 9.127686518621433
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6175438596491228,
+          "brierScore": 0.23014107235791179,
+          "logLoss": 0.6522143790987106,
+          "marginMAE": 10.55134887532834
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.656140350877193,
+          "brierScore": 0.21683039527623502,
+          "logLoss": 0.6245085277210647,
+          "marginMAE": 10.28672434935579
+        },
+        {
+          "season": 2025,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6197183098591549,
+          "brierScore": 0.22702161539246551,
+          "logLoss": 0.6449258283381444,
+          "marginMAE": 10.367985425994116
+        }
+      ]
+    },
+    {
+      "variantId": "NO_ADVANCED_WEEKS_1_4",
+      "description": "Remove all advanced evidence for Weeks 1-4.",
+      "windows": [
+        {
+          "window": "WEEK_1",
+          "sampleSize": 125,
+          "winnerAccuracy": 0.624,
+          "brierScore": 0.2292622335170963,
+          "logLoss": 0.6502961773545073,
+          "marginMAE": 10.136216007039648,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 4,
+          "correctedMisses": 1,
+          "introducedMisses": 3,
+          "netCorrectedFavoriteFlips": -2
+        },
+        {
+          "window": "WEEKS_1_2",
+          "sampleSize": 252,
+          "winnerAccuracy": 0.6349206349206349,
+          "brierScore": 0.22892026219527792,
+          "logLoss": 0.649990334175053,
+          "marginMAE": 9.651433075432605,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 11,
+          "correctedMisses": 6,
+          "introducedMisses": 5,
+          "netCorrectedFavoriteFlips": 1
+        },
+        {
+          "window": "WEEKS_1_4",
+          "sampleSize": 503,
+          "winnerAccuracy": 0.610337972166998,
+          "brierScore": 0.23252119806027688,
+          "logLoss": 0.6574151988806236,
+          "marginMAE": 10.129892083301641,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 27,
+          "correctedMisses": 13,
+          "introducedMisses": 14,
+          "netCorrectedFavoriteFlips": -1
+        },
+        {
+          "window": "WEEKS_1_6",
+          "sampleSize": 736,
+          "winnerAccuracy": 0.5869565217391305,
+          "brierScore": 0.23544378076118466,
+          "logLoss": 0.6630840294276895,
+          "marginMAE": 10.28767063342216,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 27,
+          "correctedMisses": 13,
+          "introducedMisses": 14,
+          "netCorrectedFavoriteFlips": -1
+        },
+        {
+          "window": "FULL_SEASON",
+          "sampleSize": 2219,
+          "winnerAccuracy": 0.6205497972059486,
+          "brierScore": 0.22650233666779637,
+          "logLoss": 0.6442505200491995,
+          "marginMAE": 10.412190919451914,
+          "priorSeasonAdvancedGames": 123,
+          "favoriteFlips": 27,
+          "correctedMisses": 13,
+          "introducedMisses": 14,
+          "netCorrectedFavoriteFlips": -1
+        }
+      ],
+      "bySeason": [
+        {
+          "season": 2018,
+          "sampleSize": 265,
+          "winnerAccuracy": 0.6075471698113207,
+          "brierScore": 0.2252484820572019,
+          "logLoss": 0.6409133579261737,
+          "marginMAE": 10.329766299815077
+        },
+        {
+          "season": 2019,
+          "sampleSize": 266,
+          "winnerAccuracy": 0.5864661654135338,
+          "brierScore": 0.23616322615253688,
+          "logLoss": 0.6644241545352078,
+          "marginMAE": 11.143417976939086
+        },
+        {
+          "season": 2020,
+          "sampleSize": 268,
+          "winnerAccuracy": 0.6343283582089553,
+          "brierScore": 0.2206934011150894,
+          "logLoss": 0.6321735209906576,
+          "marginMAE": 10.177351547729812
+        },
+        {
+          "season": 2021,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.5845070422535211,
+          "brierScore": 0.2342953131418006,
+          "logLoss": 0.660611221781132,
+          "marginMAE": 11.374566908435375
+        },
+        {
+          "season": 2022,
+          "sampleSize": 282,
+          "winnerAccuracy": 0.6631205673758865,
+          "brierScore": 0.22279438473837385,
+          "logLoss": 0.6368036973362069,
+          "marginMAE": 9.128475283502029
+        },
+        {
+          "season": 2023,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6210526315789474,
+          "brierScore": 0.2294423837944609,
+          "logLoss": 0.6508473160944415,
+          "marginMAE": 10.528056434797234
+        },
+        {
+          "season": 2024,
+          "sampleSize": 285,
+          "winnerAccuracy": 0.6526315789473685,
+          "brierScore": 0.21659429839319194,
+          "logLoss": 0.6238136719975093,
+          "marginMAE": 10.27726959039757
+        },
+        {
+          "season": 2025,
+          "sampleSize": 284,
+          "winnerAccuracy": 0.6126760563380281,
+          "brierScore": 0.22698678807496103,
+          "logLoss": 0.644788465373295,
+          "marginMAE": 10.357250827576287
+        }
+      ]
+    }
+  ]
+}

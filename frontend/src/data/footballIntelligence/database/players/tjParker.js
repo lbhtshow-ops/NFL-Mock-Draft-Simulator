@@ -1,5 +1,5 @@
-import { createFootballPlayerRecord } from "../createFootballPlayerRecord";
-import { prospectIds } from "../../registry/prospectIds";
+import { createFootballPlayerRecord } from "../createFootballPlayerRecord.js";
+import { prospectIds } from "../../registry/prospectIds.js";
 
 const playerId = prospectIds.TJ_PARKER;
 

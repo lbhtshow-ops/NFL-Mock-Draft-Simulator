@@ -6,6 +6,7 @@ import { getAthleticSummary } from "../../../engines/AthleticIntelligenceEngine"
 import { getFootballIQSummary } from "../../../engines/FootballIQEngine";
 import { getSchemeFitSummary } from "../../../engines/SchemeFitEngine";
 import { getProductionSummary } from "../../../engines/ProductionEngine";
+import { getNFLTeamIntelligenceResult } from "../../../engines/teamIntelligence/index.js";
 
 function buildEnginePlayerInput(footballPlayer) {
   return {
@@ -101,6 +102,11 @@ export function buildFootballIntelligenceProfile(player) {
   };
 }
 
+export function buildNFLTeamIntelligenceProfile(team, options = {}) {
+  return getNFLTeamIntelligenceResult(team, options);
+}
+
 export default {
   buildFootballIntelligenceProfile,
+  buildNFLTeamIntelligenceProfile,
 };

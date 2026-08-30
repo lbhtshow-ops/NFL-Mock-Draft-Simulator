@@ -1,0 +1,21 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+import { fileURLToPath } from "node:url";
+import { evaluateFidFunctionOwnerCapabilityAmendmentSql } from "../persistence/deployment/FidFunctionOwnerCapabilityAmendmentStaticOracle.js";
+import { evaluateFidFunctionOwnerCapabilityState } from "../persistence/deployment/FidFunctionOwnerCapabilityAmendmentEvaluator.js";
+import snapshots from "../persistence/deployment/FidFunctionOwnerCapabilityAmendmentSnapshots.js";
+import { evaluateMigration012CapabilityCompatibility } from "../persistence/deployment/FidMigration012CapabilityCompatibilitySuccessor.js";
+
+const sqlPath = fileURLToPath(new URL("../persistence/deployment/review/017c13_fid_function_owner_capability_amendment.sql", import.meta.url));
+const sql = fs.readFileSync(sqlPath, "utf8");
+assert.equal(evaluateFidFunctionOwnerCapabilityAmendmentSql(sql).passed, true);
+assert.equal(evaluateFidFunctionOwnerCapabilityState(snapshots.before).classification, "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_NOT_APPLIED");
+assert.equal(evaluateFidFunctionOwnerCapabilityState(snapshots.after).classification, "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_FULLY_APPLIED");
+assert.equal(evaluateFidFunctionOwnerCapabilityState(snapshots.partialSetOnly).classification, "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_PARTIALLY_APPLIED");
+assert.equal(evaluateFidFunctionOwnerCapabilityState(snapshots.partialCreateOnly).classification, "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_PARTIALLY_APPLIED");
+assert.equal(evaluateFidFunctionOwnerCapabilityState({ ...snapshots.after, admin: false }).classification, "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_STATE_INCONSISTENT");
+assert.equal(evaluateFidFunctionOwnerCapabilityState({ ...snapshots.after, unexpectedPrivilegeExpansion: true }).classification, "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_UNEXPECTED_PRIVILEGE_EXPANSION");
+assert.equal(evaluateFidFunctionOwnerCapabilityState({ ...snapshots.after, resolved: false }).classification, "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_STATE_UNRESOLVED");
+assert.equal(evaluateMigration012CapabilityCompatibility({ ownerCreateOnFid: true, ownerCreateOnOtherSchema: false, restrictedAttributesExact: true }), "FID_MIGRATION_012_CAPABILITY_SUCCESSOR_COMPATIBLE");
+for (const corruption of [sql.replace("BEGIN;", ""), sql.replace("SET TRUE", "SET FALSE"), sql.replace("ADMIN TRUE", "ADMIN FALSE"), sql.replace("INHERIT FALSE", "INHERIT TRUE"), sql.replace("SCHEMA fid", "SCHEMA public"), `${sql}\nALTER ROLE fid_function_owner LOGIN;`, `${sql}\nGRANT USAGE ON SCHEMA fid TO anon;`]) assert.equal(evaluateFidFunctionOwnerCapabilityAmendmentSql(corruption).passed, false);
+console.log("FID function-owner capability amendment diagnostics passed");

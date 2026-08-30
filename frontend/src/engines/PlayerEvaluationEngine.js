@@ -1,18 +1,23 @@
-import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary";
-import { getPlayerTier } from "./PlayerTiers";
-import { assignPlayerArchetype } from "./PlayerArchetypeEngine";
-import { getPlayerComparison } from "./PlayerComparisonEngine";
-import scoutingProfiles from "../data/footballIntelligence/scouting/scoutingProfiles";
-import defaultScoutingProfile from "../data/footballIntelligence/scouting/defaultScoutingProfile";
-import { resolvePlayerContext } from "./context/PlayerContextResolver";
-import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine";
+import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary.js";
+import { getPlayerTier } from "./PlayerTiers.js";
+import { assignPlayerArchetype } from "./PlayerArchetypeEngine.js";
+import { getPlayerComparison } from "./PlayerComparisonEngine.js";
+import scoutingProfiles from "../data/footballIntelligence/scouting/scoutingProfiles.js";
+import defaultScoutingProfile from "../data/footballIntelligence/scouting/defaultScoutingProfile.js";
+import { resolvePlayerContext } from "./context/PlayerContextResolver.js";
+import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine.js";
 import {
   createIntelligenceResult,
   createUnavailableIntelligenceResult,
   DATA_STATES,
   EVIDENCE_LEVELS,
-} from "./contracts/IntelligenceResultContract";
-import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId";
+} from "./contracts/IntelligenceResultContract.js";
+import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId.js";
+import { evaluateCanonicalProspect } from "./playerEvaluation/prospect/CanonicalProspectEvaluationService.js";
+import {
+  PLAYER_CALIBER_SUBJECT_KINDS,
+  resolveCanonicalPlayerCaliber,
+} from "./playerEvaluation/caliber/index.js";
 
 const PLAYER_EVALUATION_MODEL_VERSION =
   "PLAYER-EVALUATION-PROSPECT-1.0.0";
@@ -321,190 +326,206 @@ export function getPlayerEvaluationIntelligenceResult(
   options = {}
 ) {
   const playerId = getCanonicalPlayerId(player);
-
   const playerContext =
     options?.playerContext ||
     player?.playerContext ||
     resolvePlayerContext(player);
 
-  const scoutingProfile = getScoutingProfile(player);
+  if (!playerId) {
+    return createUnavailableIntelligenceResult({
+      domain: "playerEvaluation",
+      playerId: null,
+      competitionLevel: playerContext?.competition?.level || null,
+      careerStage: playerContext?.careerStage || null,
+      dataState: DATA_STATES.UNKNOWN,
+      summary: "No canonical prospect identity is currently available for this player.",
+      missingEvidence: ["playerId"],
+      frameworkVersion: "1.0.0",
+      modelVersion: PLAYER_EVALUATION_MODEL_VERSION,
+    });
+  }
 
-  if (
-    !playerId ||
-    scoutingProfile === defaultScoutingProfile
-  ) {
+  if (isNonProspectContext(playerContext)) {
     return createUnavailableIntelligenceResult({
       domain: "playerEvaluation",
       playerId,
-
-      competitionLevel:
-        playerContext?.competition?.level || null,
-
-      careerStage:
-        playerContext?.careerStage || null,
-
-      dataState: playerId
-        ? DATA_STATES.UNAVAILABLE
-        : DATA_STATES.UNKNOWN,
-
-      summary:
-        "No prospect evaluation profile is currently available for this player.",
-
-      missingEvidence: playerId
-        ? ["evaluationProfile"]
-        : ["playerId", "evaluationProfile"],
-
+      competitionLevel: playerContext?.competition?.level || null,
+      careerStage: playerContext?.careerStage || null,
+      dataState: DATA_STATES.NOT_APPLICABLE,
+      summary: "Prospect position models are not applicable to the current player context.",
+      missingEvidence: ["prospectContext"],
       frameworkVersion: "1.0.0",
-      modelVersion:
-        PLAYER_EVALUATION_MODEL_VERSION,
+      modelVersion: PLAYER_EVALUATION_MODEL_VERSION,
     });
   }
 
-  const storedEvaluation =
-    getStoredEvaluation(scoutingProfile);
+  const scoutingProfile = getScoutingProfile(player);
+  const hasScoutingProfile = scoutingProfile !== defaultScoutingProfile;
+  const runtime = evaluateCanonicalProspect({
+    player,
+    playerContext,
+    scoutingProfile: hasScoutingProfile ? scoutingProfile : null,
+    includeDiagnostics: options?.includeDiagnostics === true,
+  });
+  const modelResult = runtime?.modelResult || null;
 
-  const nonProspectContext =
-    isNonProspectContext(playerContext);
+  if (!runtime?.available || !modelResult) {
+    const modelMissingEvidence = Array.isArray(modelResult?.missingEvidence)
+      ? modelResult.missingEvidence
+      : [];
+    const position = runtime?.position || playerContext?.position || player?.position || null;
+    const errorCode = runtime?.error || "PROSPECT_MODEL_UNAVAILABLE";
 
-  const score = nonProspectContext
-    ? null
-    : storedEvaluation.overallGrade;
-
-  const missingEvidence =
-    getMissingEvaluationEvidence(
-      storedEvaluation
-    );
-
-  if (nonProspectContext) {
-    missingEvidence.push(
-      "currentLevelEvaluation"
-    );
+    return createIntelligenceResult({
+      domain: "playerEvaluation",
+      available: false,
+      dataState: modelResult?.dataState || DATA_STATES.UNAVAILABLE,
+      score: null,
+      value: {
+        type: "STRUCTURED",
+        data: {
+          evaluation: {
+            overallGrade: null,
+            position,
+            model: modelResult?.model || null,
+          },
+          calibration: {
+            storedScoutingProfileAvailable: hasScoutingProfile,
+            storedOverallGrade: hasScoutingProfile
+              ? getStoredOverallGrade(scoutingProfile)
+              : null,
+            scoringRole: "CALIBRATION_OR_FALLBACK_EVIDENCE_ONLY",
+          },
+        },
+      },
+      confidence: modelResult?.confidence || 0,
+      evidenceLevel: modelResult?.evidenceLevel || EVIDENCE_LEVELS.NONE,
+      playerId,
+      competitionLevel: playerContext?.competition?.level || null,
+      careerStage: playerContext?.careerStage || null,
+      summary: `Prospect evaluation is unavailable because the canonical position model did not produce a governed grade (${errorCode}).`,
+      explanation: {
+        positiveFactors: [],
+        limitingFactors: [errorCode],
+        contextualFactors: hasScoutingProfile
+          ? ["Stored scouting evaluation retained as calibration evidence only."]
+          : [],
+      },
+      evidence: hasScoutingProfile
+        ? [{ type: "STORED_SCOUTING_CALIBRATION_EVIDENCE", value: scoutingProfile }]
+        : [],
+      missingEvidence: [
+        ...new Set([
+          ...modelMissingEvidence,
+          "registeredProspectPositionModel",
+        ]),
+      ],
+      sources: hasScoutingProfile && scoutingProfile?.source
+        ? [scoutingProfile.source]
+        : [],
+      rawData: {
+        playerContext,
+        prospectRuntime: runtime,
+        prospectModelResult: modelResult,
+        calibrationProfile: hasScoutingProfile ? scoutingProfile : null,
+      },
+      lastUpdated: hasScoutingProfile ? scoutingProfile?.lastUpdated || null : null,
+      frameworkVersion: "1.0.0",
+      modelVersion: modelResult?.versions?.model || PLAYER_EVALUATION_MODEL_VERSION,
+      dataVersion: modelResult?.versions?.data ?? null,
+    });
   }
 
-  const dataState =
-    score !== null && !nonProspectContext
-      ? DATA_STATES.AVAILABLE
-      : DATA_STATES.INSUFFICIENT_SAMPLE;
-
-  const confidence =
-    scoutingProfile?.confidence || 0;
-
-  const evidenceTransition =
-    options?.evidenceTransition ||
-    resolveEvidenceTransition(player, {
-      playerContext,
-    });
-
-  const strengths = Array.isArray(
-    scoutingProfile?.strengths
-  )
-    ? scoutingProfile.strengths
+  const strengths = Array.isArray(modelResult?.explanation?.strengths)
+    ? modelResult.explanation.strengths
     : [];
-
-  const limitingFactors = Array.isArray(
-    scoutingProfile?.weaknesses
-  )
-    ? scoutingProfile.weaknesses
-    : Array.isArray(
-        scoutingProfile?.developmentAreas
-      )
-    ? scoutingProfile.developmentAreas
+  const concerns = Array.isArray(modelResult?.explanation?.concerns)
+    ? modelResult.explanation.concerns
+    : [];
+  const contextualFactors = Array.isArray(modelResult?.explanation?.contextualFactors)
+    ? modelResult.explanation.contextualFactors
     : [];
 
   return createIntelligenceResult({
     domain: "playerEvaluation",
-
     available: true,
-    dataState,
-
-    score,
+    dataState: modelResult.dataState || DATA_STATES.AVAILABLE,
+    score: modelResult.overallGrade,
     value: {
       type: "STRUCTURED",
       data: {
         evaluation: {
-          overallGrade:
-            storedEvaluation.overallGrade,
-          tier: storedEvaluation.tier,
-          comparison:
-            storedEvaluation.comparison,
+          overallGrade: modelResult.overallGrade,
+          position: modelResult.position,
+          model: modelResult.model,
+          components: modelResult.components,
         },
-
-        projection: {
-          draftProjection:
-            storedEvaluation.draftProjection,
-          readiness:
-            storedEvaluation.readiness,
-          developmentProjection:
-            storedEvaluation.developmentProjection,
-          ceiling: storedEvaluation.ceiling,
-          floor: storedEvaluation.floor,
-        },
-
-        profile: {
-          archetype:
-            storedEvaluation.archetype,
-          riskProfile:
-            storedEvaluation.riskProfile,
-          translationRisk:
-            storedEvaluation.translationRisk,
-        },
-
-        narrative: {
-          summary: storedEvaluation.summary,
+        conclusions: modelResult.conclusions,
+        aggregation: modelResult.aggregation,
+        calibration: {
+          storedScoutingProfileAvailable: hasScoutingProfile,
+          storedOverallGrade: hasScoutingProfile
+            ? getStoredOverallGrade(scoutingProfile)
+            : null,
+          scoringRole: "CALIBRATION_OR_FALLBACK_EVIDENCE_ONLY",
         },
       },
     },
-
-    confidence,
-    evidenceLevel:
-      getEvidenceLevel(confidence),
-
+    confidence: modelResult.confidence,
+    evidenceLevel: modelResult.evidenceLevel,
     playerId,
-
-    competitionLevel:
-      playerContext?.competition?.level || null,
-
-    careerStage:
-      playerContext?.careerStage || null,
-
-    summary: storedEvaluation.summary,
-
+    competitionLevel: playerContext?.competition?.level || null,
+    careerStage: playerContext?.careerStage || null,
+    summary: `Canonical ${modelResult.position} prospect evaluation produced by ${modelResult.model}.`,
     explanation: {
       positiveFactors: strengths,
-      limitingFactors,
-      contextualFactors:
-        storedEvaluation.summary
-          ? [storedEvaluation.summary]
-          : [],
+      limitingFactors: concerns,
+      contextualFactors,
     },
-
     evidence: [
       {
-        type: "PLAYER_EVALUATION_PROFILE",
-        value: scoutingProfile,
+        type: "PROSPECT_POSITION_MODEL_RESULT",
+        value: {
+          model: modelResult.model,
+          position: modelResult.position,
+          overallGrade: modelResult.overallGrade,
+          provenance: modelResult.provenance,
+        },
       },
+      ...(hasScoutingProfile
+        ? [{ type: "STORED_SCOUTING_CALIBRATION_EVIDENCE", value: scoutingProfile }]
+        : []),
     ],
-
-    missingEvidence,
-
-    sources: scoutingProfile?.source
+    missingEvidence: modelResult.missingEvidence || [],
+    sources: hasScoutingProfile && scoutingProfile?.source
       ? [scoutingProfile.source]
       : [],
-
     rawData: {
-      profile: scoutingProfile,
       playerContext,
-      evidenceTransition,
+      prospectRuntime: runtime,
+      prospectModelResult: modelResult,
+      calibrationProfile: hasScoutingProfile ? scoutingProfile : null,
     },
-
-    lastUpdated:
-      scoutingProfile?.lastUpdated || null,
-
+    lastUpdated: hasScoutingProfile ? scoutingProfile?.lastUpdated || null : null,
     frameworkVersion: "1.0.0",
-    modelVersion:
-      PLAYER_EVALUATION_MODEL_VERSION,
-    dataVersion:
-      scoutingProfile?.lastUpdated || null,
+    modelVersion: modelResult?.versions?.model || PLAYER_EVALUATION_MODEL_VERSION,
+    dataVersion: modelResult?.versions?.data ?? null,
+  });
+}
+
+/**
+ * Convenience boundary for higher-level FIE consumers that need canonical
+ * prospect caliber. It evaluates through the production prospect registry and
+ * then delegates projection to CanonicalPlayerCaliberService without regrading.
+ */
+export function getCanonicalProspectCaliberResult(player, options = {}) {
+  const evaluation = getPlayerEvaluationIntelligenceResult(player, options);
+  const modelResult = evaluation?.rawData?.prospectModelResult || null;
+
+  return resolveCanonicalPlayerCaliber({
+    subjectKind: PLAYER_CALIBER_SUBJECT_KINDS.PROSPECT,
+    player,
+    prospectModelResult: modelResult,
   });
 }
 
@@ -514,4 +535,5 @@ export default {
   getPlayerEvaluationSummary,
   evaluatePlayer,
   getPlayerEvaluationIntelligenceResult,
+  getCanonicalProspectCaliberResult,
 };

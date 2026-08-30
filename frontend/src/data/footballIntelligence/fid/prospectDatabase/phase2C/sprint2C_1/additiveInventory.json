@@ -1,0 +1,45 @@
+{
+  "sprint": "2C.1",
+  "entries": [
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2C/sprint2C_1/CHANGES.md",
+      "sha256": "9E8BF97A8B89F3AFC80EAB3E1907A3721C1231E298EA1E91DA1E6499B633AE97",
+      "bytes": 368
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2C/sprint2C_1/ImplementationAuthorization.json",
+      "sha256": "B13548E6EE922CCE7D5FD93C6308935BB70D037D01526E7CE0DB4659DAD311A0",
+      "bytes": 518
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2C/sprint2C_1/README.md",
+      "sha256": "7DF26138703C8FB4F8E262AFBE5ECE9CE3F0BB5C4074BA7B7ADC98AA5AED99BE",
+      "bytes": 795
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2C/sprint2C_1/index.js",
+      "sha256": "48010E28392A685938A21DC99E3EF7EFF9AB9E06AC3F74769C29BD289AA55C23",
+      "bytes": 230
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2C/sprint2C_1/quarterbackPreparationRecords.js",
+      "sha256": "D16774A683148FC099145ACCE155249D8510B70A56EBFB408EB9E57DE8D6E491",
+      "bytes": 3214
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2C/sprint2C_1/quarterbackResearch.js",
+      "sha256": "20DE1B9413470844D5C8E246E7EA88D86B27538477CB94F6BAAD2731220EB82E",
+      "bytes": 6675
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2C/sprint2C_1/repositoryAudit.md",
+      "sha256": "B1B4E2DF9C58421A6DD3841EBF246D1C100EDE0A765DA12C86F70D5211A5AD94",
+      "bytes": 1150
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2C/sprint2C_1/runDiagnostics.mjs",
+      "sha256": "4FBA19953E06C07D6493C70C1F3E81FA9B017137301452CD1DCA7EA43A3D0ADE",
+      "bytes": 2821
+    }
+  ]
+}

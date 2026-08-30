@@ -10,12 +10,14 @@
     "preview": "vite preview",
     "sync:nfl-rosters": "node scripts/syncNFLVerseRosters.mjs",
     "sync:nfl-player-stats": "node scripts/syncNFLVersePlayerStats.mjs",
-    "sync:nfl-snap-counts": "node scripts/syncNFLVerseSnapCounts.mjs"
+    "sync:nfl-snap-counts": "node scripts/syncNFLVerseSnapCounts.mjs",
+    "sync:nfl-team-performance": "node scripts/syncNFLVerseTeamPerformance.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.7",
     "axios": "^1.10.0",
     "html2canvas": "^1.4.1",
+    "pg": "8.22.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.6.2",

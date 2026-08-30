@@ -1,0 +1,31 @@
+export const NFL_PLAYER_IMPACT_PROMOTION_GATE_2D3 = Object.freeze({
+  contractVersion: "FIE-NFL-PLAYER-IMPACT-PROMOTION-GATE-GOVERNANCE-1.0.1",
+  sprint: "2D.3",
+  unitOfAnalysis: "TREATED_TEAM_GAME_MATCHED_ATT",
+  matchedATTContainsIndividualPlayerIdentity: false,
+  oneToOnePlayerJoinRequired: false,
+  allFiveSeasonsRepresentedMeans: "AT_LEAST_ONE_USABLE_MATCHED_EFFECT_PER_SEASON",
+  minimum25EffectsPerSeasonIsHardGate: false,
+  legacyMatchedATTExpectedPairs: 131,
+  expansionMustEqualLegacyCardinality: false,
+  expansionStructuralIntegrityRequired: true,
+  targetedSensitivityRequired: Object.freeze([
+    "PERFORMANCE_WINDOW_SENSITIVITY",
+    "OPPONENT_ADJUSTMENT_SENSITIVITY",
+    "PLAYER_LEVEL_HETEROGENEITY_USING_CANONICAL_EXISTING_AUDITS",
+  ]),
+  antiWeedsPolicy: Object.freeze({
+    reopenHistoricalConstructionOnlyOnHardIntegrityFailure: true,
+    doNotRetuneCaliper: true,
+    doNotInventPlayerIdentityForTeamGameATT: true,
+    doNotCreateIndependentPickemWeights: true,
+  }),
+  safeguards: Object.freeze({
+    mode: "SHADOW_ONLY",
+    productionWeightsFitAuthorized: false,
+    calibrationAuthorized: false,
+    teamStrengthMutationAuthorized: false,
+    decisionModelMutationAuthorized: false,
+    pickemMutationAuthorized: false,
+  }),
+});

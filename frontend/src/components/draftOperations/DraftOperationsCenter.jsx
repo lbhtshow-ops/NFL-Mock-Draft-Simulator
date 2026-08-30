@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import ProspectIntelligenceCenter from "../draftV3/Intelligence/ProspectIntelligenceCenter";
 import DraftWire from "./DraftWire";
-import { resolveSportsDraftWire, resolveSportsProspectIntelligence, resolveSportsTeamIntelligence } from "../../data/sportsIntelligence/SportsIntelligenceEngine";
+import { resolveSportsDraftDecision, resolveSportsDraftWire, resolveSportsProspectIntelligence, resolveSportsTeamIntelligence } from "../../data/sportsIntelligence/SportsIntelligenceEngine";
 import { getNFLRosterByTeam } from "../../data/footballIntelligence/nfl/rosters";
 import { teamProfiles } from "../draftV3/WarRoom/WarRoomData";
 import "../../styles/draft-operations-next.css";
@@ -63,7 +63,9 @@ function formatPick(pick) {
 }
 
 function playerGrade(player, getProspectGrade) {
-  const value = Number(getProspectGrade?.(player));
+  const raw = getProspectGrade?.(player);
+  if (raw === null || raw === undefined || raw === "") return "--";
+  const value = Number(raw);
   return Number.isFinite(value) ? value : "--";
 }
 
@@ -79,6 +81,15 @@ function formatClock(seconds) {
   const minutes = Math.floor(seconds / 60);
   const remaining = seconds % 60;
   return minutes > 0 ? `${minutes}:${String(remaining).padStart(2, "0")}` : `${remaining}s`;
+}
+
+function coverageLabel(classification) {
+  return String(classification || "UNAVAILABLE").replaceAll("_", " ");
+}
+
+function CoverageBadge({ state, compact = false }) {
+  const classification = state?.classification || state || "UNAVAILABLE";
+  return <span className={`next-coverage-badge is-${String(classification).toLowerCase().replaceAll("_", "-")} ${compact ? "is-compact" : ""}`}>{coverageLabel(classification)}</span>;
 }
 
 function Metric({ label, value, tone = "default" }) {
@@ -204,6 +215,19 @@ export default function DraftOperationsCenter({
     coachAdaptability: sportsTeamIntel?.signals?.coachAdaptability ?? null,
     coachDevelopment: sportsTeamIntel?.signals?.coachDevelopment ?? null,
   };
+  const warRoomCoverage = sportsTeamIntel?.coverageContract?.domains || {};
+  const tabCoverage = {
+    overview: { classification: "PARTIAL" },
+    needs: warRoomCoverage.needs,
+    roster: warRoomCoverage.roster,
+    drafted: warRoomCoverage.drafted,
+    intel: warRoomCoverage.draftStrategy,
+    identity: warRoomCoverage.identity,
+    "front-office": warRoomCoverage.organization,
+    capital: warRoomCoverage.draftCapital,
+    queue: warRoomCoverage.draftQueue,
+  };
+  const activeCoverage = tabCoverage[warRoomTab] || { classification: "UNAVAILABLE" };
   const needByPosition = useMemo(
     () => Object.fromEntries(needs.rows.map((need) => [need.position, need])),
     [needs.rows]
@@ -220,7 +244,13 @@ export default function DraftOperationsCenter({
       (card) => card.dataset.timelinePickId === String(currentPick.id)
     );
 
-    currentCard?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    if (!currentCard) return;
+
+    const centeredLeft = currentCard.offsetLeft - ((timeline.clientWidth - currentCard.offsetWidth) / 2);
+    const maxLeft = Math.max(0, timeline.scrollWidth - timeline.clientWidth);
+    const targetLeft = Math.min(Math.max(0, centeredLeft), maxLeft);
+
+    timeline.scrollTo({ left: targetLeft, behavior: "smooth" });
   }, [currentPick?.id]);
 
   const handleTimelineWheel = (event) => {
@@ -234,6 +264,21 @@ export default function DraftOperationsCenter({
   const roundPicks = picks.filter((pick) => pick?.draft_pick?.round === currentRound);
   const teamsRemainingThisRound = roundPicks.filter((pick) => !pick.player).length;
   const currentTeamPicks = picks.filter((pick) => pick?.team?.id === warRoomTeam?.id);
+  const decisionPick = useMemo(() => {
+    if (!warRoomTeam) return null;
+    if (currentPick?.team?.id === warRoomTeam.id) return currentPick;
+    return picks.find((pick) => pick?.team?.id === warRoomTeam.id && !pick?.player) || null;
+  }, [currentPick, picks, warRoomTeam]);
+  const selectedDraftDecision = useMemo(() => {
+    if (!selectedPlayer || !warRoomTeamContext || !decisionPick) return null;
+    return resolveSportsDraftDecision({
+      players: [selectedPlayer],
+      team: warRoomTeamContext,
+      pick: decisionPick,
+      teamPicks: currentTeamPicks,
+    });
+  }, [selectedPlayer, warRoomTeamContext, decisionPick, currentTeamPicks]);
+  const selectedDecisionRecommendation = selectedDraftDecision?.recommendation || null;
   const teamDraftCapital = useMemo(() => {
     if (!warRoomTeam) return [];
     const resolved = getTeamDraftCapital?.(warRoomTeam);
@@ -419,6 +464,7 @@ export default function DraftOperationsCenter({
           {timelinePicks.map((pick) => {
             const isCurrent = pick.id === currentPick?.id;
             const isInspected = pick?.team?.id === warRoomTeam?.id;
+            const isUserControlled = Boolean(pick?.team?.id && userControlledTeams.includes(pick.team.id));
             const playerSchool = pick.player?.school || pick.player?.college || "";
             return (
               <button
@@ -431,7 +477,7 @@ export default function DraftOperationsCenter({
                 title={`Open ${pick.team?.name || "team"} War Room`}
               >
                 <span>{formatPick(pick)}</span>
-                <strong>{pick.team?.name || "Team"}</strong>
+                <strong className={isUserControlled ? "next-timeline-user-team" : undefined}>{pick.team?.name || "Team"}</strong>
                 {pick.player ? (
                   <>
                     <small className="next-timeline-player">{pick.player.name}</small>
@@ -621,9 +667,10 @@ export default function DraftOperationsCenter({
               <span className="next-kicker">Team Intelligence</span>
               <h2>War Room</h2>
             </div>
-            <span className={`next-source-state ${teamIntel.connected ? "connected" : "partial"}`}>
-              {teamIntel.connected ? "Sports Intelligence Connected" : teamIntel.sourceClassification === "TRANSITIONAL_TEAM_CONTEXT" ? "Transitional Context" : "Partial Coverage"}
-            </span>
+            <div className="next-war-coverage-status">
+              <CoverageBadge state={activeCoverage} />
+              <small>{sportsTeamIntel?.coverageContract?.version || "Coverage pending"}</small>
+            </div>
           </div>
 
           <div className="next-war-team next-war-team-premium">
@@ -649,9 +696,19 @@ export default function DraftOperationsCenter({
                 key={tab.id}
                 onClick={() => setWarRoomTab(tab.id)}
               >
-                {tab.id === "queue" ? `Draft Queue (${queuedPlayers.length})` : tab.label}
+                <span>{tab.id === "queue" ? `Draft Queue (${queuedPlayers.length})` : tab.label}</span>
+                <i className={`next-tab-coverage is-${String(tabCoverage[tab.id]?.classification || "UNAVAILABLE").toLowerCase().replaceAll("_", "-")}`} aria-hidden="true" />
               </button>
             ))}
+          </div>
+
+          <div className="next-war-coverage-legend" aria-label="War Room intelligence coverage">
+            <span>Coverage</span>
+            <CoverageBadge state="CANONICAL" compact />
+            <CoverageBadge state="ROSTER_DERIVED" compact />
+            <CoverageBadge state="MDS_RUNTIME" compact />
+            <CoverageBadge state="TRANSITIONAL" compact />
+            <CoverageBadge state="UNAVAILABLE" compact />
           </div>
 
           <div className="next-war-content">
@@ -660,8 +717,8 @@ export default function DraftOperationsCenter({
                 <section className="next-war-card next-war-leadership-card">
                   <div className="next-war-card-title"><h3>Front Office</h3><span>Organization</span></div>
                   <dl>
-                    <div><dt>General Manager</dt><dd>{teamIntel.generalManager}</dd></div>
-                    <div><dt>Head Coach</dt><dd>{teamIntel.headCoach}</dd></div>
+                    <div><dt>General Manager <CoverageBadge state={warRoomCoverage.organization?.fields?.generalManager} compact /></dt><dd>{teamIntel.generalManager}</dd></div>
+                    <div><dt>Head Coach <CoverageBadge state={warRoomCoverage.organization?.fields?.headCoach} compact /></dt><dd>{teamIntel.headCoach}</dd></div>
                     <div><dt>Offense</dt><dd>{teamIntel.offensiveScheme}</dd></div>
                     <div><dt>Defense</dt><dd>{teamIntel.defensiveScheme}</dd></div>
                   </dl>
@@ -832,10 +889,10 @@ export default function DraftOperationsCenter({
                 <section className="next-war-card">
                   <h3>Leadership</h3>
                   <dl>
-                    <div><dt>Owner</dt><dd>{teamIntel.owner}</dd></div>
+                    <div><dt>Owner <CoverageBadge state={warRoomCoverage.organization?.fields?.owner} compact /></dt><dd>{teamIntel.owner}</dd></div>
                     <div><dt>President</dt><dd>{teamIntel.president}</dd></div>
-                    <div><dt>General Manager</dt><dd>{teamIntel.generalManager}</dd></div>
-                    <div><dt>Head Coach</dt><dd>{teamIntel.headCoach}</dd></div>
+                    <div><dt>General Manager <CoverageBadge state={warRoomCoverage.organization?.fields?.generalManager} compact /></dt><dd>{teamIntel.generalManager}</dd></div>
+                    <div><dt>Head Coach <CoverageBadge state={warRoomCoverage.organization?.fields?.headCoach} compact /></dt><dd>{teamIntel.headCoach}</dd></div>
                     <div><dt>Offensive Coordinator</dt><dd>{teamIntel.offensiveCoordinator}</dd></div>
                     <div><dt>Defensive Coordinator</dt><dd>{teamIntel.defensiveCoordinator}</dd></div>
                   </dl>
@@ -844,8 +901,8 @@ export default function DraftOperationsCenter({
                   <h3>Decision Context</h3>
                   <dl>
                     <div><dt>Competitive Window</dt><dd>{teamIntel.window}</dd></div>
-                    <div><dt>Offensive Identity</dt><dd>{teamIntel.offensiveScheme}</dd></div>
-                    <div><dt>Defensive Identity</dt><dd>{teamIntel.defensiveScheme}</dd></div>
+                    <div><dt>Offensive Identity <CoverageBadge state={warRoomCoverage.identity?.fields?.offensiveScheme} compact /></dt><dd>{teamIntel.offensiveScheme}</dd></div>
+                    <div><dt>Defensive Identity <CoverageBadge state={warRoomCoverage.identity?.fields?.defensiveScheme} compact /></dt><dd>{teamIntel.defensiveScheme}</dd></div>
                   </dl>
                 </section>
               </div>
@@ -875,6 +932,58 @@ export default function DraftOperationsCenter({
             )}
           </div>
         </aside>
+
+        <section className="next-workspace next-selected-decision-support" aria-label="Selected prospect draft decision support">
+          <div className="next-selected-decision-header">
+            <div>
+              <span className="next-kicker">Draft Decision Intelligence</span>
+              <h2>{selectedPlayer ? `Why ${selectedPlayer.name}?` : "Select a prospect"}</h2>
+              <p>{selectedPlayer && decisionPick
+                ? `${warRoomTeam?.name || "Team"} · Pick ${decisionPick?.draft_pick?.pick_number ?? "--"} · Round ${decisionPick?.draft_pick?.round ?? "--"}`
+                : "Select a prospect from the Big Board to evaluate the current team-and-pick context."}</p>
+            </div>
+            {selectedDecisionRecommendation ? (
+              <div className="next-selected-decision-metrics" aria-label="MDS draft decision metrics">
+                <span><small>MDS Decision</small><b>{selectedDecisionRecommendation.decisionScore ?? "--"}</b></span>
+                <span><small>Team Fit</small><b>{selectedDecisionRecommendation.components?.teamFitScore ?? "--"}</b></span>
+                <span><small>Confidence</small><b>{selectedDecisionRecommendation.confidence ?? "--"}{Number.isFinite(selectedDecisionRecommendation.confidence) ? "%" : ""}</b></span>
+              </div>
+            ) : null}
+          </div>
+
+          {selectedDecisionRecommendation ? (
+            <div className="next-selected-decision-grid">
+              <article>
+                <span className="next-decision-label">Why this pick</span>
+                <ul>
+                  {(selectedDecisionRecommendation.reasons || []).slice(0, 4).map((reason, index) => (
+                    <li key={`${reason}-${index}`}>{reason}</li>
+                  ))}
+                  {!selectedDecisionRecommendation.reasons?.length ? <li>No application-level decision explanation is available for this prospect yet.</li> : null}
+                </ul>
+              </article>
+              <article>
+                <span className="next-decision-label">Team context</span>
+                <dl>
+                  <div><dt>Top need</dt><dd>{needs.sorted?.[0]?.position || "Coverage pending"}</dd></div>
+                  <div><dt>Offense</dt><dd>{teamIntel.offensiveScheme}</dd></div>
+                  <div><dt>Defense</dt><dd>{teamIntel.defensiveScheme}</dd></div>
+                  <div><dt>FIE coverage</dt><dd>{selectedDraftDecision?.canonicalFIE?.state || "UNAVAILABLE"}</dd></div>
+                </dl>
+              </article>
+              <article>
+                <span className="next-decision-label">Decision provenance</span>
+                <p>Prospect selection remains MDS application decision support. Canonical FIE Team Intelligence is context-only and does not re-rank prospects in this sprint.</p>
+                <small>{selectedDraftDecision?.provenance?.canonicalFIEUsedForProspectRanking ? "Canonical FIE ranking active" : "Canonical FIE prospect re-ranking: OFF"}</small>
+              </article>
+            </div>
+          ) : (
+            <div className="next-selected-decision-empty">
+              <strong>{selectedPlayer ? "Decision context unavailable" : "No prospect selected"}</strong>
+              <p>{selectedPlayer ? "This team does not currently have an unresolved pick available for evaluation." : "Choose a Big Board prospect to open team-and-pick decision support."}</p>
+            </div>
+          )}
+        </section>
 
         <section ref={prospectWorkspaceRef} className="next-workspace next-prospect-workspace">
         <div className="next-workspace-header">

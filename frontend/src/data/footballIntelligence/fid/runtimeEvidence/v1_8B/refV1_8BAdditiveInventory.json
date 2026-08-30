@@ -1,0 +1,81 @@
+{
+  "inventoryIdentity": "REF_V1_8B_ADDITIVE_INVENTORY",
+  "version": "1.0.0",
+  "predecessorManifestModified": false,
+  "retainedSyntheticFixtures": 0,
+  "entries": [
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/v1_8B/appendOnlyWriter.mjs",
+      "sha256": "B0677620F8FA760370EDC7431B7BE6950213A96A82B7E054D8B83C0D04DE6F79",
+      "artifactCategory": "SOURCE",
+      "gitState": "UNTRACKED",
+      "classification": "ADDITIVE_IMPLEMENTATION_ARTIFACT",
+      "fixtureOnly": false,
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/v1_8B/composition.mjs",
+      "sha256": "8FA74AF65F0F2DD39EA6DA04948DBDCF0CCFCD6ACD1FB1930A42218A63A77CCA",
+      "artifactCategory": "SOURCE",
+      "gitState": "UNTRACKED",
+      "classification": "ADDITIVE_IMPLEMENTATION_ARTIFACT",
+      "fixtureOnly": false,
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/v1_8B/docs/ArchitectureAndReviews.md",
+      "sha256": "DB4B10EAC118767FEAD3CAC6984D225A9FB7EA920BB8079774B6D18DFDFEC8C5",
+      "artifactCategory": "DOCUMENTATION",
+      "gitState": "UNTRACKED",
+      "classification": "ADDITIVE_IMPLEMENTATION_ARTIFACT",
+      "fixtureOnly": false,
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/v1_8B/fixtures.mjs",
+      "sha256": "E7305AB4EEF4079998C28FF0574D4E19858FE1F7B150A51760478F560876825F",
+      "artifactCategory": "SOURCE",
+      "gitState": "UNTRACKED",
+      "classification": "ADDITIVE_IMPLEMENTATION_ARTIFACT",
+      "fixtureOnly": false,
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/v1_8B/index.mjs",
+      "sha256": "3B611732E458B1580B2792D86674168AA8DE2D81D7620E7263EA308D771AC567",
+      "artifactCategory": "SOURCE",
+      "gitState": "UNTRACKED",
+      "classification": "ADDITIVE_IMPLEMENTATION_ARTIFACT",
+      "fixtureOnly": false,
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/v1_8B/pathPolicy.mjs",
+      "sha256": "D4848D6163B4CC1FA3972033ABEE02659AA8A9F4925C33E0A19E93CE483B26E3",
+      "artifactCategory": "SOURCE",
+      "gitState": "UNTRACKED",
+      "classification": "ADDITIVE_IMPLEMENTATION_ARTIFACT",
+      "fixtureOnly": false,
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/v1_8B/runDiagnostics.mjs",
+      "sha256": "5AC28279325B9BA3C65FAB9C3EA52DE3D3C9CEF16EFEBB03B0F5D8C42CF92C85",
+      "artifactCategory": "SOURCE",
+      "gitState": "UNTRACKED",
+      "classification": "ADDITIVE_DIAGNOSTIC",
+      "fixtureOnly": false,
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "src/data/footballIntelligence/fid/runtimeEvidence/v1_8B/submissionBundle.mjs",
+      "sha256": "D016312DB1B737386D398DE9228571C2E2BD7AF64FEF2B2CBB218659857C4A39",
+      "artifactCategory": "SOURCE",
+      "gitState": "UNTRACKED",
+      "classification": "ADDITIVE_IMPLEMENTATION_ARTIFACT",
+      "fixtureOnly": false,
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    }
+  ],
+  "aggregateSha256": "476CDC5CC086663C59FB867951E96BCA42E8B50EEC92A3638E01D0097EDB5239"
+}

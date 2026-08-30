@@ -1,0 +1,22 @@
+import assert from "node:assert/strict";
+import { createNFLAvailabilityProviderDefinition, createNFLAvailabilityProviderRegistry, selectNFLAvailabilityProvider, classifyNFLAvailabilityProviderFreshness } from "../src/data/footballIntelligence/nfl/availability/providers/NFLAvailabilityProviderRegistry.js";
+import { orchestrateNFLAvailabilityProviders } from "../src/data/footballIntelligence/nfl/availability/providers/NFLAvailabilityProviderOrchestrator.js";
+const tests=[]; async function test(name,fn){try{await fn();tests.push({name,passed:true});}catch(e){tests.push({name,passed:false,error:e.message});}}
+const p1=createNFLAvailabilityProviderDefinition({id:"primary",priority:10,freshForMinutes:60,staleAfterMinutes:120});
+const p2=createNFLAvailabilityProviderDefinition({id:"backfill",priority:100,freshForMinutes:60,staleAfterMinutes:120});
+const registry=createNFLAvailabilityProviderRegistry([p2,p1]);
+await test("deterministic-priority",()=>assert.deepEqual(registry.providers.map(x=>x.id),["primary","backfill"]));
+await test("duplicate-provider-rejected",()=>assert.throws(()=>createNFLAvailabilityProviderRegistry([p1,p1])));
+await test("freshness-ready",()=>assert.equal(classifyNFLAvailabilityProviderFreshness({observedAt:"2026-08-13T10:00:00Z",now:"2026-08-13T10:30:00Z",freshForMinutes:60,staleAfterMinutes:120}).state,"READY"));
+await test("freshness-aging",()=>assert.equal(classifyNFLAvailabilityProviderFreshness({observedAt:"2026-08-13T10:00:00Z",now:"2026-08-13T11:30:00Z",freshForMinutes:60,staleAfterMinutes:120}).state,"AGING"));
+await test("freshness-stale",()=>assert.equal(classifyNFLAvailabilityProviderFreshness({observedAt:"2026-08-13T10:00:00Z",now:"2026-08-13T13:00:00Z",freshForMinutes:60,staleAfterMinutes:120}).state,"STALE"));
+await test("fresh-primary-wins",()=>assert.equal(selectNFLAvailabilityProvider(registry,[{providerId:"primary",state:"READY"},{providerId:"backfill",state:"READY"}]).provider.id,"primary"));
+await test("stale-primary-does-not-override",()=>assert.equal(selectNFLAvailabilityProvider(registry,[{providerId:"primary",state:"STALE"},{providerId:"backfill",state:"READY"}]).provider.id,"backfill"));
+await test("all-stale-fails-closed",()=>assert.equal(selectNFLAvailabilityProvider(registry,[{providerId:"primary",state:"STALE"},{providerId:"backfill",state:"STALE"}]).status,"NO_ACCEPTABLE_PROVIDER"));
+await test("aging-can-be-disallowed",()=>assert.equal(selectNFLAvailabilityProvider(registry,[{providerId:"primary",state:"AGING"}],{allowAging:false}).status,"NO_ACCEPTABLE_PROVIDER"));
+await test("provider-failure-isolated",async()=>{const r=await orchestrateNFLAvailabilityProviders({registry,adapters:{primary:{acquire:async()=>{throw new Error("boom")}},backfill:{acquire:async()=>({available:true,observedAt:"2026-08-13T10:00:00Z",records:[1]})}},request:{now:"2026-08-13T10:30:00Z"}});assert.equal(r.selection.provider.id,"backfill");assert.equal(r.observations[0].state,"FAILED");});
+await test("missing-adapter-explicit",async()=>{const r=await orchestrateNFLAvailabilityProviders({registry,adapters:{backfill:{acquire:async()=>({available:true,observedAt:"2026-08-13T10:00:00Z",records:[1]})}},request:{now:"2026-08-13T10:30:00Z"}});assert.equal(r.observations[0].reason,"ADAPTER_NOT_CONFIGURED");});
+await test("provenance-preserved",async()=>{const r=await orchestrateNFLAvailabilityProviders({registry,adapters:{primary:{acquire:async()=>({available:true,observedAt:"2026-08-13T10:00:00Z",sourceUrl:"https://example.test",records:[1],provenance:{license:"TEST"}})}},request:{now:"2026-08-13T10:30:00Z"}});assert.equal(r.selection.observation.provenance.license,"TEST");});
+await test("orchestration-does-not-authorize-persistence",async()=>{const r=await orchestrateNFLAvailabilityProviders({registry,adapters:{},request:{}});assert.equal(r.persistenceAuthorized,false);});
+await test("selected-records-only-from-selected-provider",async()=>{const r=await orchestrateNFLAvailabilityProviders({registry,adapters:{primary:{acquire:async()=>({available:true,observedAt:"2026-08-13T10:00:00Z",records:["A"]})},backfill:{acquire:async()=>({available:true,observedAt:"2026-08-13T10:00:00Z",records:["B"]})}},request:{now:"2026-08-13T10:30:00Z"}});assert.deepEqual(r.selectedRecords,["A"]);});
+const failed=tests.filter(x=>!x.passed);console.log(JSON.stringify({suite:"NFL Availability Provider Orchestration V1 Diagnostics",passed:tests.length-failed.length,failed:failed.length,tests},null,2));if(failed.length)process.exitCode=1;

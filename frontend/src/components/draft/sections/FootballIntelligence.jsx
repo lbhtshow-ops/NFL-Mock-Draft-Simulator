@@ -10,8 +10,8 @@ function IQRow({ label, value }) {
   );
 }
 
-export default function FootballIntelligence({ player }) {
-  const prospectIntelligence = buildProspectIntelligence(player);
+export default function FootballIntelligence({ player, intelligence }) {
+  const prospectIntelligence = intelligence || buildProspectIntelligence(player);
   const footballIQSummary =
   prospectIntelligence?.footballIQ ||
   prospectIntelligence?.intelligence?.footballIQ ||

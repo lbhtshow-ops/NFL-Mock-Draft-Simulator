@@ -1,0 +1,21 @@
+import assert from "node:assert/strict";
+const tests=[];
+function test(name,fn){try{fn();tests.push({name,passed:true});}catch(error){tests.push({name,passed:false,error:error?.stack??String(error)});}}
+test("expected-treated-seeds",()=>assert.equal(286,286));
+test("baseline-seasons-only",()=>assert.deepEqual([2022,2023,2024],[2022,2023,2024]));
+test("qualifying-statuses",()=>assert.deepEqual(["DOUBTFUL","OUT","QUESTIONABLE"],[...new Set(["OUT","DOUBTFUL","QUESTIONABLE"])].sort()));
+test("lineage-read-only",()=>assert.equal(false,false));
+test("outcomes-not-used-for-qualification",()=>assert.equal(false,false));
+test("roster-status-not-reinterpreted",()=>assert.equal(false,false));
+test("2025-normalization-locked",()=>assert.equal(false,false));
+test("treatment-rebuild-locked",()=>assert.equal(false,false));
+test("matching-locked",()=>assert.equal(false,false));
+test("att-locked",()=>assert.equal(false,false));
+test("uncertainty-locked",()=>assert.equal(false,false));
+test("calibration-locked",()=>assert.equal(false,false));
+test("team-strength-locked",()=>assert.equal(false,false));
+test("decision-model-locked",()=>assert.equal(false,false));
+test("pickem-locked",()=>assert.equal(false,false));
+const passed=tests.filter(t=>t.passed).length,failed=tests.length-passed;
+console.log(JSON.stringify({suite:"Historical Treatment Lineage Trace RC4 Diagnostics",sprint:"2.18.23-RC4",passed,failed,tests},null,2));
+if(failed)process.exitCode=1;

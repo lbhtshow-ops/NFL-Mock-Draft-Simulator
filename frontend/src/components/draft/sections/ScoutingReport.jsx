@@ -25,8 +25,8 @@ function ScoutingList({ items = [], fallback = "Pending" }) {
   );
 }
 
-export default function ScoutingReport({ player }) {
-  const prospectIntelligence = buildProspectIntelligence(player);
+export default function ScoutingReport({ player, intelligence }) {
+  const prospectIntelligence = intelligence || buildProspectIntelligence(player);
 
   const bio = prospectIntelligence?.profile?.bio || {};
   const evaluationSummary =

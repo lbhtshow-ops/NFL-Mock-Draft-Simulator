@@ -1,0 +1,24 @@
+{
+  "inventoryIdentity": "REF_V1_9B_ADDITIVE_INVENTORY",
+  "version": "1.0.0",
+  "predecessorManifestsAndInventoriesModified": false,
+  "inventorySelfExcluded": true,
+  "aggregateDerivation": "SHA256_UPPERCASE_HEX_OF_UTF8_JSON_STRINGIFY_ORDERED_ARRAY_OF_RELATIVE_PATH_AND_SHA256",
+  "entries": [
+    { "relativePath": "AdversarialReview.md", "sha256": "59824FE348E48276219FF2102E622C1E69DD18900DE1C468B80EA66164177204", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "ConsolidatedReview.md", "sha256": "42BF23AA41CEB50AFDA2A0E0FC96D087205F12FDE44D13A50BCD049BC0C775F3", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "DependencyTreeReview.md", "sha256": "F46BD26F077ACF7376A60ACF5813DEE0FA1EE79B03DF62AAF0F002662250AA8F", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "IdentityIntegrityReview.md", "sha256": "E5B24C88D3AAFDA222738AD1E2F5EF4D8CAA982D9562CD6AB765F3B7DEDB429F", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "index.md", "sha256": "A02D5A109BD2C517F5DD6673328E80A303C09C09CA7223C057DA3913435B66FF", "artifactCategory": "DOCUMENTATION_INDEX", "gitState": "UNTRACKED" },
+    { "relativePath": "InstallationMutationBoundary.md", "sha256": "79DC20119A769E57A3957F8ACBA7064184E5E97839E7FB1E90BDDE2EE627F70E", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "InstallationReadinessGates.md", "sha256": "6742328E928E7A38542F64E13E580BD94251EB5023F52C3C0C96330CC9879238", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "NodeEsmCompatibilityReview.md", "sha256": "B17E73251EAC904236077FFDDEC9D2EFD73A293059104B00CCD08494FC0A29B0", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "OfficialPackageMetadata.json", "sha256": "7F47ABBE365D1E9BE86C8DDB75DD29F2C8558170E6670893E8E807EC69F99488", "artifactCategory": "RESEARCH_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "ReadOnlyMetadataDiagnostics.md", "sha256": "40B52535306FB240D3B20FA3B4643ECDE69FB7C73EF652E6CD49B89FEF56EA61", "artifactCategory": "DIAGNOSTIC_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "runDiagnostics.mjs", "sha256": "CAA75F1146E7F907112527CFB072AFE818A44EC3DA675A014C94F9C31AFB0C79", "artifactCategory": "READ_ONLY_DIAGNOSTIC", "gitState": "UNTRACKED" },
+    { "relativePath": "RuntimeBehaviorReview.md", "sha256": "2FA8D29DC94D7578958B1CE93F685CCA6442F22E44F43A0193AC91080EE1B3F5", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "SecurityAdvisoryReview.md", "sha256": "B6F10EED1163F8070091B38174F1B77A57B7EFB1F11365E708DD5F0D37A7505D", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" }
+  ],
+  "aggregateSha256": "5C06F19656660B67DB33EA21D327FB976397183C1328D7B1D4531EF6C0C31A6A",
+  "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+}

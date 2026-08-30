@@ -19,8 +19,8 @@ function TestingItem({ label, value }) {
   );
 }
 
-export default function AthleticProfile({ player }) {
-  const prospectIntelligence = buildProspectIntelligence(player);
+export default function AthleticProfile({ player, intelligence }) {
+  const prospectIntelligence = intelligence || buildProspectIntelligence(player);
   const athleticSummary =
   prospectIntelligence?.athletics ||
   prospectIntelligence?.intelligence?.athletics ||

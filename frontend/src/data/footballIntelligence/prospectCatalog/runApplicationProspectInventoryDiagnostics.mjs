@@ -10,7 +10,7 @@ const exactCarterOt = resolveApplicationProspect({ application_prospect_ref: "ap
 const exactCarterQb = resolveApplicationProspect({ application_prospect_ref: "app-prospect:2027:carter-smith:source-315" });
 const exactJamariCb = resolveApplicationProspect({ application_prospect_ref: "app-prospect:2027:jamari-johnson:source-335" });
 const exactAnthonyDl = resolveApplicationProspect({ application_prospect_ref: "app-prospect:2027:anthony-smith:source-336" });
-const structuredCarterQb = resolveApplicationProspect({ name: "Carter Smith", year: 2027, position: "QB", college: "Indiana" });
+const structuredCarterQb = resolveApplicationProspect({ name: "Carter Smith", year: 2027, position: "QB", college: "Wisconsin" });
 const ambiguousCarter = resolveApplicationProspectResolution({ name: "Carter Smith", year: 2027 });
 const ambiguousJamari = resolveApplicationProspectResolution({ name: "Jamari Johnson", year: 2027 });
 const ambiguousAnthony = resolveApplicationProspectResolution({ name: "Anthony Smith", year: 2027 });
@@ -36,5 +36,5 @@ const checks = {
   completeSevenRoundDepthAvailable: catalog.length > 257,
 };
 const status = Object.values(checks).every(Boolean) ? "PASS" : "FAIL";
-console.log(JSON.stringify({ status, contract: "UnifiedApplicationProspectIdentityDiagnostics", contractVersion: "MDS-5B.4-1.0.0", checks, inventoryDiagnostics, catalogDiagnostics, samples: { exactCarterOt, exactCarterQb, exactJamariCb, exactAnthonyDl, ambiguousCarter } }, null, 2));
+console.log(JSON.stringify({ status, contract: "UnifiedApplicationProspectIdentityDiagnostics", contractVersion: "MDS-5B.6-1.0.0", checks, inventoryDiagnostics, catalogDiagnostics, samples: { exactCarterOt, exactCarterQb, exactJamariCb, exactAnthonyDl, ambiguousCarter } }, null, 2));
 if (status !== "PASS") process.exitCode = 1;

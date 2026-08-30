@@ -1,0 +1,23 @@
+{
+  "inventoryIdentity": "REF_V1_9C_ADDITIVE_INVENTORY",
+  "version": "1.0.0",
+  "predecessorManifestsAndInventoriesModified": false,
+  "inventorySelfExcluded": true,
+  "aggregateDerivation": "SHA256_UPPERCASE_HEX_OF_UTF8_JSON_STRINGIFY_ORDERED_ARRAY_OF_RELATIVE_PATH_AND_SHA256",
+  "entries": [
+    { "relativePath": "AdversarialReview.md", "sha256": "7FCE053C65C58D26235286EA2EC3720B9FCFFBE5A500E49D8280C70B77C33310", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "ConsolidatedReview.md", "sha256": "9FFD5EF4925CD2A062C525D319F97E0730DF18FBEF006B896D17F5AD7304B26C", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "Diagnostics.md", "sha256": "10540CBBC5C7EC9C07CDD23FBD5E2B5CBFB685990F6E554DE229D1E6CE9AB890", "artifactCategory": "DIAGNOSTIC_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "DirtyWorktreeAttributionReview.md", "sha256": "A4AFADD06708C3C83358D9C531719A98EF6CDC0947794E854A63AE2B30DE64AF", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "EvidenceReproductionMatrix.md", "sha256": "10B5B9E28FB3A4A9F607DAA3431A342814027C439075A9F9BBD63B3FBFD11EFC", "artifactCategory": "EVIDENCE_MATRIX", "gitState": "UNTRACKED" },
+    { "relativePath": "IndependentReviewDeclaration.md", "sha256": "BB0FAE72F2E44705C1AB96B505988FE8FC97CF18587A5EB787E1CC366BB8F24E", "artifactCategory": "DECLARATION", "gitState": "UNTRACKED" },
+    { "relativePath": "InstallationAuthorization.json", "sha256": "BF820CDAA13BE4B8185B899C67FAC5D52D011ECB8337D189A9469E3A2C951997", "artifactCategory": "ONE_EXECUTION_AUTHORIZATION", "gitState": "UNTRACKED" },
+    { "relativePath": "InstallationMutationReview.md", "sha256": "0C6690D85C8A24E36BB74F1716EF2A09D12AA58E2E8D4D9A112EFD8B7221B25B", "artifactCategory": "DOCUMENTATION", "gitState": "UNTRACKED" },
+    { "relativePath": "PackageLockfilePreconditions.md", "sha256": "3496CB13D9EBB56CB35F23D97CA544563ADE2528F9B4EE72DBF40C8AEEA169B2", "artifactCategory": "EVIDENCE_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "PostInstallValidationPlan.md", "sha256": "0E97C4BFC77A8882FA96F55F0BE0523399657245578FCFB96553C6F736D3A319", "artifactCategory": "VALIDATION_PLAN", "gitState": "UNTRACKED" },
+    { "relativePath": "SecurityReview.md", "sha256": "7B02C702D115605520BE00C6299C15C3B13F0A2D47681BCF48FF0736BA2BA63F", "artifactCategory": "SECURITY_REVIEW", "gitState": "UNTRACKED" },
+    { "relativePath": "index.md", "sha256": "4AD785E7D59ADA24171A2E39B7B91444FE5DD685EA95D50C8B0022013E989070", "artifactCategory": "DOCUMENTATION_INDEX", "gitState": "UNTRACKED" }
+  ],
+  "aggregateSha256": "D12B4501ED9878662757DD6504B28FC35F8979BF76384606B5B2FAFD8FF314C6",
+  "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+}

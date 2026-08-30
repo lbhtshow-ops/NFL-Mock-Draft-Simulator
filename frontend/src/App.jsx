@@ -16,13 +16,27 @@ const FootballIntelligenceOperationsCenter = lazy(() =>
   import("./pages/FootballIntelligenceOperationsCenter.jsx")
 );
 
+const DraftRoomPreview = lazy(() => import("./pages/DraftRoomPreview.jsx"));
+const DraftResultsPreview = lazy(() => import("./pages/DraftResultsPreview.jsx"));
+const ProspectVerificationCenter = lazy(() => import("./pages/ProspectVerificationCenter.jsx"));
+
 const footballIntelligenceOperationsEnabled =
   import.meta.env.DEV ||
   import.meta.env.VITE_ENABLE_FOOTBALL_INTELLIGENCE_OPS === "true";
 
+const draftRoomPreviewEnabled =
+  import.meta.env.DEV ||
+  import.meta.env.VITE_ENABLE_FID_DRAFT_ROOM_PREVIEW === "true";
+
 // Function to set up the main application routes
 function App() {
-  const apiURL = "https://nfl-mock-draft-simulator.onrender.com";
+  const productionApiURL =
+    import.meta.env.VITE_API_URL ||
+    "https://nfl-mock-draft-simulator-5q81.onrender.com";
+
+  // During local Vite development, use the same-origin /api proxy. This avoids
+  // browser CORS enforcement while preserving the production API URL in builds.
+  const apiURL = import.meta.env.DEV ? "/api" : productionApiURL;
 
   useEffect(() => {
 
@@ -53,6 +67,16 @@ function App() {
         <Route path="/results/:draftId" element={<Results apiURL={apiURL} />} />
         {footballIntelligenceOperationsEnabled && (
           <Route
+            path="/__dev/prospect-verification"
+            element={
+              <Suspense fallback={<div role="status">Loading Prospect Verification Center…</div>}>
+                <ProspectVerificationCenter />
+              </Suspense>
+            }
+          />
+        )}
+        {footballIntelligenceOperationsEnabled && (
+          <Route
             path="/__dev/football-intelligence"
             element={
               <Suspense
@@ -63,6 +87,26 @@ function App() {
                 }
               >
                 <FootballIntelligenceOperationsCenter />
+              </Suspense>
+            }
+          />
+        )}
+        {draftRoomPreviewEnabled && (
+          <Route
+            path="/__dev/draft-room-preview"
+            element={
+              <Suspense fallback={<div role="status">Loading fixture Draft Room preview…</div>}>
+                <DraftRoomPreview />
+              </Suspense>
+            }
+          />
+        )}
+        {draftRoomPreviewEnabled && (
+          <Route
+            path="/__dev/draft-results-preview"
+            element={
+              <Suspense fallback={<div role="status">Loading fixture Draft Results preview…</div>}>
+                <DraftResultsPreview />
               </Suspense>
             }
           />

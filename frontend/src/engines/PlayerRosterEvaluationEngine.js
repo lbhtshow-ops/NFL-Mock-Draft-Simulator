@@ -1,14 +1,14 @@
-import { getPlayerUsageProfile } from "./PlayerUsageIndex";
-import { getPlayerPerformanceProfile } from "./PlayerPerformanceIndex";
-import { getPlayerRecognitionSummary } from "./playerEvaluation/PlayerRecognitionEngine";
-import { evaluateQuarterback } from "./playerEvaluation/positionModels/QuarterbackEvaluationModel";
-import { evaluateRunningBack } from "./playerEvaluation/positionModels/RunningBackEvaluationModel";
-import { evaluateReceiver } from "./playerEvaluation/positionModels/ReceiverEvaluationModel";
-import { evaluateOffensiveLine } from "./playerEvaluation/positionModels/OffensiveLineEvaluationModel";
-import { evaluateDefensiveLine } from "./playerEvaluation/positionModels/DefensiveLineEvaluationModel";
-import { evaluateLinebacker } from "./playerEvaluation/positionModels/LinebackerEvaluationModel";
-import { evaluateSecondary } from "./playerEvaluation/positionModels/SecondaryEvaluationModel";
-import { evaluateSpecialist } from "./playerEvaluation/positionModels/SpecialistEvaluationModel";
+import { getPlayerUsageProfile } from "./PlayerUsageIndex.js";
+import { getPlayerPerformanceProfile } from "./PlayerPerformanceIndex.js";
+import { getPlayerRecognitionSummary } from "./playerEvaluation/PlayerRecognitionEngine.js";
+import { evaluateQuarterback } from "./playerEvaluation/positionModels/QuarterbackEvaluationModel.js";
+import { evaluateRunningBack } from "./playerEvaluation/positionModels/RunningBackEvaluationModel.js";
+import { evaluateReceiver } from "./playerEvaluation/positionModels/ReceiverEvaluationModel.js";
+import { evaluateOffensiveLine } from "./playerEvaluation/positionModels/OffensiveLineEvaluationModel.js";
+import { evaluateDefensiveLine } from "./playerEvaluation/positionModels/DefensiveLineEvaluationModel.js";
+import { evaluateLinebacker } from "./playerEvaluation/positionModels/LinebackerEvaluationModel.js";
+import { evaluateSecondary } from "./playerEvaluation/positionModels/SecondaryEvaluationModel.js";
+import { evaluateSpecialist } from "./playerEvaluation/positionModels/SpecialistEvaluationModel.js";
 
 const positionValueTiers = {
   QB: 8,
@@ -155,8 +155,32 @@ function getProductionScore(player) {
   return null;
 }
 
+function getGovernedRecognitionSummary(player) {
+  if (player?.historicalEvaluationEvidence?.disableRecognition === true) {
+    return {
+      available: false,
+      score: null,
+      rawScore: 0,
+      careerRecognitionScore: null,
+      recentRecognitionScore: null,
+      eliteSeasonCount: 0,
+      lastEliteSeason: null,
+      provenEliteCeiling: false,
+      sustainedEliteRecognition: false,
+      establishedCareerBaseline: null,
+      tier: "Historical Recognition Unavailable",
+      awards: [],
+      confidence: 0,
+      summary:
+        "Recognition disabled for temporally governed historical evaluation.",
+    };
+  }
+
+  return getPlayerRecognitionSummary(player);
+}
+
 function getRecognitionScore(player) {
-  const recognition = getPlayerRecognitionSummary(player);
+  const recognition = getGovernedRecognitionSummary(player);
 
   if (!recognition?.available) return null;
 
@@ -209,7 +233,7 @@ function getGenericPlayerQuality(player) {
 
 function getPositionEvaluation(player) {
   const position = getPlayerPosition(player);
-  const recognitionSummary = getPlayerRecognitionSummary(player);
+  const recognitionSummary = getGovernedRecognitionSummary(player);
 
   const context = {
     statusScore: getStatusScore(player),
@@ -301,7 +325,7 @@ function getDevelopmentTrajectory(player) {
 export function evaluateNFLRosterPlayer(player) {
   const usageProfile = getPlayerUsageProfile(player);
   const performanceProfile = getPlayerPerformanceProfile(player);
-  const recognitionSummary = getPlayerRecognitionSummary(player);
+  const recognitionSummary = getGovernedRecognitionSummary(player);
   const positionEvaluation = getPositionEvaluation(player);
 
   const usageScore = getUsageScore(player);

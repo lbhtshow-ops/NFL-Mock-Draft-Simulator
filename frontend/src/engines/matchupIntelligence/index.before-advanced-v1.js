@@ -1,0 +1,20 @@
+export {
+  NFL_MATCHUP_INTELLIGENCE_CONTRACT,
+  NFL_MATCHUP_INTELLIGENCE_VERSION,
+  NFL_MATCHUP_INTELLIGENCE_STATES,
+  createNFLMatchupIntelligenceResult,
+  isNFLMatchupIntelligenceResult,
+} from "./NFLMatchupIntelligenceResultContract.js";
+
+export {
+  buildNFLMatchupDimensions,
+} from "./NFLMatchupDimensionEngine.js";
+
+export {
+  NFL_GAME_CONTEXT_VERSION,
+  buildNFLGameContext,
+} from "./NFLGameContextEngine.js";
+
+export {
+  evaluateNFLMatchupIntelligence,
+} from "./NFLMatchupIntelligenceEngine.js";

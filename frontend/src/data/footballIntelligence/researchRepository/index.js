@@ -1,0 +1,13 @@
+export * from "./migrations/index.js";
+export * from "./sourceIntake/index.js";
+export * from "./evidenceCapture/index.js";
+export * from "./evidenceLinkage/index.js";
+export * from "./evidenceReview/index.js";
+export * from "./sourcePackages/index.js";
+import migrations from "./migrations/index.js";
+import sourceIntake from "./sourceIntake/index.js";
+import evidenceCapture from "./evidenceCapture/index.js";
+import evidenceLinkage from "./evidenceLinkage/index.js";
+import evidenceReview from "./evidenceReview/index.js";
+import sourcePackages from "./sourcePackages/index.js";
+export default Object.freeze({ ...migrations, ...sourceIntake, ...evidenceCapture, ...evidenceLinkage, ...evidenceReview, ...sourcePackages });

@@ -1,0 +1,2235 @@
+{
+  "contract": "NFLCandidateDecisionModelEmpiricalReport",
+  "version": "1.0.0",
+  "status": "RESEARCH_ONLY",
+  "records": 2227,
+  "seasons": [
+    2018,
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "experiments": [
+    {
+      "contract": "NFLCandidateModelSeasonHoldoutExperiment",
+      "version": "1.0.0",
+      "status": "RESEARCH_ONLY",
+      "holdoutSeason": 2019,
+      "trainingRecords": 267,
+      "holdoutRecords": 267,
+      "candidates": [
+        {
+          "modelId": "BASELINE_HOME_FIELD",
+          "parameters": {
+            "homeFieldPoints": 2.1385767790262173,
+            "edgeScale": 0,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 2.1385767790262173,
+              "edgeScale": 0,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 267
+          },
+          "holdout": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 267,
+            "winnerAccuracy": 0.5205992509363296,
+            "brierScore": 0.2532868764656596,
+            "logLoss": 0.6998402868990259,
+            "marginMAE": 11.592054875226198,
+            "calibrationBins": [
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 267,
+                "predicted": 155.26555060120592,
+                "actual": 139,
+                "meanPredicted": 0.5815189161093854,
+                "observedHomeWinRate": 0.5205992509363296
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LINEAR",
+          "parameters": {
+            "homeFieldPoints": 1.75,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.75,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 267,
+            "trainingMarginMAE": 10.284343355861283
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 267,
+            "winnerAccuracy": 0.5805243445692884,
+            "brierScore": 0.2384866132989887,
+            "logLoss": 0.6694304216686842,
+            "marginMAE": 11.168369754908769,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 4,
+                "predicted": 1.080201222725603,
+                "actual": 1,
+                "meanPredicted": 0.27005030568140076,
+                "observedHomeWinRate": 0.25
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 27,
+                "predicted": 9.554690124720016,
+                "actual": 10,
+                "meanPredicted": 0.3538774120266673,
+                "observedHomeWinRate": 0.37037037037037035
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 45,
+                "predicted": 20.454891238674026,
+                "actual": 19,
+                "meanPredicted": 0.4545531386372006,
+                "observedHomeWinRate": 0.4222222222222222
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 87,
+                "predicted": 48.36424415021198,
+                "actual": 42,
+                "meanPredicted": 0.5559108523012871,
+                "observedHomeWinRate": 0.4827586206896552
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 61,
+                "predicted": 39.63415613043437,
+                "actual": 36,
+                "meanPredicted": 0.6497402644333503,
+                "observedHomeWinRate": 0.5901639344262295
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 34,
+                "predicted": 25.034965060538127,
+                "actual": 23,
+                "meanPredicted": 0.7363225017805332,
+                "observedHomeWinRate": 0.6764705882352942
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 9,
+                "predicted": 7.394019010622126,
+                "actual": 8,
+                "meanPredicted": 0.821557667846903,
+                "observedHomeWinRate": 0.8888888888888888
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LOGISTIC",
+          "parameters": {
+            "homeFieldPoints": 1.75,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.75,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 267,
+            "trainingMarginMAE": 10.284343355861283
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 267,
+            "winnerAccuracy": 0.5805243445692884,
+            "brierScore": 0.2384866132989887,
+            "logLoss": 0.6694304216686842,
+            "marginMAE": 11.168369754908769,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 4,
+                "predicted": 1.080201222725603,
+                "actual": 1,
+                "meanPredicted": 0.27005030568140076,
+                "observedHomeWinRate": 0.25
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 27,
+                "predicted": 9.554690124720016,
+                "actual": 10,
+                "meanPredicted": 0.3538774120266673,
+                "observedHomeWinRate": 0.37037037037037035
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 45,
+                "predicted": 20.454891238674026,
+                "actual": 19,
+                "meanPredicted": 0.4545531386372006,
+                "observedHomeWinRate": 0.4222222222222222
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 87,
+                "predicted": 48.36424415021198,
+                "actual": 42,
+                "meanPredicted": 0.5559108523012871,
+                "observedHomeWinRate": 0.4827586206896552
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 61,
+                "predicted": 39.63415613043437,
+                "actual": 36,
+                "meanPredicted": 0.6497402644333503,
+                "observedHomeWinRate": 0.5901639344262295
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 34,
+                "predicted": 25.034965060538127,
+                "actual": 23,
+                "meanPredicted": 0.7363225017805332,
+                "observedHomeWinRate": 0.6764705882352942
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 9,
+                "predicted": 7.394019010622126,
+                "actual": 8,
+                "meanPredicted": 0.821557667846903,
+                "observedHomeWinRate": 0.8888888888888888
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "QUALITY_WEIGHTED_MATCHUP",
+          "parameters": {
+            "homeFieldPoints": 2,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 2,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 267,
+            "trainingMarginMAE": 10.248284205903602
+          },
+          "holdout": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 267,
+            "winnerAccuracy": 0.5917602996254682,
+            "brierScore": 0.23973992493350338,
+            "logLoss": 0.6719990576074446,
+            "marginMAE": 11.202410976338882,
+            "calibrationBins": [
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 18,
+                "predicted": 6.6590942269467375,
+                "actual": 5,
+                "meanPredicted": 0.36994967927481875,
+                "observedHomeWinRate": 0.2777777777777778
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 41,
+                "predicted": 18.685636735365325,
+                "actual": 15,
+                "meanPredicted": 0.45574723744793477,
+                "observedHomeWinRate": 0.36585365853658536
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 100,
+                "predicted": 55.402361455411764,
+                "actual": 51,
+                "meanPredicted": 0.5540236145541176,
+                "observedHomeWinRate": 0.51
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 78,
+                "predicted": 50.641116556004086,
+                "actual": 46,
+                "meanPredicted": 0.6492450840513344,
+                "observedHomeWinRate": 0.5897435897435898
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 29,
+                "predicted": 21.57888845464882,
+                "actual": 21,
+                "meanPredicted": 0.744099601884442,
+                "observedHomeWinRate": 0.7241379310344828
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 1,
+                "predicted": 0.8029799731922943,
+                "actual": 1,
+                "meanPredicted": 0.8029799731922943,
+                "observedHomeWinRate": 1
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "contract": "NFLCandidateModelSeasonHoldoutExperiment",
+      "version": "1.0.0",
+      "status": "RESEARCH_ONLY",
+      "holdoutSeason": 2020,
+      "trainingRecords": 534,
+      "holdoutRecords": 269,
+      "candidates": [
+        {
+          "modelId": "BASELINE_HOME_FIELD",
+          "parameters": {
+            "homeFieldPoints": 1.0898876404494382,
+            "edgeScale": 0,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.0898876404494382,
+              "edgeScale": 0,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 534
+          },
+          "holdout": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 269,
+            "winnerAccuracy": 0.49814126394052044,
+            "brierScore": 0.25190444862119676,
+            "logLoss": 0.6969690990594309,
+            "marginMAE": 11.045904515266697,
+            "calibrationBins": [
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 269,
+                "predicted": 145.7498002824892,
+                "actual": 134,
+                "meanPredicted": 0.5418208188940119,
+                "observedHomeWinRate": 0.49814126394052044
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LINEAR",
+          "parameters": {
+            "homeFieldPoints": 1.25,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.25,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 534,
+            "trainingMarginMAE": 10.717678035721267
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 269,
+            "winnerAccuracy": 0.6394052044609665,
+            "brierScore": 0.21777832671372044,
+            "logLoss": 0.6253188821012213,
+            "marginMAE": 10.05659403680871,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 11,
+                "predicted": 2.8570142314802527,
+                "actual": 2,
+                "meanPredicted": 0.2597285664982048,
+                "observedHomeWinRate": 0.18181818181818182
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 43,
+                "predicted": 15.249958752241469,
+                "actual": 11,
+                "meanPredicted": 0.35465020354049925,
+                "observedHomeWinRate": 0.2558139534883721
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 50,
+                "predicted": 22.861868880197928,
+                "actual": 20,
+                "meanPredicted": 0.45723737760395855,
+                "observedHomeWinRate": 0.4
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 56,
+                "predicted": 30.767168658063053,
+                "actual": 23,
+                "meanPredicted": 0.5494137260368402,
+                "observedHomeWinRate": 0.4107142857142857
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 68,
+                "predicted": 44.17959509684217,
+                "actual": 45,
+                "meanPredicted": 0.6496999278947378,
+                "observedHomeWinRate": 0.6617647058823529
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 31,
+                "predicted": 23.149530780780026,
+                "actual": 24,
+                "meanPredicted": 0.746759057444517,
+                "observedHomeWinRate": 0.7741935483870968
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 10,
+                "predicted": 8.166521364472892,
+                "actual": 9,
+                "meanPredicted": 0.8166521364472892,
+                "observedHomeWinRate": 0.9
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LOGISTIC",
+          "parameters": {
+            "homeFieldPoints": 1.25,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.25,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 534,
+            "trainingMarginMAE": 10.717678035721267
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 269,
+            "winnerAccuracy": 0.6394052044609665,
+            "brierScore": 0.21777832671372044,
+            "logLoss": 0.6253188821012213,
+            "marginMAE": 10.05659403680871,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 11,
+                "predicted": 2.8570142314802527,
+                "actual": 2,
+                "meanPredicted": 0.2597285664982048,
+                "observedHomeWinRate": 0.18181818181818182
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 43,
+                "predicted": 15.249958752241469,
+                "actual": 11,
+                "meanPredicted": 0.35465020354049925,
+                "observedHomeWinRate": 0.2558139534883721
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 50,
+                "predicted": 22.861868880197928,
+                "actual": 20,
+                "meanPredicted": 0.45723737760395855,
+                "observedHomeWinRate": 0.4
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 56,
+                "predicted": 30.767168658063053,
+                "actual": 23,
+                "meanPredicted": 0.5494137260368402,
+                "observedHomeWinRate": 0.4107142857142857
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 68,
+                "predicted": 44.17959509684217,
+                "actual": 45,
+                "meanPredicted": 0.6496999278947378,
+                "observedHomeWinRate": 0.6617647058823529
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 31,
+                "predicted": 23.149530780780026,
+                "actual": 24,
+                "meanPredicted": 0.746759057444517,
+                "observedHomeWinRate": 0.7741935483870968
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 10,
+                "predicted": 8.166521364472892,
+                "actual": 9,
+                "meanPredicted": 0.8166521364472892,
+                "observedHomeWinRate": 0.9
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "QUALITY_WEIGHTED_MATCHUP",
+          "parameters": {
+            "homeFieldPoints": 1.5,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.5,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 534,
+            "trainingMarginMAE": 10.713580721759424
+          },
+          "holdout": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 269,
+            "winnerAccuracy": 0.654275092936803,
+            "brierScore": 0.2219466823301607,
+            "logLoss": 0.634554944313564,
+            "marginMAE": 10.16056285958506,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 1,
+                "predicted": 0.28353753395863057,
+                "actual": 1,
+                "meanPredicted": 0.28353753395863057,
+                "observedHomeWinRate": 1
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 31,
+                "predicted": 11.115889516958665,
+                "actual": 6,
+                "meanPredicted": 0.358577081192215,
+                "observedHomeWinRate": 0.1935483870967742
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 56,
+                "predicted": 25.32644192078061,
+                "actual": 16,
+                "meanPredicted": 0.4522578914425109,
+                "observedHomeWinRate": 0.2857142857142857
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 71,
+                "predicted": 38.84499112620269,
+                "actual": 32,
+                "meanPredicted": 0.5471125510732774,
+                "observedHomeWinRate": 0.4507042253521127
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 78,
+                "predicted": 50.311377679993,
+                "actual": 54,
+                "meanPredicted": 0.6450176625640128,
+                "observedHomeWinRate": 0.6923076923076923
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 30,
+                "predicted": 22.361733254612673,
+                "actual": 23,
+                "meanPredicted": 0.7453911084870891,
+                "observedHomeWinRate": 0.7666666666666667
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 2,
+                "predicted": 1.6021290028365092,
+                "actual": 2,
+                "meanPredicted": 0.8010645014182546,
+                "observedHomeWinRate": 1
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "contract": "NFLCandidateModelSeasonHoldoutExperiment",
+      "version": "1.0.0",
+      "status": "RESEARCH_ONLY",
+      "holdoutSeason": 2021,
+      "trainingRecords": 803,
+      "holdoutRecords": 285,
+      "candidates": [
+        {
+          "modelId": "BASELINE_HOME_FIELD",
+          "parameters": {
+            "homeFieldPoints": 0.7833125778331258,
+            "edgeScale": 0,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 0.7833125778331258,
+              "edgeScale": 0,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 803
+          },
+          "holdout": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.5157894736842106,
+            "brierScore": 0.2499552261499075,
+            "logLoss": 0.6930586208543813,
+            "marginMAE": 12.041930479998262,
+            "calibrationBins": [
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 285,
+                "predicted": 151.0759347426277,
+                "actual": 147,
+                "meanPredicted": 0.5300909990969394,
+                "observedHomeWinRate": 0.5157894736842106
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LINEAR",
+          "parameters": {
+            "homeFieldPoints": 0.5,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 0.5,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 803,
+            "trainingMarginMAE": 10.481047688955814
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.6105263157894737,
+            "brierScore": 0.2332625756219949,
+            "logLoss": 0.6589392838099626,
+            "marginMAE": 11.252558417926295,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 22,
+                "predicted": 5.923405288119424,
+                "actual": 9,
+                "meanPredicted": 0.2692456949145193,
+                "observedHomeWinRate": 0.4090909090909091
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 38,
+                "predicted": 13.285842525183172,
+                "actual": 16,
+                "meanPredicted": 0.3496274348732414,
+                "observedHomeWinRate": 0.42105263157894735
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 57,
+                "predicted": 25.83918840953727,
+                "actual": 20,
+                "meanPredicted": 0.45331909490416267,
+                "observedHomeWinRate": 0.3508771929824561
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 76,
+                "predicted": 41.87731289357762,
+                "actual": 37,
+                "meanPredicted": 0.551017274915495,
+                "observedHomeWinRate": 0.4868421052631579
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 59,
+                "predicted": 38.08842477465356,
+                "actual": 40,
+                "meanPredicted": 0.6455665216042976,
+                "observedHomeWinRate": 0.6779661016949152
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 33,
+                "predicted": 24.563677370104433,
+                "actual": 25,
+                "meanPredicted": 0.7443538597001343,
+                "observedHomeWinRate": 0.7575757575757576
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LOGISTIC",
+          "parameters": {
+            "homeFieldPoints": 0.5,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 0.5,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 803,
+            "trainingMarginMAE": 10.481047688955814
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.6105263157894737,
+            "brierScore": 0.2332625756219949,
+            "logLoss": 0.6589392838099626,
+            "marginMAE": 11.252558417926295,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 22,
+                "predicted": 5.923405288119424,
+                "actual": 9,
+                "meanPredicted": 0.2692456949145193,
+                "observedHomeWinRate": 0.4090909090909091
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 38,
+                "predicted": 13.285842525183172,
+                "actual": 16,
+                "meanPredicted": 0.3496274348732414,
+                "observedHomeWinRate": 0.42105263157894735
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 57,
+                "predicted": 25.83918840953727,
+                "actual": 20,
+                "meanPredicted": 0.45331909490416267,
+                "observedHomeWinRate": 0.3508771929824561
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 76,
+                "predicted": 41.87731289357762,
+                "actual": 37,
+                "meanPredicted": 0.551017274915495,
+                "observedHomeWinRate": 0.4868421052631579
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 59,
+                "predicted": 38.08842477465356,
+                "actual": 40,
+                "meanPredicted": 0.6455665216042976,
+                "observedHomeWinRate": 0.6779661016949152
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 33,
+                "predicted": 24.563677370104433,
+                "actual": 25,
+                "meanPredicted": 0.7443538597001343,
+                "observedHomeWinRate": 0.7575757575757576
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "QUALITY_WEIGHTED_MATCHUP",
+          "parameters": {
+            "homeFieldPoints": 0.75,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 0.75,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 803,
+            "trainingMarginMAE": 10.51067827135088
+          },
+          "holdout": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.5894736842105263,
+            "brierScore": 0.23352170142457224,
+            "logLoss": 0.6591975441397081,
+            "marginMAE": 11.338300270298255,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 3,
+                "predicted": 0.8347811981472715,
+                "actual": 1,
+                "meanPredicted": 0.2782603993824238,
+                "observedHomeWinRate": 0.3333333333333333
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 42,
+                "predicted": 14.6811075414216,
+                "actual": 15,
+                "meanPredicted": 0.34955017955765716,
+                "observedHomeWinRate": 0.35714285714285715
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 64,
+                "predicted": 29.380946488832215,
+                "actual": 28,
+                "meanPredicted": 0.45907728888800337,
+                "observedHomeWinRate": 0.4375
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 87,
+                "predicted": 47.97152937577823,
+                "actual": 40,
+                "meanPredicted": 0.5513968893767612,
+                "observedHomeWinRate": 0.45977011494252873
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 71,
+                "predicted": 45.754901668902804,
+                "actual": 49,
+                "meanPredicted": 0.6444352347732789,
+                "observedHomeWinRate": 0.6901408450704225
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 18,
+                "predicted": 13.266465651403324,
+                "actual": 14,
+                "meanPredicted": 0.7370258695224069,
+                "observedHomeWinRate": 0.7777777777777778
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "contract": "NFLCandidateModelSeasonHoldoutExperiment",
+      "version": "1.0.0",
+      "status": "RESEARCH_ONLY",
+      "holdoutSeason": 2022,
+      "trainingRecords": 1088,
+      "holdoutRecords": 284,
+      "candidates": [
+        {
+          "modelId": "BASELINE_HOME_FIELD",
+          "parameters": {
+            "homeFieldPoints": 1.0845588235294117,
+            "edgeScale": 0,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.0845588235294117,
+              "edgeScale": 0,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1088
+          },
+          "holdout": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 284,
+            "winnerAccuracy": 0.5633802816901409,
+            "brierScore": 0.24645656764462467,
+            "logLoss": 0.686047903610861,
+            "marginMAE": 9.639006835128422,
+            "calibrationBins": [
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 284,
+                "predicted": 153.81931072250993,
+                "actual": 160,
+                "meanPredicted": 0.5416172912764434,
+                "observedHomeWinRate": 0.5633802816901409
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LINEAR",
+          "parameters": {
+            "homeFieldPoints": 0.5,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 0.5,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1088,
+            "trainingMarginMAE": 10.683143789835027
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 284,
+            "winnerAccuracy": 0.6549295774647887,
+            "brierScore": 0.2228289652424381,
+            "logLoss": 0.6370041325316375,
+            "marginMAE": 9.120030126962602,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 19,
+                "predicted": 5.015187572890685,
+                "actual": 8,
+                "meanPredicted": 0.2639572406784571,
+                "observedHomeWinRate": 0.42105263157894735
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 43,
+                "predicted": 15.286109945792534,
+                "actual": 13,
+                "meanPredicted": 0.3554909289719194,
+                "observedHomeWinRate": 0.3023255813953488
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 66,
+                "predicted": 29.59638525741616,
+                "actual": 30,
+                "meanPredicted": 0.4484300796578206,
+                "observedHomeWinRate": 0.45454545454545453
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 60,
+                "predicted": 32.867524835882385,
+                "actual": 36,
+                "meanPredicted": 0.5477920805980397,
+                "observedHomeWinRate": 0.6
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 63,
+                "predicted": 40.79385287671786,
+                "actual": 47,
+                "meanPredicted": 0.6475214742336167,
+                "observedHomeWinRate": 0.746031746031746
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 30,
+                "predicted": 22.11175497393457,
+                "actual": 23,
+                "meanPredicted": 0.7370584991311523,
+                "observedHomeWinRate": 0.7666666666666667
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 3,
+                "predicted": 2.431678257454367,
+                "actual": 3,
+                "meanPredicted": 0.8105594191514557,
+                "observedHomeWinRate": 1
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LOGISTIC",
+          "parameters": {
+            "homeFieldPoints": 0.5,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 0.5,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1088,
+            "trainingMarginMAE": 10.683143789835027
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 284,
+            "winnerAccuracy": 0.6549295774647887,
+            "brierScore": 0.2228289652424381,
+            "logLoss": 0.6370041325316375,
+            "marginMAE": 9.120030126962602,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 19,
+                "predicted": 5.015187572890685,
+                "actual": 8,
+                "meanPredicted": 0.2639572406784571,
+                "observedHomeWinRate": 0.42105263157894735
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 43,
+                "predicted": 15.286109945792534,
+                "actual": 13,
+                "meanPredicted": 0.3554909289719194,
+                "observedHomeWinRate": 0.3023255813953488
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 66,
+                "predicted": 29.59638525741616,
+                "actual": 30,
+                "meanPredicted": 0.4484300796578206,
+                "observedHomeWinRate": 0.45454545454545453
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 60,
+                "predicted": 32.867524835882385,
+                "actual": 36,
+                "meanPredicted": 0.5477920805980397,
+                "observedHomeWinRate": 0.6
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 63,
+                "predicted": 40.79385287671786,
+                "actual": 47,
+                "meanPredicted": 0.6475214742336167,
+                "observedHomeWinRate": 0.746031746031746
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 30,
+                "predicted": 22.11175497393457,
+                "actual": 23,
+                "meanPredicted": 0.7370584991311523,
+                "observedHomeWinRate": 0.7666666666666667
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 3,
+                "predicted": 2.431678257454367,
+                "actual": 3,
+                "meanPredicted": 0.8105594191514557,
+                "observedHomeWinRate": 1
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "QUALITY_WEIGHTED_MATCHUP",
+          "parameters": {
+            "homeFieldPoints": 0.75,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 0.75,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1088,
+            "trainingMarginMAE": 10.727472636883977
+          },
+          "holdout": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 284,
+            "winnerAccuracy": 0.6690140845070423,
+            "brierScore": 0.223446452193086,
+            "logLoss": 0.6383518515284629,
+            "marginMAE": 9.107781867449848,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 5,
+                "predicted": 1.3864140902639197,
+                "actual": 0,
+                "meanPredicted": 0.27728281805278393,
+                "observedHomeWinRate": 0
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 36,
+                "predicted": 12.892383309901172,
+                "actual": 15,
+                "meanPredicted": 0.35812175860836587,
+                "observedHomeWinRate": 0.4166666666666667
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 79,
+                "predicted": 35.80919118363518,
+                "actual": 30,
+                "meanPredicted": 0.45328090105867314,
+                "observedHomeWinRate": 0.379746835443038
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 74,
+                "predicted": 40.71974507463542,
+                "actual": 47,
+                "meanPredicted": 0.550266825332911,
+                "observedHomeWinRate": 0.6351351351351351
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 68,
+                "predicted": 43.84093984205788,
+                "actual": 49,
+                "meanPredicted": 0.6447197035596747,
+                "observedHomeWinRate": 0.7205882352941176
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 22,
+                "predicted": 16.03570581680384,
+                "actual": 19,
+                "meanPredicted": 0.7288957189456291,
+                "observedHomeWinRate": 0.8636363636363636
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "contract": "NFLCandidateModelSeasonHoldoutExperiment",
+      "version": "1.0.0",
+      "status": "RESEARCH_ONLY",
+      "holdoutSeason": 2023,
+      "trainingRecords": 1372,
+      "holdoutRecords": 285,
+      "candidates": [
+        {
+          "modelId": "BASELINE_HOME_FIELD",
+          "parameters": {
+            "homeFieldPoints": 1.2922740524781342,
+            "edgeScale": 0,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.2922740524781342,
+              "edgeScale": 0,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1372
+          },
+          "holdout": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.5649122807017544,
+            "brierScore": 0.24602270959463415,
+            "logLoss": 0.6851745102501496,
+            "marginMAE": 11.141325251905265,
+            "calibrationBins": [
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 285,
+                "predicted": 156.61883727485883,
+                "actual": 161,
+                "meanPredicted": 0.5495397799117854,
+                "observedHomeWinRate": 0.5649122807017544
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LINEAR",
+          "parameters": {
+            "homeFieldPoints": 0.75,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 0.75,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1372,
+            "trainingMarginMAE": 10.3568862985537
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.624561403508772,
+            "brierScore": 0.23179270004077163,
+            "logLoss": 0.655860993271731,
+            "marginMAE": 10.571109318686261,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 21,
+                "predicted": 5.5909763815591615,
+                "actual": 8,
+                "meanPredicted": 0.26623697055043627,
+                "observedHomeWinRate": 0.38095238095238093
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 41,
+                "predicted": 14.488541062464883,
+                "actual": 16,
+                "meanPredicted": 0.3533790503040215,
+                "observedHomeWinRate": 0.3902439024390244
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 67,
+                "predicted": 30.681805505589715,
+                "actual": 32,
+                "meanPredicted": 0.45793739560581664,
+                "observedHomeWinRate": 0.47761194029850745
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 62,
+                "predicted": 34.356480019343955,
+                "actual": 39,
+                "meanPredicted": 0.5541367745055477,
+                "observedHomeWinRate": 0.6290322580645161
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 56,
+                "predicted": 35.95139157973933,
+                "actual": 37,
+                "meanPredicted": 0.641989135352488,
+                "observedHomeWinRate": 0.6607142857142857
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 30,
+                "predicted": 22.401594362168726,
+                "actual": 21,
+                "meanPredicted": 0.7467198120722909,
+                "observedHomeWinRate": 0.7
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 8,
+                "predicted": 6.492009318205448,
+                "actual": 8,
+                "meanPredicted": 0.811501164775681,
+                "observedHomeWinRate": 1
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LOGISTIC",
+          "parameters": {
+            "homeFieldPoints": 0.75,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 0.75,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1372,
+            "trainingMarginMAE": 10.3568862985537
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.624561403508772,
+            "brierScore": 0.23179270004077163,
+            "logLoss": 0.655860993271731,
+            "marginMAE": 10.571109318686261,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 21,
+                "predicted": 5.5909763815591615,
+                "actual": 8,
+                "meanPredicted": 0.26623697055043627,
+                "observedHomeWinRate": 0.38095238095238093
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 41,
+                "predicted": 14.488541062464883,
+                "actual": 16,
+                "meanPredicted": 0.3533790503040215,
+                "observedHomeWinRate": 0.3902439024390244
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 67,
+                "predicted": 30.681805505589715,
+                "actual": 32,
+                "meanPredicted": 0.45793739560581664,
+                "observedHomeWinRate": 0.47761194029850745
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 62,
+                "predicted": 34.356480019343955,
+                "actual": 39,
+                "meanPredicted": 0.5541367745055477,
+                "observedHomeWinRate": 0.6290322580645161
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 56,
+                "predicted": 35.95139157973933,
+                "actual": 37,
+                "meanPredicted": 0.641989135352488,
+                "observedHomeWinRate": 0.6607142857142857
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 30,
+                "predicted": 22.401594362168726,
+                "actual": 21,
+                "meanPredicted": 0.7467198120722909,
+                "observedHomeWinRate": 0.7
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 8,
+                "predicted": 6.492009318205448,
+                "actual": 8,
+                "meanPredicted": 0.811501164775681,
+                "observedHomeWinRate": 1
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "QUALITY_WEIGHTED_MATCHUP",
+          "parameters": {
+            "homeFieldPoints": 1,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1372,
+            "trainingMarginMAE": 10.391688181106334
+          },
+          "holdout": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.6105263157894737,
+            "brierScore": 0.2307866806760304,
+            "logLoss": 0.6535828793396353,
+            "marginMAE": 10.563505763415959,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 3,
+                "predicted": 0.8522748162860754,
+                "actual": 2,
+                "meanPredicted": 0.2840916054286918,
+                "observedHomeWinRate": 0.6666666666666666
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 40,
+                "predicted": 14.143984881521718,
+                "actual": 11,
+                "meanPredicted": 0.35359962203804296,
+                "observedHomeWinRate": 0.275
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 70,
+                "predicted": 32.00666435230666,
+                "actual": 37,
+                "meanPredicted": 0.45723806217580937,
+                "observedHomeWinRate": 0.5285714285714286
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 84,
+                "predicted": 46.375693428993536,
+                "actual": 50,
+                "meanPredicted": 0.5520915884403992,
+                "observedHomeWinRate": 0.5952380952380952
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 57,
+                "predicted": 36.5397945840549,
+                "actual": 37,
+                "meanPredicted": 0.6410490277904369,
+                "observedHomeWinRate": 0.6491228070175439
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 31,
+                "predicted": 22.931972395662555,
+                "actual": 24,
+                "meanPredicted": 0.7397410450213727,
+                "observedHomeWinRate": 0.7741935483870968
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "contract": "NFLCandidateModelSeasonHoldoutExperiment",
+      "version": "1.0.0",
+      "status": "RESEARCH_ONLY",
+      "holdoutSeason": 2024,
+      "trainingRecords": 1657,
+      "holdoutRecords": 285,
+      "candidates": [
+        {
+          "modelId": "BASELINE_HOME_FIELD",
+          "parameters": {
+            "homeFieldPoints": 1.572721786360893,
+            "edgeScale": 0,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.572721786360893,
+              "edgeScale": 0,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1657
+          },
+          "holdout": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.5473684210526316,
+            "brierScore": 0.24792077724706282,
+            "logLoss": 0.6889861795901913,
+            "marginMAE": 11.168836091435587,
+            "calibrationBins": [
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 285,
+                "predicted": 159.6558353207789,
+                "actual": 156,
+                "meanPredicted": 0.5601959134062418,
+                "observedHomeWinRate": 0.5473684210526316
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LINEAR",
+          "parameters": {
+            "homeFieldPoints": 1,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1657,
+            "trainingMarginMAE": 10.392884660346962
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.6596491228070176,
+            "brierScore": 0.21421544607406554,
+            "logLoss": 0.618748272224648,
+            "marginMAE": 10.217079117936773,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 16,
+                "predicted": 4.376665973589901,
+                "actual": 5,
+                "meanPredicted": 0.2735416233493688,
+                "observedHomeWinRate": 0.3125
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 45,
+                "predicted": 15.969195769198526,
+                "actual": 10,
+                "meanPredicted": 0.3548710170933006,
+                "observedHomeWinRate": 0.2222222222222222
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 57,
+                "predicted": 25.689882132272448,
+                "actual": 28,
+                "meanPredicted": 0.4506996865310956,
+                "observedHomeWinRate": 0.49122807017543857
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 61,
+                "predicted": 33.587754013713855,
+                "actual": 33,
+                "meanPredicted": 0.5506189182576042,
+                "observedHomeWinRate": 0.5409836065573771
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 56,
+                "predicted": 36.18802605340331,
+                "actual": 40,
+                "meanPredicted": 0.6462147509536306,
+                "observedHomeWinRate": 0.7142857142857143
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 37,
+                "predicted": 27.606906096567233,
+                "actual": 31,
+                "meanPredicted": 0.7461325972045199,
+                "observedHomeWinRate": 0.8378378378378378
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 13,
+                "predicted": 10.523397440063146,
+                "actual": 9,
+                "meanPredicted": 0.8094921107740881,
+                "observedHomeWinRate": 0.6923076923076923
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LOGISTIC",
+          "parameters": {
+            "homeFieldPoints": 1,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1657,
+            "trainingMarginMAE": 10.392884660346962
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.6596491228070176,
+            "brierScore": 0.21421544607406554,
+            "logLoss": 0.618748272224648,
+            "marginMAE": 10.217079117936773,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 16,
+                "predicted": 4.376665973589901,
+                "actual": 5,
+                "meanPredicted": 0.2735416233493688,
+                "observedHomeWinRate": 0.3125
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 45,
+                "predicted": 15.969195769198526,
+                "actual": 10,
+                "meanPredicted": 0.3548710170933006,
+                "observedHomeWinRate": 0.2222222222222222
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 57,
+                "predicted": 25.689882132272448,
+                "actual": 28,
+                "meanPredicted": 0.4506996865310956,
+                "observedHomeWinRate": 0.49122807017543857
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 61,
+                "predicted": 33.587754013713855,
+                "actual": 33,
+                "meanPredicted": 0.5506189182576042,
+                "observedHomeWinRate": 0.5409836065573771
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 56,
+                "predicted": 36.18802605340331,
+                "actual": 40,
+                "meanPredicted": 0.6462147509536306,
+                "observedHomeWinRate": 0.7142857142857143
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 37,
+                "predicted": 27.606906096567233,
+                "actual": 31,
+                "meanPredicted": 0.7461325972045199,
+                "observedHomeWinRate": 0.8378378378378378
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 13,
+                "predicted": 10.523397440063146,
+                "actual": 9,
+                "meanPredicted": 0.8094921107740881,
+                "observedHomeWinRate": 0.6923076923076923
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "QUALITY_WEIGHTED_MATCHUP",
+          "parameters": {
+            "homeFieldPoints": 1,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1657,
+            "trainingMarginMAE": 10.421240390495734
+          },
+          "holdout": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.6596491228070176,
+            "brierScore": 0.2168761116580815,
+            "logLoss": 0.6246540350827232,
+            "marginMAE": 10.307100774575073,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 3,
+                "predicted": 0.865812223376327,
+                "actual": 0,
+                "meanPredicted": 0.2886040744587757,
+                "observedHomeWinRate": 0
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 41,
+                "predicted": 14.609836449881575,
+                "actual": 11,
+                "meanPredicted": 0.35633747438735547,
+                "observedHomeWinRate": 0.2682926829268293
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 70,
+                "predicted": 31.716514205977163,
+                "actual": 30,
+                "meanPredicted": 0.453093060085388,
+                "observedHomeWinRate": 0.42857142857142855
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 76,
+                "predicted": 41.98692583393713,
+                "actual": 42,
+                "meanPredicted": 0.5524595504465412,
+                "observedHomeWinRate": 0.5526315789473685
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 59,
+                "predicted": 38.11939930778215,
+                "actual": 45,
+                "meanPredicted": 0.646091513691223,
+                "observedHomeWinRate": 0.7627118644067796
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 36,
+                "predicted": 26.69030822537691,
+                "actual": 28,
+                "meanPredicted": 0.7413974507049141,
+                "observedHomeWinRate": 0.7777777777777778
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "contract": "NFLCandidateModelSeasonHoldoutExperiment",
+      "version": "1.0.0",
+      "status": "RESEARCH_ONLY",
+      "holdoutSeason": 2025,
+      "trainingRecords": 1942,
+      "holdoutRecords": 285,
+      "candidates": [
+        {
+          "modelId": "BASELINE_HOME_FIELD",
+          "parameters": {
+            "homeFieldPoints": 1.67610710607621,
+            "edgeScale": 0,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.67610710607621,
+              "edgeScale": 0,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1942
+          },
+          "holdout": {
+            "modelId": "BASELINE_HOME_FIELD",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.5333333333333333,
+            "brierScore": 0.24983614177032154,
+            "logLoss": 0.6928404753756571,
+            "marginMAE": 11.004446492131462,
+            "calibrationBins": [
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 285,
+                "predicted": 160.771579977083,
+                "actual": 152,
+                "meanPredicted": 0.5641108069371333,
+                "observedHomeWinRate": 0.5333333333333333
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LINEAR",
+          "parameters": {
+            "homeFieldPoints": 1.25,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.25,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1942,
+            "trainingMarginMAE": 10.36609519447749
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LINEAR",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.6140350877192983,
+            "brierScore": 0.225791824865781,
+            "logLoss": 0.6417763360344915,
+            "marginMAE": 10.270623170620457,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 9,
+                "predicted": 2.4833445439119055,
+                "actual": 4,
+                "meanPredicted": 0.2759271715457673,
+                "observedHomeWinRate": 0.4444444444444444
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 48,
+                "predicted": 17.026537160850996,
+                "actual": 18,
+                "meanPredicted": 0.35471952418439573,
+                "observedHomeWinRate": 0.375
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 56,
+                "predicted": 25.57483411283749,
+                "actual": 23,
+                "meanPredicted": 0.4566934663006695,
+                "observedHomeWinRate": 0.4107142857142857
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 75,
+                "predicted": 41.495982952558315,
+                "actual": 37,
+                "meanPredicted": 0.5532797727007776,
+                "observedHomeWinRate": 0.49333333333333335
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 47,
+                "predicted": 30.65232170942559,
+                "actual": 31,
+                "meanPredicted": 0.652177057647353,
+                "observedHomeWinRate": 0.6595744680851063
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 44,
+                "predicted": 32.93392887172607,
+                "actual": 33,
+                "meanPredicted": 0.7484983834483198,
+                "observedHomeWinRate": 0.75
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 6,
+                "predicted": 4.9105964132855515,
+                "actual": 6,
+                "meanPredicted": 0.8184327355475919,
+                "observedHomeWinRate": 1
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "MATCHUP_EDGE_LOGISTIC",
+          "parameters": {
+            "homeFieldPoints": 1.25,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.25,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1942,
+            "trainingMarginMAE": 10.36609519447749
+          },
+          "holdout": {
+            "modelId": "MATCHUP_EDGE_LOGISTIC",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.6140350877192983,
+            "brierScore": 0.225791824865781,
+            "logLoss": 0.6417763360344915,
+            "marginMAE": 10.270623170620457,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 9,
+                "predicted": 2.4833445439119055,
+                "actual": 4,
+                "meanPredicted": 0.2759271715457673,
+                "observedHomeWinRate": 0.4444444444444444
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 48,
+                "predicted": 17.026537160850996,
+                "actual": 18,
+                "meanPredicted": 0.35471952418439573,
+                "observedHomeWinRate": 0.375
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 56,
+                "predicted": 25.57483411283749,
+                "actual": 23,
+                "meanPredicted": 0.4566934663006695,
+                "observedHomeWinRate": 0.4107142857142857
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 75,
+                "predicted": 41.495982952558315,
+                "actual": 37,
+                "meanPredicted": 0.5532797727007776,
+                "observedHomeWinRate": 0.49333333333333335
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 47,
+                "predicted": 30.65232170942559,
+                "actual": 31,
+                "meanPredicted": 0.652177057647353,
+                "observedHomeWinRate": 0.6595744680851063
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 44,
+                "predicted": 32.93392887172607,
+                "actual": 33,
+                "meanPredicted": 0.7484983834483198,
+                "observedHomeWinRate": 0.75
+              },
+              {
+                "lower": 0.8,
+                "upper": 0.9,
+                "count": 6,
+                "predicted": 4.9105964132855515,
+                "actual": 6,
+                "meanPredicted": 0.8184327355475919,
+                "observedHomeWinRate": 1
+              }
+            ]
+          }
+        },
+        {
+          "modelId": "QUALITY_WEIGHTED_MATCHUP",
+          "parameters": {
+            "homeFieldPoints": 1.25,
+            "edgeScale": 0.25,
+            "probabilityScale": 6.5
+          },
+          "training": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "parameters": {
+              "homeFieldPoints": 1.25,
+              "edgeScale": 0.25,
+              "probabilityScale": 6.5
+            },
+            "trainingRecords": 1942,
+            "trainingMarginMAE": 10.402392129975784
+          },
+          "holdout": {
+            "modelId": "QUALITY_WEIGHTED_MATCHUP",
+            "status": "RESEARCH_ONLY",
+            "sampleSize": 285,
+            "winnerAccuracy": 0.6210526315789474,
+            "brierScore": 0.22700145678137948,
+            "logLoss": 0.6448903640619946,
+            "marginMAE": 10.329324110015106,
+            "calibrationBins": [
+              {
+                "lower": 0.2,
+                "upper": 0.3,
+                "count": 1,
+                "predicted": 0.26749869390751224,
+                "actual": 0,
+                "meanPredicted": 0.26749869390751224,
+                "observedHomeWinRate": 0
+              },
+              {
+                "lower": 0.3,
+                "upper": 0.4,
+                "count": 36,
+                "predicted": 13.066767685544342,
+                "actual": 14,
+                "meanPredicted": 0.3629657690428984,
+                "observedHomeWinRate": 0.3888888888888889
+              },
+              {
+                "lower": 0.4,
+                "upper": 0.5,
+                "count": 62,
+                "predicted": 27.819636843178678,
+                "actual": 23,
+                "meanPredicted": 0.448703820051269,
+                "observedHomeWinRate": 0.3709677419354839
+              },
+              {
+                "lower": 0.5,
+                "upper": 0.6,
+                "count": 95,
+                "predicted": 52.06531140894257,
+                "actual": 48,
+                "meanPredicted": 0.5480559095678166,
+                "observedHomeWinRate": 0.5052631578947369
+              },
+              {
+                "lower": 0.6,
+                "upper": 0.7,
+                "count": 55,
+                "predicted": 35.76877990371853,
+                "actual": 37,
+                "meanPredicted": 0.6503414527948824,
+                "observedHomeWinRate": 0.6727272727272727
+              },
+              {
+                "lower": 0.7,
+                "upper": 0.8,
+                "count": 36,
+                "predicted": 26.48693745549326,
+                "actual": 30,
+                "meanPredicted": 0.7357482626525905,
+                "observedHomeWinRate": 0.8333333333333334
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

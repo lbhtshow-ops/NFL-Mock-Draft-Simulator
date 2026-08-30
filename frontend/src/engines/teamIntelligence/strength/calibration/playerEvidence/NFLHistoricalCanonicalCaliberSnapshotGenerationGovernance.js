@@ -1,0 +1,35 @@
+export const NFL_HISTORICAL_CANONICAL_CALIBER_SNAPSHOT_GENERATION_GOVERNANCE=Object.freeze({
+ contractVersion:"FIE-NFL-HISTORICAL-CANONICAL-CALIBER-SNAPSHOT-GENERATION-GOVERNANCE-1.0.0",
+ sprint:"9D.1C2B2C11",
+ minimumReadyCanonicalScoreInputs:3,
+ resolvedCanonicalPositionRequired:true,
+ asOfRequired:true,
+ kickoffRequired:true,
+ asOfMustPrecedeKickoff:true,
+ canonicalPositionModelExecutionRequired:true,
+ canonicalNFLHardeningRequired:true,
+ canonicalPlayerCaliberProjectionRequired:true,
+ playerQualityIsCanonicalCaliberSource:true,
+ rosterValueMayNotSubstituteForCaliber:true,
+ deterministicRepeatRequired:true,
+ finiteCaliberRequired:true,
+ finiteConfidenceRequired:true,
+ modelVersionRequired:true,
+ provenanceRequired:true,
+ recognitionMayRemainUnavailable:true,
+ partialReadinessMayProduceSnapshot:true,
+ ineligibleTargetRemainsUnavailable:true,
+ currentIndexLookupAllowed:false,
+ currentRosterLookupAllowed:false,
+ currentRecognitionLookupAllowed:false,
+ prospectCarryoverAllowed:false,
+ targetWeekEvidenceAllowed:false,
+ futureEvidenceAllowed:false,
+ all606ForcedScoringAllowed:false,
+ calibrationAuthorized:false,
+ learnedWeightsAuthorized:false,
+ datasetMutationAuthorized:false
+});
+export function getNFLHistoricalCanonicalCaliberSnapshotGenerationGovernance(){
+ return NFL_HISTORICAL_CANONICAL_CALIBER_SNAPSHOT_GENERATION_GOVERNANCE;
+}

@@ -1,35 +1,47 @@
 // src/engines/ProductionEngine.js
 
-import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary";
-import productionProfiles from "../data/footballIntelligence/production/productionProfiles";
-import defaultProductionProfile from "../data/footballIntelligence/production/defaultProductionProfile";
+import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary.js";
+import productionProfiles from "../data/footballIntelligence/production/productionProfiles.js";
+import defaultProductionProfile from "../data/footballIntelligence/production/defaultProductionProfile.js";
 
-import { resolvePlayerContext } from "./context/PlayerContextResolver";
-import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine";
+import { resolvePlayerContext } from "./context/PlayerContextResolver.js";
+import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine.js";
 
 import {
   createIntelligenceResult,
   createUnavailableIntelligenceResult,
   DATA_STATES,
   EVIDENCE_LEVELS,
-} from "./contracts/IntelligenceResultContract";
-import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId";
+} from "./contracts/IntelligenceResultContract.js";
+import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId.js";
+import { createProductionModeledOutputDeclaration } from "./production/ProductionModeledOutputDeclaration.js";
+import {
+  createProductionInput,
+  PRODUCTION_COMPLETENESS,
+  PRODUCTION_SAMPLE_STATUS,
+} from "./production/ProductionInputProjection.js";
+import { getCanonicalProductionIntelligenceResult } from "./production/CanonicalProductionEngine.js";
 
 const PRODUCTION_MODEL_VERSION = "PRODUCTION-1.0.0";
 
-function getProductionScore(profile = {}) {
-  const score =
-    profile?.productionScores?.overallProductionScore;
-
-  if (
-    typeof score === "number" &&
-    Number.isFinite(score)
-  ) {
-    return score;
-  }
-
-  return null;
-}
+export const PRODUCTION_COMPATIBILITY_EXCEPTION = Object.freeze({
+  output: "LEGACY_STORED_PRODUCTION_SCORE",
+  owner: "LEGACY_SYSTEM",
+  derivationStatus: "UNKNOWN",
+  governanceStatus: "TRANSITIONAL",
+  canonicalDerivation: false,
+  permittedUse: "COMPATIBILITY_ONLY",
+  activeDependencies: Object.freeze([
+    "PLAYER_EVALUATION",
+    "PROSPECT_MODEL_SOURCE_ADAPTER",
+    "EXECUTIVE_SUMMARY",
+    "EXPLAINABILITY",
+    "DRAFT_BOARD",
+    "DRAFT_DECISION",
+  ]),
+  removalCondition:
+    "Remove after all active evaluation and Decision Support consumers have migrated to a governed Production replacement, or after an approved governed Production model supersedes the legacy declaration and compatibility snapshots approve the resulting behavior change.",
+});
 
 function getEvidenceLevel(confidence = 0) {
   if (confidence >= 0.9) {
@@ -303,7 +315,40 @@ export function getProductionIntelligenceResult(
     });
   }
 
-  const score = getProductionScore(profile);
+  const legacyModeledOutputDeclaration =
+    createProductionModeledOutputDeclaration({
+      productionScores: profile.productionScores,
+      strengths: profile.strengths,
+      concerns: profile.concerns,
+      notes: profile.notes,
+      sourceLabel: profile.source,
+      lastUpdated: profile.lastUpdated,
+    });
+  const productionInput = createProductionInput({
+    playerContext,
+    evidenceState: DATA_STATES.AVAILABLE,
+    objectiveEvidence: profile.statistics,
+    completeness: {
+      status: PRODUCTION_COMPLETENESS.PARTIAL,
+      scope: `${profile?.statistics?.season?.year ?? "Unknown"} legacy Production profile statistics`,
+      limitations: [
+        "The legacy profile does not declare complete objective-statistics coverage.",
+      ],
+    },
+    sample: {
+      status: PRODUCTION_SAMPLE_STATUS.UNKNOWN,
+      opportunities: {
+        games: profile?.statistics?.season?.games ?? null,
+        starts: profile?.statistics?.season?.starts ?? null,
+      },
+    },
+    legacyModeledOutputDeclaration,
+  });
+  const canonicalResult =
+    getCanonicalProductionIntelligenceResult(productionInput);
+  const score =
+    legacyModeledOutputDeclaration.productionScores
+      .overallProductionScore;
   const confidence = profile?.confidence || 0;
 
   const evidenceTransition =
@@ -361,6 +406,17 @@ export function getProductionIntelligenceResult(
     rawData: {
       profile,
 
+      legacyModeledOutputDeclaration,
+
+      productionInput,
+
+      canonicalResult,
+
+      canonicalInvocationCount: 1,
+
+      compatibilityException:
+        PRODUCTION_COMPATIBILITY_EXCEPTION,
+
       playerContext,
 
       evidenceTransition,
@@ -380,4 +436,8 @@ export default {
   getProductionProfile,
   getProductionSummary,
   getProductionIntelligenceResult,
+  getCanonicalProductionIntelligenceResult,
+  PRODUCTION_COMPATIBILITY_EXCEPTION,
 };
+
+export { getCanonicalProductionIntelligenceResult };

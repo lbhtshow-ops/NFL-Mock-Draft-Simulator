@@ -1,0 +1,23 @@
+export const NFL_HISTORICAL_REPLACEMENT_IDENTITY_RESOLUTION_GOVERNANCE=Object.freeze({
+ contractVersion:"FIE-NFL-HISTORICAL-REPLACEMENT-IDENTITY-RESOLUTION-GOVERNANCE-1.0.0",
+ sprint:"9D.1C2B2C1",
+ pregameOfficialAnchorRequired:true,
+ unavailableStatusRequired:Object.freeze(["OUT","DOUBTFUL"]),
+ canonicalUnavailablePlayerIdRequired:true,
+ exactTeamWeekDepthChartRequired:true,
+ unavailableDepthSlotRequired:true,
+ uniqueNextDepthRankRequired:true,
+ sameDepthPositionRequired:true,
+ explicitDepthChartEvidenceType:"EXPLICIT_DEPTH_CHART",
+ rosterOrderHeuristicAllowed:false,
+ nameGuessAllowed:false,
+ positionOnlyFallbackAllowed:false,
+ postgameSnapCountsMayCorroborate:true,
+ postgameSnapCountsMayDefineExpectedReplacement:false,
+ ambiguousReplacementRemainsNull:true,
+ missingReplacementRemainsNull:true,
+ calibrationAuthorized:false,
+ learnedWeightsAuthorized:false,
+ datasetMutationAuthorized:false,
+});
+export function getNFLHistoricalReplacementIdentityResolutionGovernance(){return NFL_HISTORICAL_REPLACEMENT_IDENTITY_RESOLUTION_GOVERNANCE;}

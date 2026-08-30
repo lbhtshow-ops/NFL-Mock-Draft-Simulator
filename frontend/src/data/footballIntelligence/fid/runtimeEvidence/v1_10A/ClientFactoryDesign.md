@@ -1,0 +1,5 @@
+# Client factory design
+
+Select `acquireClient()` as the repository-native boundary because it communicates one governed acquisition rather than generic construction. The injected factory accepts a sanitized connection declaration and separately injected credential value inside Node-only composition, creates exactly one `Client`, and returns an opaque governed wrapper. It exposes neither constructor configuration after acquisition, `Pool`, reconnect, retry, failover, nor generic query access to callers other than the bounded driver.
+
+CredentialProvider returns one bounded, expiring credential only to composition; it never exposes the environment, logs, or evidence. TargetAttestationProvider returns operator/repository declarations (project/environment, endpoint reference, role reference) and makes no database-observed claim. Portable ConnectionConfiguration contains endpoint reference, port, database, role reference, application name, TLS-policy reference, and connect timeout—never password or a full connection string. Direct `process.env` reads are prohibited.

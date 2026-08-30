@@ -3,7 +3,9 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import fidApi, * as namedFidApi from "../index.js";
 import prospectIntakeApi, * as namedProspectIntakeApi from "../prospectIntake/index.js";
-import sprint19ProspectIntakeApi, * as namedSprint19ProspectIntakeApi from "../prospectIntake/ProspectIntakeArchitectureSpecification.js";
+import sprint19ArchitectureApi, * as namedSprint19ArchitectureApi from "../prospectIntake/ProspectIntakeArchitectureSpecification.js";
+import sprint19CandidateConstants, * as namedSprint19CandidateConstants from "../prospectIntake/prospectIntakeCandidateConstants.js";
+import sprint19CandidateContract, * as namedSprint19CandidateContract from "../prospectIntake/ProspectIntakeCandidateContract.js";
 import sprint20WatchlistConstants, * as namedSprint20WatchlistConstants from "../prospectIntake/prospectWatchlistConstants.js";
 import sprint20WatchlistApi, * as namedSprint20WatchlistApi from "../prospectIntake/ProspectWatchlistContract.js";
 import sprint20IdentityIntakeApi, * as namedSprint20IdentityIntakeApi from "../prospectIntake/ProspectIdentityIntakeContract.js";
@@ -21,6 +23,8 @@ import { runSupabaseResearchRepositoryAdapterDiagnostics } from "../../../resear
 const SUITE = "ProspectIntakeArchitectureDiagnostics";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SPECIFICATION_SOURCE = readFileSync(resolve(ROOT, "prospectIntake/ProspectIntakeArchitectureSpecification.js"), "utf8");
+const CANDIDATE_CONSTANTS_SOURCE = readFileSync(resolve(ROOT, "prospectIntake/prospectIntakeCandidateConstants.js"), "utf8");
+const CANDIDATE_CONTRACT_SOURCE = readFileSync(resolve(ROOT, "prospectIntake/ProspectIntakeCandidateContract.js"), "utf8");
 const INTAKE_INDEX_SOURCE = readFileSync(resolve(ROOT, "prospectIntake/index.js"), "utf8");
 const FID_INDEX_SOURCE = readFileSync(resolve(ROOT, "index.js"), "utf8");
 const FACTUAL_CONTRACT_SOURCES = [
@@ -52,6 +56,9 @@ function assert(condition, message, details = null) {
 function imports(source) {
   return [...source.matchAll(/from\s+["']([^"']+)["']/g)].map((match) => match[1]);
 }
+
+const sprint19ProspectIntakeApi = Object.freeze({ ...sprint19ArchitectureApi, ...sprint19CandidateConstants, ...sprint19CandidateContract });
+const namedSprint19ProspectIntakeApi = Object.freeze({ ...namedSprint19ArchitectureApi, ...namedSprint19CandidateConstants, ...namedSprint19CandidateContract });
 
 function minimalCandidate(suffix = "1", overrides = {}) {
   return {
@@ -249,12 +256,13 @@ function versionHistoryChecks(variant) {
 }
 
 function architectureBoundaryChecks() {
-  const productionImports = [...imports(SPECIFICATION_SOURCE), ...imports(INTAKE_INDEX_SOURCE)];
+  const productionImports = [...imports(SPECIFICATION_SOURCE), ...imports(CANDIDATE_CONSTANTS_SOURCE), ...imports(CANDIDATE_CONTRACT_SOURCE), ...imports(INTAKE_INDEX_SOURCE)];
   assert(productionImports.every((entry) => !/researchRepository|contracts[/\\]|persistence|repository|supabase|database|registry|resolver|engine|draft|components|pages|router|routes/i.test(entry)), "Prospect Intake has a prohibited production dependency.");
-  assert(imports(SPECIFICATION_SOURCE).length === 0, "Prospect Intake specification is not standalone.");
+  assert(JSON.stringify(imports(SPECIFICATION_SOURCE)) === JSON.stringify(["./prospectIntakeCandidateConstants.js"]), "Prospect Intake specification has dependencies beyond its documented vocabulary.");
+  assert(imports(CANDIDATE_CONSTANTS_SOURCE).length === 0 && JSON.stringify(imports(CANDIDATE_CONTRACT_SOURCE)) === JSON.stringify(["./prospectIntakeCandidateConstants.js"]), "Prospect Intake Candidate extraction introduced a prohibited dependency.");
   assert(FACTUAL_CONTRACT_SOURCES.every((source) => imports(source).every((entry) => !/prospectIntake/i.test(entry))), "Existing factual contract imports Prospect Intake.");
-  assert(!/\b(?:createVersion|queryRecords|getLatestByRecordId)\s*\(/.test(SPECIFICATION_SOURCE), "Repository operation entered Prospect Intake.");
-  assert(!/\b(?:fetch|createClient)\s*\(|\blocalStorage\s*\.|\bindexedDB\s*\./.test(SPECIFICATION_SOURCE), "External, database, or browser runtime entered Prospect Intake.");
+  assert(!/\b(?:createVersion|queryRecords|getLatestByRecordId)\s*\(/.test(SPECIFICATION_SOURCE + CANDIDATE_CONTRACT_SOURCE), "Repository operation entered Prospect Intake.");
+  assert(!/\b(?:fetch|createClient)\s*\(|\blocalStorage\s*\.|\bindexedDB\s*\./.test(SPECIFICATION_SOURCE + CANDIDATE_CONTRACT_SOURCE), "External, database, or browser runtime entered Prospect Intake.");
   const prohibitedResultFields = ["playerGrade", "prospectGrade", "athleticScore", "productionScore", "footballIQScore", "schemeFit", "teamFit", "draftValue", "consensusScore", "lbhtRanking", "draftProjection", "recommendation", "prediction"];
   const candidate = fidApi.createProspectIntakeCandidate(minimalCandidate());
   assert(prohibitedResultFields.every((field) => !Object.hasOwn(candidate, field)), "Evaluation or intelligence output entered candidate schema.");

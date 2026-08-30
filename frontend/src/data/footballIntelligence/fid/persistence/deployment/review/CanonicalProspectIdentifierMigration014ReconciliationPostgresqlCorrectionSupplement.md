@@ -1,0 +1,9 @@
+# Migration 014 reconciliation PostgreSQL compatibility correction
+
+The first authorized execution of `017c4_failed_migration_014_read_only_commit_state_reconciliation.sql` stopped with SQLSTATE `42601` at line 135. PostgreSQL parsed the unquoted `constraint` relation alias as a keyword rather than an identifier. No result sets were produced, the reconciliation did not determine migration 014 commit state, and its read-only statements caused zero database mutations.
+
+The additive `017c5_failed_migration_014_read_only_commit_state_reconciliation_postgresql_correction.sql` replaces every `AS constraint` alias and every corresponding `constraint.` qualification with the descriptive identifier `constraint_record`. Six alias declarations are corrected across blocks C1, C2, and H. The header is versioned for 017c5; all other SQL text and governed semantics are preserved.
+
+The complete successor was statically audited for relation aliases, CTE boundaries, delimiters, scalar subqueries, aggregates, unions, ordering expressions, catalog casts, function calls, PostgreSQL 17 catalog fields, and the final classifier. Tokens such as `current_user` and `session_user` remain valid expressions/output labels, while aliases including `role` and `function` are valid in their actual PostgreSQL contexts. No prohibited reserved keyword remains as an unquoted relation alias.
+
+No local PostgreSQL parser is available and none was installed. Whole-file deterministic equivalence, token, delimiter, statement-prefix, coverage, classifier, mutation, locking, and invocation checks compensate for that limitation. This authorization is limited to one manual execution of 017c5 against project `ahmorpzcaapvoymiqlkv`; migration 014 retry, repair, cleanup, role changes, grants, RPC invocation, and prospect operations remain prohibited.

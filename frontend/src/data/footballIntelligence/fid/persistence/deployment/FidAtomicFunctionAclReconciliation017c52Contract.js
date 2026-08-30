@@ -1,0 +1,3 @@
+import prior from "./FidAtomicFunctionAclGuardedReconciliation017c51Contract.js";
+export const FID_ATOMIC_FUNCTION_ACL_RECONCILIATION_017C52_CONTRACT=Object.freeze({contractId:"FID_ATOMIC_FUNCTION_ACL_BOUNDED_JSONB_RECONCILIATION_RESULT_017C52_V1",version:"17C.52.1",rowCardinality:prior.rowCardinality,fieldCount:prior.fieldCount,fields:prior.fields,fieldOrderPreserved:true,fieldTypesMeaningsAuthoritiesAndSanitizationPreserved:true,changedConstantValues:Object.freeze({result_identity:"FID_ATOMIC_FUNCTION_ACL_FAILED_REMEDIATION_BOUNDED_JSONB_RECONCILIATION_017C52",result_version:"17C.52.1"})});
+export default FID_ATOMIC_FUNCTION_ACL_RECONCILIATION_017C52_CONTRACT;

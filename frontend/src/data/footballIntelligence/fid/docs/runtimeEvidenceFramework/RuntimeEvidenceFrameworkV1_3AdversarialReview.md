@@ -1,0 +1,9 @@
+# REF-V1.3 Adversarial Review
+
+The implementation resists cross-contract and cross-profile confusion through explicit profile names and a versioned contract-type envelope. Contract/schema versions are hashed. Object insertion order is removed; array order is retained. Undefined disappearance, negative-zero collapse, non-finite numbers, executable getters, custom prototypes, sparse arrays, circular input, extension overrides, digest self-reference, mutable results, and sensitive-field redaction are rejected or explicitly governed.
+
+There is no time, random, process, path, locale, environment-order, filesystem, database, or network dependency. Exact artifact bytes are never parsed or normalized. Evidence states remain distinct strings and chronology remains ordered. Local digest match is labeled local-only and expressly disclaims authorization, external receipt, execution, and success.
+
+Known limitations: Web Crypto availability is a runtime prerequisite; SHA-256 collision resistance is relied upon but cannot mathematically guarantee uniqueness; JavaScript JSON number rendering is the V1 algorithm and any cross-language implementation must reproduce it exactly; Unicode is intentionally not normalized; V1 declares no set-semantic array fields; duplicate source-language JSON keys must be rejected by a future parser before object construction because JavaScript objects cannot reveal overwritten source keys; this layer validates declarations but does not authenticate their reference targets or prove external facts.
+
+The in-memory Sprint 17C successor fixture contains non-executable byte text, a local artifact digest, target/environment references, a new-authorization-required reference, identities for manifest/execution plan/observation plan/package, an external-platform residual gap, rollback as expectation only, and unresolved persistent-state semantics. It does not reuse consumed authority, create SQL, claim root cause, or claim success.

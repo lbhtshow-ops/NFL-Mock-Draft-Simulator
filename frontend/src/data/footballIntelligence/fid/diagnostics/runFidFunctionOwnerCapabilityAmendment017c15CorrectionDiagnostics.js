@@ -1,0 +1,36 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import { createHash } from "node:crypto";
+import { fileURLToPath } from "node:url";
+import { evaluate017c15CorrectedAmendment, evaluate017c15ReadOnlySql } from "../persistence/deployment/FidFunctionOwnerCapabilityAmendment017c15StaticOracle.js";
+import { classify017c15CapabilityState, evaluate017c15SchemaGrantAuthority } from "../persistence/deployment/FidFunctionOwnerCapabilityAmendment017c15Evaluator.js";
+
+const read = (name) => fs.readFileSync(fileURLToPath(new URL(`../persistence/deployment/review/${name}`, import.meta.url)), "utf8");
+const amendment = read("017c15a_fid_function_owner_capability_amendment_authority_and_boundary_correction.sql");
+const preflight = read("017c15b_fid_function_owner_capability_amendment_guarded_preflight_correction.sql");
+const reconciliation = read("017c15c_fid_function_owner_capability_amendment_guarded_reconciliation_correction.sql");
+const post = read("017c15d_fid_function_owner_capability_amendment_complete_post_verification_correction.sql");
+const sha256 = (value) => createHash("sha256").update(value).digest("hex").toUpperCase();
+
+assert.equal(evaluate017c15CorrectedAmendment(amendment).passed, true);
+assert.equal(evaluate017c15ReadOnlySql(preflight, "preflight").passed, true);
+assert.equal(evaluate017c15ReadOnlySql(reconciliation, "reconciliation").passed, true);
+assert.equal(evaluate017c15ReadOnlySql(post, "post").passed, true);
+assert.equal(sha256(amendment), "8A1FDAC9C00D87550B2E06078221AEFF8D20515906682D6C5B7E34B8E9A8152C");
+assert.equal(sha256(preflight), "D2338D8A248ED8E4ABA35A355CF243E10E598AD527E9459B511243E7D0DD5373");
+assert.equal(sha256(reconciliation), "9F0F625A603B618AC68A80069F46D95FC066F814575A6655076CBCDA473D65A8");
+assert.equal(sha256(post), "B4D8F4B1B427E8CDFF381E9051DB9C57E496A70A8F156C57F57197FCC2367F28");
+for (const invalid of [amendment.replace("BEGIN;", ""), amendment.replace("acl.is_grantable", "false"), amendment.replace("ADMIN TRUE", "ADMIN FALSE"), amendment.replace("INHERIT FALSE", "INHERIT TRUE"), amendment.replace("SET TRUE", "SET FALSE"), amendment.replace("SCHEMA fid", "SCHEMA public"), `${amendment}\nALTER ROLE fid_function_owner LOGIN;`, `${amendment}\nGRANT USAGE ON SCHEMA fid TO anon;`]) assert.equal(evaluate017c15CorrectedAmendment(invalid).passed, false);
+for (const sql of [preflight,reconciliation,post]) assert.equal(/(^|;)\s*(grant|revoke|insert|update|delete|alter|create|drop|lock|set\s+role)\b/im.test(sql), false);
+assert.equal(evaluate017c15SchemaGrantAuthority({ schemaOwnedByExecutor: true }), true);
+assert.equal(evaluate017c15SchemaGrantAuthority({ directCreateGrantOption: true }), true);
+assert.equal(evaluate017c15SchemaGrantAuthority({ effectiveCreate: true }), false);
+const base = { identityExact: true, versionExact: true, targetsResolved: true, admin: true, inherit: false, usage: true, restrictedExact: true, fixedBoundaryExact: true, migrationStateExact: true, unexpectedPrivilegeExpansion: false };
+assert.equal(classify017c15CapabilityState({ ...base, set: false, create: false }), "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_NOT_APPLIED");
+assert.equal(classify017c15CapabilityState({ ...base, set: true, create: true }), "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_FULLY_APPLIED");
+assert.equal(classify017c15CapabilityState({ ...base, set: true, create: false }), "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_PARTIALLY_APPLIED");
+assert.equal(classify017c15CapabilityState({ ...base, set: false, create: true }), "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_PARTIALLY_APPLIED");
+assert.equal(classify017c15CapabilityState({ ...base, set: true, create: true, unexpectedPrivilegeExpansion: true }), "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_UNEXPECTED_PRIVILEGE_EXPANSION");
+assert.equal(classify017c15CapabilityState({ ...base, set: true, create: true, admin: false }), "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_STATE_INCONSISTENT");
+assert.equal(classify017c15CapabilityState({ ...base, set: true, create: true, targetsResolved: false }), "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_STATE_UNRESOLVED");
+console.log("17C.15 capability amendment correction diagnostics passed");

@@ -23,16 +23,11 @@ function getConsensusValue(player) {
 }
 
 function getIntelligenceScore(prospectIntelligence) {
-  const evaluation =
-    prospectIntelligence?.intelligence?.evaluation?.data || {};
-  const athletics =
-    prospectIntelligence?.intelligence?.athletics?.data?.scores || {};
-  const footballIQ =
-    prospectIntelligence?.intelligence?.footballIQ?.data?.scores || {};
-  const production =
-    prospectIntelligence?.intelligence?.production?.data?.productionScores || {};
-  const schemeFit =
-    prospectIntelligence?.intelligence?.schemeFit?.data?.versatility || {};
+  const evaluation = prospectIntelligence?.intelligence?.evaluation?.data || {};
+  const athletics = prospectIntelligence?.intelligence?.athletics?.data?.scores || {};
+  const footballIQ = prospectIntelligence?.intelligence?.footballIQ?.data?.scores || {};
+  const production = prospectIntelligence?.intelligence?.production?.data?.productionScores || {};
+  const schemeFit = prospectIntelligence?.intelligence?.schemeFit?.data?.versatility || {};
 
   const evaluationScore = getNumber(evaluation.overallGrade || evaluation.grade, 80);
   const athleticScore = getNumber(athletics.overallAthleticScore, 80);
@@ -49,10 +44,7 @@ function getIntelligenceScore(prospectIntelligence) {
   );
 }
 
-function getTeamFitScore({
-  fit,
-  teamPriorityMultiplier,
-}) {
+function getTeamFitScore({ fit, teamPriorityMultiplier }) {
   return (
     50 *
     fit.positionValue *
@@ -67,9 +59,28 @@ function getTeamFitScore({
   );
 }
 
-export const scorePlayerForTeam = ({ player, team, pick, positionsDrafted }) => {
-  const teamAIProfile = getTeamAIProfile(team);
+function stableHash(value) {
+  const text = String(value || "");
+  let hash = 2166136261;
+  for (let index = 0; index < text.length; index += 1) {
+    hash ^= text.charCodeAt(index);
+    hash = Math.imul(hash, 16777619);
+  }
+  return hash >>> 0;
+}
 
+function deterministicVariance({ player, team, pick }) {
+  const seed = [
+    team?.id || team?.name || "team",
+    pick?.id || pick?.draft_pick?.pick_number || "pick",
+    player?.id || player?.name || "player",
+  ].join("|");
+  const normalized = stableHash(seed) / 0xffffffff;
+  return 0.97 + normalized * 0.06;
+}
+
+export const scorePlayerForTeam = ({ player, team, pick, positionsDrafted, teamAIProfile: suppliedTeamAIProfile }) => {
+  const teamAIProfile = suppliedTeamAIProfile || getTeamAIProfile(team);
   const prospectIntelligence = buildProspectIntelligence(player);
 
   const evaluatedPlayer = {
@@ -85,25 +96,21 @@ export const scorePlayerForTeam = ({ player, team, pick, positionsDrafted }) => 
     positionsDrafted,
   });
 
-  const positionPriority =
-    teamAIProfile?.positionalPriorities?.[evaluatedPlayer.position] || 5;
-
+  const positionPriority = teamAIProfile?.positionalPriorities?.[evaluatedPlayer.position] || 5;
   const teamPriorityMultiplier = 1 + (positionPriority - 5) * 0.08;
-
   const intelligenceScore = getIntelligenceScore(prospectIntelligence);
   const consensusValue = getConsensusValue(player);
-  const teamFitScore = getTeamFitScore({
-    fit,
-    teamPriorityMultiplier,
-  });
+  const teamFitScore = getTeamFitScore({ fit, teamPriorityMultiplier });
 
   const decisionScore =
     intelligenceScore * 0.52 +
     teamFitScore * 0.33 +
     consensusValue * 0.15;
 
-  const randomnessFactor = 0.97 + Math.random() * 0.06;
-  const finalScore = decisionScore * randomnessFactor;
+  // Draft simulations need some organizational variation, but the same inputs must
+  // remain reproducible. Use a stable, bounded variance instead of Math.random().
+  const varianceFactor = deterministicVariance({ player, team, pick });
+  const finalScore = decisionScore * varianceFactor;
 
   return {
     score: finalScore,
@@ -111,6 +118,9 @@ export const scorePlayerForTeam = ({ player, team, pick, positionsDrafted }) => 
     intelligenceScore,
     teamFitScore,
     consensusValue,
+    varianceFactor,
+    fit,
+    teamAIProfile,
     prospectIntelligence,
     explanation: explainDraftDecision({
       player,
@@ -122,20 +132,10 @@ export const scorePlayerForTeam = ({ player, team, pick, positionsDrafted }) => 
   };
 };
 
-export const buildTeamDraftBoard = ({
-  players,
-  team,
-  pick,
-  positionsDrafted,
-}) => {
+export const buildTeamDraftBoard = ({ players, team, pick, positionsDrafted, teamAIProfile }) => {
   return [...players]
     .map((player) => {
-      const result = scorePlayerForTeam({
-        player,
-        team,
-        pick,
-        positionsDrafted,
-      });
+      const result = scorePlayerForTeam({ player, team, pick, positionsDrafted, teamAIProfile });
 
       return {
         ...player,
@@ -145,6 +145,9 @@ export const buildTeamDraftBoard = ({
         intelligenceScore: result.intelligenceScore,
         teamFitScore: result.teamFitScore,
         consensusValue: result.consensusValue,
+        varianceFactor: result.varianceFactor,
+        draftFit: result.fit,
+        draftTeamProfile: result.teamAIProfile,
         draftExplanation: result.explanation,
       };
     })

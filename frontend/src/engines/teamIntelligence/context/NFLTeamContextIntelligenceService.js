@@ -1,0 +1,4 @@
+import {createNFLTeamCoachingSchemeEvidence} from "./NFLTeamCoachingSchemeEvidenceContract.js";
+import {synthesizeNFLTeamCoachingIntelligence} from "./NFLTeamCoachingIntelligence.js";
+import {synthesizeNFLTeamSchemeIntelligence} from "./NFLTeamSchemeIntelligence.js";
+export function evaluateNFLTeamContext(input={}){const evidence=createNFLTeamCoachingSchemeEvidence(input);return Object.freeze({contextVersion:"FIE-NFL-TEAM-CONTEXT-1.0.0",team:evidence.team,season:evidence.season,asOf:evidence.asOf,coaching:synthesizeNFLTeamCoachingIntelligence(evidence),scheme:synthesizeNFLTeamSchemeIntelligence(evidence),provenance:evidence.provenance,evidenceStatus:evidence.status});}

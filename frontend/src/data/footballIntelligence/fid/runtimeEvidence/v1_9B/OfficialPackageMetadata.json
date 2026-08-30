@@ -1,0 +1,41 @@
+{
+  "recordIdentity": "REF_V1_9B_PG_8_22_0_OFFICIAL_METADATA",
+  "researchedAt": "2026-08-02T00:00:00-04:00",
+  "temporalReference": "2026-08-02 America/New_York",
+  "name": "pg",
+  "selectedVersion": "8.22.0",
+  "registry": "https://registry.npmjs.org/",
+  "distTags": { "latest": "8.22.0", "beta": "8.14.2-alpha.1" },
+  "publicationDate": "2026-06-19T00:53:54.954Z",
+  "deprecated": false,
+  "prerelease": false,
+  "dist": {
+    "integrity": "sha512-8wih1vVIBMxoUM2oB4soJsD9tDnDpLv4OXBJ+EJzFsvycD+lfyIreC2gGHq78f8jbLLt+bvlPTFdFZfJkOuzAA==",
+    "shasum": "55ca3975026180c6dced6eec3a20a844c2dc9237",
+    "tarball": "https://registry.npmjs.org/pg/-/pg-8.22.0.tgz",
+    "fileCount": 20,
+    "unpackedSize": 95249,
+    "contentLengthFromRegistryDocument": 479959,
+    "signatureKeyId": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+  },
+  "gitHead": "b617619f9fb6fbd231731823e2732a2927ded4be",
+  "repository": "git://github.com/brianc/node-postgres.git#packages/pg",
+  "author": "Brian Carlson <brian.m.carlson@gmail.com>",
+  "publisher": "brianc <brian.m.carlson@gmail.com>",
+  "maintainers": ["brianc <brian.m.carlson@gmail.com>"],
+  "license": "MIT",
+  "engines": { "node": ">= 16.0.0" },
+  "main": "./lib",
+  "exports": { ".": { "import": "./esm/index.mjs", "require": "./lib/index.js", "default": "./lib/index.js" } },
+  "files": ["lib", "esm", "SPONSORS.md"],
+  "dependencies": { "pg-connection-string": "^2.14.0", "pg-pool": "^3.14.0", "pg-protocol": "^1.15.0", "pg-types": "2.2.0", "pgpass": "1.0.5", "pg-cloudflare": "^1.4.0" },
+  "optionalDependencies": { "pg-cloudflare": "^1.4.0" },
+  "optionalPeerDependencies": { "pg-native": ">=3.0.1" },
+  "scripts": { "test": "make test-all" },
+  "reviewStatus": "EXACT_VERSION_APPROVED_INDEPENDENT_INSTALLATION_REVIEW_REQUIRED",
+  "sources": [
+    "npm view pg version",
+    "npm view pg@8.22.0 --json",
+    "https://raw.githubusercontent.com/brianc/node-postgres/b617619f9fb6fbd231731823e2732a2927ded4be/packages/pg/package.json"
+  ]
+}

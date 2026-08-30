@@ -1,0 +1,9 @@
+import fs from "fs";import path from "path";import {buildNFLDecisionModelValidationReport} from "../src/engines/gameDecisionSupport/validation/NFLDecisionModelValidationReport.js";
+const input=path.resolve("src/data/footballIntelligence/nfl/decisionSupport/sources/generatedNFLCandidateDecisionModelEvaluation.json");
+if(!fs.existsSync(input))throw new Error("5C empirical evaluation report missing. Run evaluateNFLCandidateDecisionModels.mjs first.");
+const empirical=JSON.parse(fs.readFileSync(input,"utf8")),report=buildNFLDecisionModelValidationReport(empirical.experiments||[]);
+const out=path.resolve("src/data/footballIntelligence/nfl/decisionSupport/sources/generatedNFLDecisionModelValidationReport.json");fs.writeFileSync(out,JSON.stringify(report,null,2));
+console.log(`Holdout seasons: ${report.holdoutSeasons.join(", ")}`);
+for(const g of report.promotionGates){const a=g.summary.aggregate;console.log(`\n${g.candidateId}: ${g.status}`);console.log(`mean accuracy gain: ${(a.meanAccuracyGain*100).toFixed(2)} points`);console.log(`seasons beating baseline accuracy: ${(a.seasonsBeatingBaselineAccuracy*100).toFixed(1)}%`);console.log(`seasons beating baseline Brier: ${(a.seasonsBeatingBaselineBrier*100).toFixed(1)}%`);console.log(`seasons beating baseline log loss: ${(a.seasonsBeatingBaselineLogLoss*100).toFixed(1)}%`);console.log(`accuracy-gain stdev: ${(a.accuracyGainStdDev*100).toFixed(2)} points`);if(g.failedChecks.length)console.log(`failed gates: ${g.failedChecks.join(", ")}`)}
+if(report.indistinguishableCandidates.length){console.log("\nEmpirically indistinguishable candidate pairs:");for(const p of report.indistinguishableCandidates)console.log(`${p.candidateA} == ${p.candidateB} across ${p.holdoutsCompared} holdouts`)}
+console.log("\nProduction authority granted: NO");console.log(`Wrote validation report to:\n${out}`);

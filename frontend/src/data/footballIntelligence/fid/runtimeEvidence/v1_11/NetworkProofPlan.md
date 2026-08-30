@@ -1,0 +1,3 @@
+# Network and endpoint proof plan
+
+Design only; no authorization is created. A later one-attempt proof must: obtain exact Dashboard connection-panel host/mode/port/database/region without password; record sanitized declarations; independently review exact PowerShell commands and captures; resolve A/AAAA; test only the exact port; validate TLS chain and hostname; sanitize IP/certificate metadata; compare target/region/mode; stop on mismatch or uncertainty; and perform no authentication, retry, failover, SQL, or database mutation. Where TLS validation crosses a PostgreSQL connection boundary, the authorization must say so explicitly.

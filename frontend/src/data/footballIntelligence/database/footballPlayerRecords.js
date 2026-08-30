@@ -1,4 +1,4 @@
-import playerRecords from "./players";
+import playerRecords from "./players/index.js";
 
 export const footballPlayerRecords = playerRecords;
 

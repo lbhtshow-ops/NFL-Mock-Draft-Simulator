@@ -1,4 +1,4 @@
-import prospects from "../prospects";
+import prospects from "../prospects.js";
 
 function getCanonicalProspectId(prospect) {
   return (

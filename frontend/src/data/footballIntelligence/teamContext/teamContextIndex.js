@@ -1,7 +1,7 @@
 // src/data/footballIntelligence/teamContext/teamContextIndex.js
 
-import { defaultTeamContext } from "./defaultTeamContext";
-import { ravensContext } from "./ravensContext";
+import { defaultTeamContext } from "./defaultTeamContext.js";
+import { ravensContext } from "./ravensContext.js";
 
 export const teamContexts = {
   BAL: ravensContext,

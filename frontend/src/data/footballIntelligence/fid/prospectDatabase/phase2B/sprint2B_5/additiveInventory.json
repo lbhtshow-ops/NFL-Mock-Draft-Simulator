@@ -1,0 +1,76 @@
+{
+  "sprint": "2B.5",
+  "entries": [
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/CHANGES.md",
+      "bytes": 399,
+      "sha256": "8C3E1B6CA0D4F46EEB0E0507B465620205E8E7DC56492FB7342E1BCDD038CD9D"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/DraftResultSnapshot.js",
+      "bytes": 8347,
+      "sha256": "E3CBC4C40E03849289B19F9C84D04CABAD73A57BFA3971199C44F9455BF0159C"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/INSTALL.md",
+      "bytes": 380,
+      "sha256": "969F0C1680C028B62498A2C546D208C53332B1A900FC28C01733911929B3BD88"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/README.md",
+      "bytes": 461,
+      "sha256": "EF9814EC83817031F0DEBB9F5F1380907BB7C5681055759E79AE1DFB1E54A571"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/ROADMAP.md",
+      "bytes": 816,
+      "sha256": "1E5681FBC0FC069F891599B5101E4AD5EFDE4650E29DAB164E7F67D5029D765B"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/VALIDATION.md",
+      "bytes": 628,
+      "sha256": "FF8E953A18352EBBFE5A76B848C6DC70323EF88C9306568485BB8B1AC816D4C4"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/applicationView.js",
+      "bytes": 1689,
+      "sha256": "6378281CC1A5B1D2266BFCFC32349E7A48BE1A3F5DED703EA8DC59A88CFA3887"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/consolidated-review.md",
+      "bytes": 2063,
+      "sha256": "E56CFDCE7D54BA82DDF8378B79D499579F7F503E94BCCBB15D884E25B390903D"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/constants.js",
+      "bytes": 781,
+      "sha256": "911B72D447D340BF7943344760EDACB851C05A55E7707CCA18F704A77AD9962B"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/fixture.js",
+      "bytes": 1216,
+      "sha256": "8B61339B4C3EBFB9CC2337E401B31E525DA88604E469716CD51F694ADCC1C266"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/implementation-authorization.md",
+      "bytes": 529,
+      "sha256": "F5E71F98EF4A1581E3EA294BC0807554E2076A79B486CAB3205EC63D8A85389D"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/index.js",
+      "bytes": 142,
+      "sha256": "C888CFE01A5CD6AB0B03156A78E85F593FE6C27E043318D5FC7D6F737825C87A"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/repository-audit.md",
+      "bytes": 466,
+      "sha256": "35A721EFE381478BE97965B25AD351B983FC4B393B21E9A8AD0F9DD7E76F12FF"
+    },
+    {
+      "path": "src/data/footballIntelligence/fid/prospectDatabase/phase2B/sprint2B_5/runDiagnostics.mjs",
+      "bytes": 2114,
+      "sha256": "34289CBBCECF1E1BD05D6C185833216EEEF395A8EEE14F6866E832836F6A74B7"
+    }
+  ],
+  "aggregateSha256": "ED92DB8E96D6496F185B023DCDFB0CD4567FBD48B5C012C26BD4E959B45094B9"
+}

@@ -1,0 +1,6 @@
+import record from "./FidAtomicFunctionAclFailedRemediation017c49Record.js";
+const scenario=(name,input,failure)=>Object.freeze({name,input,expectedFailure:failure});
+export const FID_ATOMIC_FUNCTION_ACL_FAILED_REMEDIATION_017C49_SCENARIOS=Object.freeze([
+  scenario("positive",record,null),scenario("authorization-reusable",{...record,authorization:{...record.authorization,retryAuthorized:true}},"authorization_consumption"),scenario("attempt-count-two",{...record,authorization:{...record.authorization,attemptCount:2}},"authorization_consumption"),scenario("success-row-claimed",{...record,response:{...record.response,visibleRows:1,successResultPresent:true}},"failure_response"),scenario("commit-inferred",{...record,response:{...record.response,commitStateInferredFromUiResponse:true}},"transactional_claim"),scenario("wrong-target",{...record,target:{...record.target,projectReference:"wrong"}},"target_binding"),scenario("migration-authorized",{...record,prohibitions:{...record.prohibitions,migration014:false}},"prohibitions"),scenario("database-operation",{...record,databaseOperationDuringSprint17c49:true},"database_operation")
+]);
+export default FID_ATOMIC_FUNCTION_ACL_FAILED_REMEDIATION_017C49_SCENARIOS;

@@ -1,21 +1,49 @@
 // src/engines/AthleticIntelligenceEngine.js
 
-import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary";
-import athleticProfiles from "../data/footballIntelligence/athletics/athleticProfiles";
-import defaultAthleticProfile from "../data/footballIntelligence/athletics/defaultAthleticProfile";
+import createIntelligenceSummary from "../data/footballIntelligence/createIntelligenceSummary.js";
+import athleticProfiles from "../data/footballIntelligence/athletics/athleticProfiles.js";
+import defaultAthleticProfile from "../data/footballIntelligence/athletics/defaultAthleticProfile.js";
 
-import { resolvePlayerContext } from "./context/PlayerContextResolver";
-import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine";
-import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId";
+import { resolvePlayerContext } from "./context/PlayerContextResolver.js";
+import { resolveEvidenceTransition } from "./context/EvidenceTransitionEngine.js";
+import { getCanonicalPlayerId } from "./shared/getCanonicalPlayerId.js";
+import { adaptLegacyAthleticProfile } from "./athletics/AthleticLegacyCompatibilityAdapter.js";
+import { getCanonicalAthleticEvidenceResult } from "./athletics/CanonicalAthleticEvidenceEngine.js";
 
 import {
   createIntelligenceResult,
   createUnavailableIntelligenceResult,
   DATA_STATES,
   EVIDENCE_LEVELS,
-} from "./contracts/IntelligenceResultContract";
+} from "./contracts/IntelligenceResultContract.js";
 
 const ATHLETIC_MODEL_VERSION = "ATHLETIC-1.0.0";
+
+const ATHLETIC_COMPATIBILITY_GOVERNANCE = Object.freeze({
+  classification: "LEGACY_DECLARED_MODELED_OUTPUT",
+  owner: "UNKNOWN",
+  derivationStatus: "UNKNOWN",
+  governanceStatus: "TRANSITIONAL",
+  calibrationStatus: "NOT_DOCUMENTED",
+  reproducibilityStatus: "NOT_DOCUMENTED",
+  canonicalDerivation: false,
+  permittedUse: "COMPATIBILITY_ONLY",
+});
+
+function compatibilityArtifacts(profile, player, playerId) {
+  const { projection, declaration } = adaptLegacyAthleticProfile(profile, {
+    playerId,
+    playerName: player?.playerName || player?.name || null,
+    position: player?.position || player?.identity?.position || null,
+  });
+  const canonicalResult = getCanonicalAthleticEvidenceResult(projection);
+  return { projection, declaration, canonicalResult };
+}
+
+function freezeCompatibilityResult(result) {
+  if (result?.rawData && !Object.isFrozen(result.rawData)) Object.freeze(result.rawData);
+  return Object.freeze(result);
+}
 
 function getAthleticScore(profile = {}) {
   const score = profile?.scores?.overallAthleticScore;
@@ -352,11 +380,17 @@ export function getAthleticIntelligenceResult(
 
   const profile = getAthleticProfile(player);
 
+  const {
+    projection: athleticInputProjection,
+    declaration: legacyModeledOutputDeclaration,
+    canonicalResult,
+  } = compatibilityArtifacts(profile, player, playerId);
+
   if (
     !playerId ||
     profile === defaultAthleticProfile
   ) {
-    return createUnavailableIntelligenceResult({
+    const unavailableResult = createUnavailableIntelligenceResult({
       domain: "athleticism",
 
       playerId,
@@ -381,6 +415,21 @@ export function getAthleticIntelligenceResult(
       frameworkVersion: "1.0.0",
       modelVersion: ATHLETIC_MODEL_VERSION,
     });
+
+    unavailableResult.rawData = {
+      profile,
+      athleticInputProjection,
+      legacyModeledOutputDeclaration,
+      canonicalResult,
+      canonicalInvocationCount: 1,
+      compatibilityGovernance: ATHLETIC_COMPATIBILITY_GOVERNANCE,
+      canonicalEvidence: {
+        result: canonicalResult,
+        scoreUsedForCompatibility: false,
+      },
+    };
+
+    return freezeCompatibilityResult(unavailableResult);
   }
 
   const score = getAthleticScore(profile);
@@ -403,7 +452,7 @@ export function getAthleticIntelligenceResult(
     ? DATA_STATES.AVAILABLE
     : DATA_STATES.INSUFFICIENT_SAMPLE;
 
-  return createIntelligenceResult({
+  return freezeCompatibilityResult(createIntelligenceResult({
     domain: "athleticism",
 
     available: hasUsableScore,
@@ -443,6 +492,15 @@ export function getAthleticIntelligenceResult(
       profile,
       playerContext,
       evidenceTransition,
+      athleticInputProjection,
+      legacyModeledOutputDeclaration,
+      canonicalResult,
+      canonicalInvocationCount: 1,
+      compatibilityGovernance: ATHLETIC_COMPATIBILITY_GOVERNANCE,
+      canonicalEvidence: {
+        result: canonicalResult,
+        scoreUsedForCompatibility: false,
+      },
     },
 
     lastUpdated:
@@ -452,7 +510,7 @@ export function getAthleticIntelligenceResult(
     modelVersion: ATHLETIC_MODEL_VERSION,
     dataVersion:
       profile?.lastUpdated || null,
-  });
+  }));
 }
 
 export default {

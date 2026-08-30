@@ -1,9 +1,9 @@
-import { nflRosterRecords } from "../../data/footballIntelligence/nfl/rosters";
+import { nflRosterRecords } from "../../data/footballIntelligence/nfl/rosters/index.js";
 import {
   getPositionModelDiagnostics,
   getTeamEvaluationDiagnostics,
-} from "./PlayerEvaluationDiagnostics";
-import { getPlayerRecognitionSummary } from "./PlayerRecognitionEngine";
+} from "./PlayerEvaluationDiagnostics.js";
+import { getPlayerRecognitionSummary } from "./PlayerRecognitionEngine.js";
 
 function flattenRosterRecords(rosterRecords = {}) {
   return Object.values(rosterRecords).flat();

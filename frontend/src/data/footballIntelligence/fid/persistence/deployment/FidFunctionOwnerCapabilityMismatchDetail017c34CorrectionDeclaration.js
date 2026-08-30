@@ -1,0 +1,25 @@
+export const FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_017C34_CORRECTION = Object.freeze({
+  id: "EXACT_TARGET_BOUND_FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_CORRECTION_017C34",
+  version: "17C.34.1",
+  repositoryOnly: true,
+  predecessorPath: "frontend/src/data/footballIntelligence/fid/persistence/deployment/review/017c32_fid_function_owner_capability_mismatch_detail_correction.sql",
+  predecessorSha256: "9A3A4E4583721182F3DE3A68B5DB29BECD6A120310CBE4C700850CC202D9A10D",
+  successorPath: "frontend/src/data/footballIntelligence/fid/persistence/deployment/review/017c34_fid_function_owner_capability_mismatch_detail_exact_target_binding_correction.sql",
+  successorSha256: "E4709DA5768F6D8099B1160DB845A9F744228C964AFE2CACBBE3A98520F96548",
+  target: Object.freeze({ organization: "Lunch Break Hot Take", projectName: "LBHT FID Persistence Test", region: "us-east-1",
+    projectId: "ahmorpzcaapvoymiqlkv", database: "Primary Database", branch: "main", sqlRole: "postgres",
+    governedEnvironment: "DEDICATED_NON_PRODUCTION_TEST" }),
+  authoritativeDatabaseState: "MIGRATION_014_FULLY_ROLLED_BACK",
+  aclObjectBoundUnits: 260,
+  aclInventoryUnits: 1,
+  authorization017c23Consumed: true,
+  authorization017c26Consumed: true,
+  authorization017c29Consumed: true,
+  sqlExecuted: false,
+  databaseConnected: false,
+  authorizationCreated: false,
+  status: "READY_FOR_EXACT_TARGET_BOUND_FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_DIAGNOSTIC_INDEPENDENT_REVIEW",
+  nextSprint: "SPRINT_17C35_EXACT_TARGET_BOUND_FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_DIAGNOSTIC_INDEPENDENT_REVIEW",
+});
+
+export default FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_017C34_CORRECTION;

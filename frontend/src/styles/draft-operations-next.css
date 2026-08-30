@@ -1856,15 +1856,137 @@
   }
   .next-big-board .next-board-scroll {
     flex: 0 1 auto;
-    height: clamp(420px, 52vh, 560px);
-    min-height: 420px;
-    max-height: 560px;
+    height: clamp(500px, 58vh, 680px);
+    min-height: 500px;
+    max-height: 680px;
     overflow-y: auto;
   }
+}
+
+
+/* MDS-5B.7B-R3 — final workspace polish */
+.next-timeline-pick .next-timeline-user-team {
+  color: var(--next-gold);
+  font-weight: 950;
+  text-shadow: 0 0 12px rgba(255, 215, 0, .14);
+}
+.next-timeline-pick.current .next-timeline-user-team {
+  color: #ffe766;
 }
 
 @media (max-width: 900px) {
   .next-search-field input { min-height: 44px; }
   .next-search-clear { width: 36px; height: 36px; right: 4px; }
   .next-timeline-pick em { font-size: .6rem; }
+}
+
+/* MDS-5B.7C — Draft Room UI polish: final Big Board fit + readability */
+@media (min-width: 901px) {
+  .next-big-board .next-board-scroll {
+    height: clamp(610px, calc(58vh + 110px), 790px);
+    min-height: 610px;
+    max-height: 790px;
+  }
+}
+
+/* Improve small operational typography without changing the major section scale. */
+.next-timeline-pick > span { font-size: .72rem; }
+.next-timeline-pick strong { font-size: .89rem; }
+.next-timeline-pick small { font-size: .72rem; }
+.next-timeline-pick em { font-size: .64rem; }
+
+.next-header-meta span { font-size: .88rem; }
+.next-board-table { font-size: .97rem; }
+.next-board-table th { font-size: .78rem; letter-spacing: .055em; }
+.next-board-table .player-cell span { font-size: .82rem; }
+.next-board-table .rank-cell { font-size: .92rem; }
+
+.next-board-tools input,
+.next-board-tools select { font-size: .95rem; }
+.next-search-clear { font-size: 1.5rem; }
+
+.next-war-tabs button { font-size: .82rem; font-weight: 850; }
+.next-roster-position-heading strong { font-size: .83rem; }
+.next-roster-position-heading span { font-size: .71rem; }
+.next-roster-player strong { font-size: .82rem; }
+.next-roster-player small { font-size: .71rem; }
+.next-roster-player em { font-size: .71rem; }
+
+@media (max-width: 900px) {
+  /* Keep mobile compact while still improving legibility. */
+  .next-board-tools input,
+  .next-board-tools select { font-size: .92rem; }
+  .next-board-table .player-cell span { font-size: .78rem; }
+  .next-war-tabs button { font-size: .79rem; }
+  .next-roster-player strong { font-size: .8rem; }
+  .next-roster-player small,
+  .next-roster-player em { font-size: .69rem; }
+}
+
+/* Sprint 7: truthful War Room intelligence coverage */
+.next-war-coverage-status { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.next-war-coverage-status small { color: var(--next-muted); font-size: 0.58rem; letter-spacing: 0.04em; }
+.next-coverage-badge { display: inline-flex; align-items: center; width: fit-content; padding: 4px 7px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); font-size: 0.62rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
+.next-coverage-badge.is-compact { padding: 2px 5px; font-size: 0.54rem; }
+.next-coverage-badge.is-canonical { color: var(--next-teal); background: var(--next-teal-soft); border-color: rgba(104,202,190,.3); }
+.next-coverage-badge.is-roster-derived { color: #8fd3ff; background: rgba(74,157,214,.10); border-color: rgba(74,157,214,.25); }
+.next-coverage-badge.is-mds-runtime { color: #c8b6ff; background: rgba(150,120,220,.10); border-color: rgba(150,120,220,.25); }
+.next-coverage-badge.is-transitional, .next-coverage-badge.is-partial { color: var(--next-amber); background: rgba(240,163,59,.10); border-color: rgba(240,163,59,.24); }
+.next-coverage-badge.is-unavailable { color: var(--next-muted); background: rgba(255,255,255,.035); border-color: rgba(255,255,255,.09); }
+.next-war-coverage-legend { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; padding: 7px 10px; border-bottom: 1px solid var(--next-line); }
+.next-war-coverage-legend > span { margin-right: 2px; color: var(--next-muted); font-size: .58rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.next-war-tabs button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.next-tab-coverage { width: 6px; height: 6px; border-radius: 50%; background: var(--next-muted); opacity: .85; }
+.next-tab-coverage.is-canonical { background: var(--next-teal); }
+.next-tab-coverage.is-roster-derived { background: #8fd3ff; }
+.next-tab-coverage.is-mds-runtime { background: #c8b6ff; }
+.next-tab-coverage.is-transitional, .next-tab-coverage.is-partial { background: var(--next-amber); }
+.next-tab-coverage.is-unavailable { background: #69727c; }
+.next-war-card dt .next-coverage-badge { margin-left: 5px; vertical-align: middle; }
+@media (max-width: 760px) {
+  .next-war-coverage-status { align-items: flex-start; }
+  .next-war-coverage-legend { overflow-x: auto; flex-wrap: nowrap; }
+}
+
+/* MDS-FI.2 — selected prospect Draft Decision Intelligence */
+.next-selected-decision-support {
+  margin-top: 14px;
+  padding: 18px 20px;
+  border: 1px solid rgba(45, 212, 191, 0.24);
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(8, 47, 73, 0.38));
+}
+
+.next-selected-decision-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.next-selected-decision-header h2 { margin: 3px 0 5px; color: #f8fafc; font-size: clamp(1.45rem, 2vw, 2rem); }
+.next-selected-decision-header p { margin: 0; color: #94a3b8; font-size: .82rem; }
+.next-selected-decision-metrics { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.next-selected-decision-metrics span { min-width: 92px; padding: 8px 10px; display: grid; justify-items: center; gap: 2px; border: 1px solid rgba(148, 163, 184, .2); border-radius: 8px; background: rgba(15, 23, 42, .7); }
+.next-selected-decision-metrics small, .next-decision-label { color: #94a3b8; font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.next-selected-decision-metrics b { color: #f8fafc; font-size: 16px; }
+.next-selected-decision-grid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 12px; padding-top: 14px; }
+.next-selected-decision-grid article { min-width: 0; padding: 13px 14px; border: 1px solid rgba(148, 163, 184, .16); border-radius: 8px; background: rgba(15, 23, 42, .5); }
+.next-selected-decision-grid ul { margin: 9px 0 0; padding-left: 18px; color: #e2e8f0; font-size: 13px; line-height: 1.5; }
+.next-selected-decision-grid dl { margin: 9px 0 0; display: grid; gap: 7px; }
+.next-selected-decision-grid dl div { display: flex; justify-content: space-between; gap: 12px; }
+.next-selected-decision-grid dt { color: #94a3b8; font-size: 12px; }
+.next-selected-decision-grid dd { margin: 0; color: #e2e8f0; font-size: 12px; font-weight: 700; text-align: right; }
+.next-selected-decision-grid p { margin: 9px 0 8px; color: #cbd5e1; font-size: 12px; line-height: 1.5; }
+.next-selected-decision-grid article > small { color: #5eead4; font-size: 10px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.next-selected-decision-empty { padding-top: 14px; }
+.next-selected-decision-empty strong { color: #e2e8f0; }
+.next-selected-decision-empty p { margin: 4px 0 0; color: #94a3b8; font-size: 13px; }
+
+@media (max-width: 1050px) {
+  .next-selected-decision-header { flex-direction: column; }
+  .next-selected-decision-metrics { justify-content: flex-start; }
+  .next-selected-decision-grid { grid-template-columns: 1fr; }
 }

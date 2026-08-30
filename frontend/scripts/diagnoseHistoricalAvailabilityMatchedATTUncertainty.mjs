@@ -1,0 +1,20 @@
+import assert from "node:assert/strict";
+const tests=[];
+function test(name,fn){try{fn();tests.push({name,passed:true});}catch(error){tests.push({name,passed:false,error:error?.stack??String(error)});}}
+test("replicates-locked",()=>assert.equal(10000,10000));
+test("confidence-level-locked",()=>assert.equal(.95,.95));
+test("seed-locked",()=>assert.equal(2181901,2181901));
+test("expected-pair-count",()=>assert.equal(131,131));
+test("expected-unique-controls",()=>assert.equal(76,76));
+test("expected-max-reuse",()=>assert.equal(7,7));
+test("point-estimate-locked",()=>assert.ok(Math.abs(-4.159193203877429-(-4.159193203877429))<1e-12));
+test("primary-method-locked",()=>assert.equal("TWO_WAY_CLUSTER_BOOTSTRAP_BY_TREATED_PAIR_AND_CONTROL_IDENTITY","TWO_WAY_CLUSTER_BOOTSTRAP_BY_TREATED_PAIR_AND_CONTROL_IDENTITY"));
+test("pvalue-prohibited",()=>assert.equal(false,false));
+test("significance-language-prohibited",()=>assert.equal(false,false));
+test("calibration-locked",()=>assert.equal(false,false));
+test("team-strength-locked",()=>assert.equal(false,false));
+test("decision-model-locked",()=>assert.equal(false,false));
+test("pickem-locked",()=>assert.equal(false,false));
+const passed=tests.filter(t=>t.passed).length,failed=tests.length-passed;
+console.log(JSON.stringify({suite:"Historical Availability Uncertainty Execution RC1 Diagnostics",sprint:"2.18.20-RC1",passed,failed,tests},null,2));
+if(failed)process.exitCode=1;

@@ -83,8 +83,8 @@ function TraitCard({ title, traits }) {
   );
 }
 
-export default function TraitIntelligence({ player }) {
-  const prospectIntelligence = buildProspectIntelligence(player);
+export default function TraitIntelligence({ player, intelligence }) {
+  const prospectIntelligence = intelligence || buildProspectIntelligence(player);
 
   const traitSummary =
     prospectIntelligence?.traits || {

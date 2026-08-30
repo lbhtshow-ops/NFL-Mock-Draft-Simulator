@@ -1,7 +1,7 @@
 import {
   DATA_STATES,
   EVIDENCE_LEVELS,
-} from "../../contracts/IntelligenceResultContract";
+} from "../../contracts/IntelligenceResultContract.js";
 
 export const PROSPECT_POSITION_MODEL_CONTRACT_VERSION =
   "PROSPECT-POSITION-MODEL-CONTRACT-1.0.0";

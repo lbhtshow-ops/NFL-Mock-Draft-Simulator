@@ -1,7 +1,7 @@
-import { staticRosterImporter } from "./importers";
-import { nflverseRosterAdapter } from "./importers";
+import { staticRosterImporter } from "./importers/index.js";
+import { nflverseRosterAdapter } from "./importers/index.js";
 
-import generatedNFLVerseRosterSource from "./sources/generatedNFLVerseRosterSource.json";
+import generatedNFLVerseRosterSource from "./sources/generatedNFLVerseRosterSource.json" with { type: "json" };
 
 const adaptedRosterRows = nflverseRosterAdapter(
   generatedNFLVerseRosterSource

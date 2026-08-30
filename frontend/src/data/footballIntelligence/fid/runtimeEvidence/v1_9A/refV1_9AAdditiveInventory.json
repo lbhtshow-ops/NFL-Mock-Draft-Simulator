@@ -1,0 +1,38 @@
+{
+  "inventoryIdentity": "REF_V1_9A_ADDITIVE_INVENTORY",
+  "version": "1.0.0",
+  "predecessorManifestsAndInventoriesModified": false,
+  "inventorySelfExcluded": true,
+  "aggregateDerivation": "SHA256_UPPERCASE_HEX_OF_UTF8_JSON_STRINGIFY_ORDERED_ARRAY_OF_RELATIVE_PATH_AND_SHA256",
+  "entries": [
+    {
+      "relativePath": "DependencyAndIsolationDecision.md",
+      "sha256": "4AD4364FB64D43A82D85F1977379000D7D94726941E4CD4860DA9BA262C183C9",
+      "artifactCategory": "DOCUMENTATION",
+      "gitState": "UNTRACKED",
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "PackageAndRuntimeAudit.md",
+      "sha256": "485D235AEE40AF3101CED2DA3AC5B63E2F9ED8A7A364FB8FFD22FB8722E1343A",
+      "artifactCategory": "DOCUMENTATION",
+      "gitState": "UNTRACKED",
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "README.md",
+      "sha256": "B7AFB363A76F1ED130909F17667C1A49D297B8F3B7DAE53BA416BBA9B596D9F1",
+      "artifactCategory": "DOCUMENTATION_INDEX",
+      "gitState": "UNTRACKED",
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    },
+    {
+      "relativePath": "SecurityTestingAndReadiness.md",
+      "sha256": "2B2C9C34DDC8A4B27FFA5AE19CE0F1F4D76E4F71AF21EBB46AFBDCDF21FFDE38",
+      "artifactCategory": "DOCUMENTATION",
+      "gitState": "UNTRACKED",
+      "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+    }
+  ],
+  "aggregateSha256": "11CABE77D6D330FB1A82EFF38F1B999B7B5FD6894C18545D9BC02649406EE69E"
+}

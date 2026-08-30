@@ -1,4 +1,4 @@
-import playerStatRows from "../data/footballIntelligence/nfl/rosters/sources/generatedNFLVersePlayerStatsSource.json";
+import playerStatRows from "../data/footballIntelligence/nfl/rosters/sources/generatedNFLVersePlayerStatsSource.json" with { type: "json" };
 
 function normalizeName(name = "") {
   return name
@@ -110,6 +110,16 @@ playerStatRows.forEach((row) => {
 });
 
 export function getPlayerPerformanceProfile(player = {}) {
+  const historicalProfile =
+    player?.historicalEvaluationEvidence?.performanceProfile ?? null;
+
+  if (historicalProfile) {
+    return {
+      ...historicalProfile,
+      matchedBy: "historicalPregameEvidence",
+    };
+  }
+
   const playerId =
     player?.playerId ||
     player?.identity?.playerId ||

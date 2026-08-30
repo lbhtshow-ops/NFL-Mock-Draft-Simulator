@@ -1,0 +1,30 @@
+{
+  "inventoryIdentity": "REF_V1_10A_ADDITIVE_INVENTORY",
+  "version": "1.0.0",
+  "predecessorManifestsAndInventoriesModified": false,
+  "inventorySelfExcluded": true,
+  "aggregateDerivation": "SHA256_UPPERCASE_HEX_OF_UTF8_JSON_STRINGIFY_ORDERED_ARRAY_OF_RELATIVE_PATH_AND_SHA256",
+  "entries": [
+    { "relativePath": "AdversarialReview.md", "sha256": "48407C9A662859C4C7F95B380E9DE526388777FECB6BA1A0426BDBB0B1E0F9A5", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "BrowserViteIsolationDesign.md", "sha256": "7B2ED522F30ECD4121AAB558B41CB9D0E65C186F3CF61A969449EFEFFB5EA677", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "CancellationAndTimeoutDesign.md", "sha256": "403662DC7E9BE62582DAA2751A230565EBF22E724511C7A1BB07A99F9AE48EEE", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "ClientFactoryDesign.md", "sha256": "B1FB266BED7569D600FEE7703F9C1AB314F68883481AA47287ED11E71F734AA1", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "ConsolidatedReview.md", "sha256": "F8B6CEF179980DE2A6D9297432573EF6E76610F72BC201D0E7ABB81DB980F393", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "Diagnostics.md", "sha256": "4686E5BAD9626B2317DEE6CF202CB6B7DE706499FC728953C6119DE24D38ABBA", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "ErrorSanitizationDesign.md", "sha256": "3BE99734D42EB9C450FE9474939437BCCBEEF446DFCD43DC9ABB5EE0B147B420", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "ExistingAdapterReuseDecision.md", "sha256": "60FD6F4854C6A528FFCA8B9D0A8997B327047E1F44DD08428FBD4B199288DE49", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "FakeClientContract.md", "sha256": "7498AD5B9E84C3B811E9A583E137BCA1C190051B1718DE5EA01399064A497D86", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "ImplementationAuthorization.json", "sha256": "03AF6C082DBC2961735480E5BF9ED14A71500A25FAAA09E02AD6C9EA8BAC5652", "artifactCategory": "IMPLEMENTATION_AUTHORIZATION", "gitState": "UNTRACKED" },
+    { "relativePath": "ImplementationMutationBoundary.md", "sha256": "0B8DDEDC0951FC806FD540AE9B18CDE1313742B3127310FDFC862EC9BB81101A", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "InstalledPgBoundaryReview.md", "sha256": "504152AC93E17B2E70550BDA2C4AB56D9DDF29C428752B12801AFB6B17CDFD51", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "NoLiveDiagnosticPlan.md", "sha256": "3B23903EFB56E57FA555C817D2EDB2FE6458BB06C2702B31C81121A6F85CEE45", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "NodeOnlyPlacementDesign.md", "sha256": "AB75BF63A0E8561B2F98541B652B841D430B957D9E6734939685CCD9686C516A", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "PostgreSQLSemanticsReview.md", "sha256": "6606A2FF291EDC9397D1CDA5C297C8B0D15684FC8DE3EE8F125774C785E49083", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "RepositoryAndAdapterAudit.md", "sha256": "D73E288B879D4BAC2BE15AFE77978E81BBAA8888B2012027DB8B74B57D8FC886", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "ResultBoundaryDesign.md", "sha256": "AD71958EF1DF4ED2274BA4F1421269882D3A17239EC33734C035AB3982DAF773", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "SecurityReview.md", "sha256": "607D2474FC57262B6964F2798E5FEB7287A81ECC8F32C07A726C74294E18D155", "artifactCategory": "READINESS_RECORD", "gitState": "UNTRACKED" },
+    { "relativePath": "index.md", "sha256": "3DBF84C3571804E1CC8D419481C924A218907C95D4B29587451C613B05811AB3", "artifactCategory": "VERSIONED_INDEX", "gitState": "UNTRACKED" }
+  ],
+  "aggregateSha256": "D8886E8016CED83B3E2E94E90C618522450FBE3A9562C23E2DA85AB7630AD027",
+  "custodyLimitation": "CURRENT_FILESYSTEM_ONLY_NO_GIT_CUSTODY"
+}

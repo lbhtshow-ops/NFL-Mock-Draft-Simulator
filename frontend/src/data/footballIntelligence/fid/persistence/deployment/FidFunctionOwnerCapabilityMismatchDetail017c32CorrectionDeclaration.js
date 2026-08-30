@@ -1,0 +1,14 @@
+export const FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_017C32_CORRECTION=Object.freeze({
+  id:"FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_DIAGNOSTIC_CORRECTION_017C32",version:"17C.32.1",
+  protectedPath:"frontend/src/data/footballIntelligence/fid/persistence/deployment/review/017c30_fid_function_owner_capability_mismatch_detail_read_only_diagnostic.sql",
+  protectedSha256:"A9882BBA3AD98B4EC608FB741672ABCFCAFB1F99CC863DEE83F39C8F35061468",
+  successorPath:"frontend/src/data/footballIntelligence/fid/persistence/deployment/review/017c32_fid_function_owner_capability_mismatch_detail_correction.sql",
+  successorSha256:"9A3A4E4583721182F3DE3A68B5DB29BECD6A120310CBE4C700850CC202D9A10D",
+  capturedMismatchCount:5,settingChanged:false,sqlExecuted:false,databaseConnected:false,authorizationCreated:false,
+  authorization017c23Consumed:true,authorization017c26Consumed:true,authorization017c29Consumed:true,retryAuthorized:false,
+  amendmentAuthorized:false,migration014Authorized:false,
+  matrix:Object.freeze({id:"FID_FUNCTION_OWNER_ACL_MATRIX_017C21_V1",version:"17C.21.1",sha256:"E92CAE3BAA5F341ACAC12D9800603DFA09FBB04F084BACC0998581EC673F70FC",entries:260,invariants:1,units:261}),
+  status:"READY_FOR_FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_DIAGNOSTIC_CORRECTION_INDEPENDENT_REVIEW",
+  nextSprint:"SPRINT_17C33_FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_DIAGNOSTIC_CORRECTION_INDEPENDENT_REVIEW",
+});
+export default FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_017C32_CORRECTION;

@@ -1,0 +1,32 @@
+export const CANONICAL_PROSPECT_IDENTIFIER_MIGRATION_014_EXECUTION_AUTHORIZATION = Object.freeze({
+  authorizationId: "CANONICAL_PROSPECT_IDENTIFIER_MIGRATION_014_EXECUTION_AUTHORIZATION",
+  authorizationVersion: "1.0.0",
+  status: "READY_FOR_CONTROLLED_CORRECTED_MIGRATION_014_EXECUTION",
+  resultRecordReference: "CANONICAL_PROSPECT_IDENTIFIER_STAGE_2_PREFLIGHT_017C3_RESULT_RECORD@1.0.0",
+  exactProjectId: "ahmorpzcaapvoymiqlkv",
+  interface: "SUPABASE_DASHBOARD_SQL_EDITOR",
+  role: "postgres",
+  migration: "014_create_fid_identifier_issuance_transaction.sql",
+  migrationSha256: "18EC78EE6F820CE5E47DE5F71AEB2ADE413046487FFC0CA5BAC7CC2E6BF574AD",
+  prohibitedMigrationSha256: "3B271BC994D82C8109CDE4E62E6A1F85A67E49F86C5D98FBD0EBA46D6D214F13",
+  executionCount: 1,
+  safeguards: Object.freeze({
+    byteForByteMigrationOnly: true,
+    executeAsOneDashboardOperation: true,
+    stopImmediatelyOnAnyError: true,
+    adHocRepairProhibited: true,
+    partialRerunProhibited: true,
+    uncertainResponseRequiresReadOnlyReconciliation: true,
+    issuanceRpcInvocationProhibited: true,
+    candidateAndProspectOperationsProhibited: true,
+    productionActivationProhibited: true,
+    edgeFunctionActivationProhibited: true,
+    stopAfterExecution: true,
+    postDeploymentAcceptanceRequiresSeparateAuthorization: true,
+  }),
+  consumed: false,
+  transferable: false,
+  requiredNextAction: "MANUALLY_EXECUTE_EXACTLY_ONCE_CORRECTED_MIGRATION_014_CAPTURE_COMPLETE_EXECUTION_RESULT_AND_STOP",
+});
+
+export default CANONICAL_PROSPECT_IDENTIFIER_MIGRATION_014_EXECUTION_AUTHORIZATION;

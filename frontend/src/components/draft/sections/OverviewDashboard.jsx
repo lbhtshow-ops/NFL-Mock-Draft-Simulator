@@ -35,8 +35,8 @@ function TraitPill({ label, value }) {
   );
 }
 
-export default function OverviewDashboard({ player }) {
-  const prospectIntelligence = buildProspectIntelligence(player);
+export default function OverviewDashboard({ player, intelligence }) {
+  const prospectIntelligence = intelligence || buildProspectIntelligence(player);
   const executiveSummary = buildExecutiveSummary(prospectIntelligence);
 
   const bio = prospectIntelligence?.profile?.bio || {};

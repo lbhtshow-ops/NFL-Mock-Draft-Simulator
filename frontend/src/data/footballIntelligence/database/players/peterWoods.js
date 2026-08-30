@@ -1,13 +1,13 @@
-import { createFootballPlayerRecord } from "../createFootballPlayerRecord";
+import { createFootballPlayerRecord } from "../createFootballPlayerRecord.js";
 
-import { prospectIds } from "../../registry/prospectIds";
+import { prospectIds } from "../../registry/prospectIds.js";
 
-import { getPlayerTraitSummary } from "../../../../engines/PlayerTraitEngine";
-import { getPlayerEvaluationSummary } from "../../../../engines/PlayerEvaluationEngine";
-import { getAthleticSummary } from "../../../../engines/AthleticIntelligenceEngine";
-import { getFootballIQSummary } from "../../../../engines/FootballIQEngine";
-import { getSchemeFitSummary } from "../../../../engines/SchemeFitEngine";
-import { getProductionSummary } from "../../../../engines/ProductionEngine";
+import { getPlayerTraitSummary } from "../../../../engines/PlayerTraitEngine.js";
+import { getPlayerEvaluationSummary } from "../../../../engines/PlayerEvaluationEngine.js";
+import { getAthleticSummary } from "../../../../engines/AthleticIntelligenceEngine.js";
+import { getFootballIQSummary } from "../../../../engines/FootballIQEngine.js";
+import { getSchemeFitSummary } from "../../../../engines/SchemeFitEngine.js";
+import { getProductionSummary } from "../../../../engines/ProductionEngine.js";
 
 const playerId = prospectIds.PETER_WOODS;
 

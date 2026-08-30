@@ -1,0 +1,23 @@
+{
+  "contract": "NFLHistoricalDecisionDatasetReconciliationAudit",
+  "version": "NFL-HISTORICAL-DECISION-DATASET-RECONCILIATION-1.0.1",
+  "generatedAt": "2026-08-11T06:22:50.184Z",
+  "counts": {
+    "scheduleGames": 2227,
+    "pregameSnapshots": 2227,
+    "normalizedPregameSnapshots": 2227,
+    "decisionRecords": 2227,
+    "assemblerExclusions": 0,
+    "unexplainedSnapshotOmissions": 0
+  },
+  "assemblerSummary": {
+    "records": 2227,
+    "exclusions": 0,
+    "missingPregameSnapshots": 0,
+    "temporalLeakageRejected": 0,
+    "contractRejected": 0,
+    "unsupportedGameTypes": 0,
+    "unsupportedGameTypeBreakdown": {}
+  },
+  "omittedSnapshotIds": []
+}

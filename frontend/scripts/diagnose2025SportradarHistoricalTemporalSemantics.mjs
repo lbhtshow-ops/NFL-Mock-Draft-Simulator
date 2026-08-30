@@ -1,0 +1,27 @@
+import fs from "node:fs";
+import assert from "node:assert/strict";
+const adapter=fs.readFileSync(new URL("../src/data/footballIntelligence/nfl/availability/providers/sportradar/SportradarNFLAvailabilityProviderAdapter.js",import.meta.url),"utf8");
+const audit=fs.readFileSync(new URL("./audit2025SportradarHistoricalTemporalQualification.mjs",import.meta.url),"utf8");
+const tests=[];function test(name,fn){try{fn();tests.push({name,passed:true});}catch(e){tests.push({name,passed:false,error:e.message});}}
+test("nested injury status_date supported",()=>assert.match(adapter,/injury\?\.status_date/));
+test("nested injury practice supported",()=>assert.match(adapter,/injury\?\.practice\?\.status/));
+test("nested injury status supported",()=>assert.match(adapter,/injury\?\.status/));
+test("source time does not use now",()=>assert.doesNotMatch(adapter,/function sourceModifiedAt[\s\S]*?\|\| now/));
+test("source temporal classification explicit",()=>assert.match(adapter,/sourceTemporalClassification/));
+test("acquisition time kept separate",()=>assert.match(adapter,/acquiredAt/));
+test("aggregate acquisition fallback classified",()=>assert.match(adapter,/ACQUISITION_TIME_FALLBACK/));
+test("audit bounded 429 retries",()=>assert.match(audit,/MAX_429_RETRIES = 2/));
+test("audit request timeout bounded",()=>assert.match(audit,/REQUEST_TIMEOUT_MS = 15000/));
+test("audit rate limit pacing present",()=>assert.match(audit,/MIN_REQUEST_INTERVAL_MS = 1300/));
+test("audit defaults to weeks 1 through 18",()=>{assert.match(audit,/--start-week", "1"/);assert.match(audit,/--end-week", "18"/);});
+test("same-day records remain ambiguous",()=>assert.match(audit,/SAME_DAY_AMBIGUOUS/));
+test("after-kickoff records excluded",()=>assert.match(audit,/AFTER_KICKOFF_DATE/));
+test("missing status date excluded",()=>assert.match(audit,/MISSING_STATUS_DATE/));
+test("95 percent historical threshold preserved",()=>assert.match(audit,/minimumPregameSafeRate: 0\.95/));
+test("normalization remains locked",()=>assert.match(audit,/historicalNormalizationAuthorized: false/));
+test("matching remains locked",()=>assert.match(audit,/matchingRerunAuthorized: false/));
+test("ATT remains locked",()=>assert.match(audit,/attRecomputationAuthorized: false/));
+test("production calibration remains locked",()=>assert.match(audit,/productionCalibrationAuthorized: false/));
+test("shadow transformation remains locked",()=>assert.match(audit,/shadowTeamStrengthTransformationAuthorized: false/));
+test("Pick'em remains locked",()=>assert.match(audit,/pickemMutationAuthorized: false/));
+const failed=tests.filter(t=>!t.passed);console.log(JSON.stringify({suite:"2025 Sportradar Historical Temporal Semantics Package Diagnostics",passed:tests.length-failed.length,failed:failed.length,tests},null,2));if(failed.length)process.exitCode=1;

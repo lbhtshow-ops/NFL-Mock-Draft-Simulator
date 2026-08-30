@@ -1,0 +1,38 @@
+export const DRAFT_SELECTION_CANONICAL_REFERENCE_POLICY_VERSION = "FID-DRAFT-SELECTION-CANONICAL-REFERENCE-POLICY-1.0.0";
+export const DRAFT_SELECTION_CANONICAL_REFERENCE_SCHEMA_VERSION = "1.0.0";
+export const DRAFT_SELECTION_CANONICAL_NAMESPACE = "draft-selection";
+export const DRAFT_SELECTION_CANONICAL_REFERENCE_SEPARATOR = ":";
+export const DRAFT_SELECTION_OVERALL_PICK_PREFIX = "overall-";
+export const DRAFT_SELECTION_MINIMUM_OVERALL_PICK = 1;
+export const DRAFT_SELECTION_CANONICAL_REFERENCE_PATTERN = /^draft-selection:([a-z0-9]+(?:-[a-z0-9]+)*):overall-([1-9]\d*)$/;
+
+export const DRAFT_SELECTION_IDENTITY_COMPONENTS = Object.freeze(["draftCycleRef", "overallPick"]);
+export const DRAFT_SELECTION_EXCLUDED_IDENTITY_COMPONENTS = Object.freeze([
+  "prospectRef", "selectingOrganizationRef", "round", "selectionDate", "selectionRevision",
+  "persistenceId", "requestId", "operationId", "batchId",
+]);
+export const DRAFT_SELECTION_IDENTIFIER_CLASSIFICATIONS = Object.freeze({
+  CANONICAL: "CANONICAL",
+  SYNTHETIC: "SYNTHETIC",
+  LEGACY: "LEGACY",
+  INVALID: "INVALID",
+});
+export const DRAFT_SELECTION_IDENTITY_OWNERSHIP = "DraftSelection owns selectionRef as the stable identity of one overall-pick slot within one canonical draft cycle.";
+export const DRAFT_SELECTION_REVISION_STABILITY = "All revisions of one DraftSelection preserve selectionRef, draftCycleRef, and overallPick.";
+export const DRAFT_SELECTION_PERSISTENCE_BOUNDARY = "Persistence owns database identity and execution metadata; none are canonical selection identity components.";
+
+export default Object.freeze({
+  DRAFT_SELECTION_CANONICAL_REFERENCE_POLICY_VERSION,
+  DRAFT_SELECTION_CANONICAL_REFERENCE_SCHEMA_VERSION,
+  DRAFT_SELECTION_CANONICAL_NAMESPACE,
+  DRAFT_SELECTION_CANONICAL_REFERENCE_SEPARATOR,
+  DRAFT_SELECTION_OVERALL_PICK_PREFIX,
+  DRAFT_SELECTION_MINIMUM_OVERALL_PICK,
+  DRAFT_SELECTION_CANONICAL_REFERENCE_PATTERN,
+  DRAFT_SELECTION_IDENTITY_COMPONENTS,
+  DRAFT_SELECTION_EXCLUDED_IDENTITY_COMPONENTS,
+  DRAFT_SELECTION_IDENTIFIER_CLASSIFICATIONS,
+  DRAFT_SELECTION_IDENTITY_OWNERSHIP,
+  DRAFT_SELECTION_REVISION_STABILITY,
+  DRAFT_SELECTION_PERSISTENCE_BOUNDARY,
+});

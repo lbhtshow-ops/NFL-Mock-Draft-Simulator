@@ -1,0 +1,56 @@
+import { execFileSync } from "node:child_process";
+import path from "node:path";
+
+const auditPath=path.resolve("./scripts/auditHeterogeneousPlayerImpactCalibration.mjs");
+const output=execFileSync(process.execPath,[auditPath],{encoding:"utf8"});
+const report=JSON.parse(output);
+
+const tests=[];
+const test=(name,passed)=>tests.push({name,passed:Boolean(passed)});
+const finite=(v)=>v!==null&&v!==undefined&&Number.isFinite(Number(v));
+
+test("286 historical observations retained", report?.source?.observationCount===286);
+test("131 matched effects retained", report?.source?.matchedEffectCount===131);
+test("Sprint 4 usage/dependency evidence loaded", report?.source?.usageDependencyEvidenceCount===286);
+test("131 multivariate model records built", report?.source?.modelRecordCount===131);
+test("zero missing observation joins", report?.reconciliation?.missingObservationJoin===0);
+test("zero missing usage joins", report?.reconciliation?.missingUsageJoin===0);
+test("all matched effects reconcile", report?.reconciliation?.allMatchedEffectsReconciled===true);
+test("full matched cohort has usage", report?.evidenceCoverage?.usageRecordCount===131);
+test("full-cohort usage coverage true", report?.evidenceCoverage?.fullCohortUsageCoverage===true);
+test("dependency subset remains explicitly bounded", report?.evidenceCoverage?.dependencyRecordCount===31);
+test("replacement-only model executes", finite(report?.models?.replacementCaliberOnly?.r2));
+test("core player-impact research model executes", finite(report?.models?.corePlayerImpactResearch?.r2));
+test("QB context model executes", finite(report?.models?.corePlusQBContext?.r2));
+test("position context model executes", finite(report?.models?.corePlusPositionContext?.r2));
+test("dependency-supported subset model executes", finite(report?.models?.dependencySupportedSubset?.r2));
+test("replacement-only grouped CV covers all 131", report?.internalRobustness?.groupedFiveFoldCV?.replacementCaliberOnly?.n===131);
+test("core grouped CV covers all 131", report?.internalRobustness?.groupedFiveFoldCV?.corePlayerImpactResearch?.n===131);
+test("grouped CV identified as non-temporal holdout", report?.internalRobustness?.internalCVIsNotTemporalHoldout===true);
+test("usage bands remain descriptive only", report?.descriptiveInteractions?.resultsAreDescriptiveOnly===true);
+test("dependency subset remains below production-support threshold", report?.interpretation?.dependencySubsetTooSmallForProductionPolicy===true);
+test("research coefficients not production-authorized", report?.interpretation?.coefficientsAreResearchDiagnosticsOnly===true);
+test("no production coefficient authorized", report?.interpretation?.noProductionCoefficientAuthorized===true);
+test("temporal/season/era validation may advance", report?.readiness?.temporalSeasonEraValidationMayAdvance===true);
+test("full Player Impact transformation still outside holdout", report?.readiness?.fullPlayerImpactTransformationReadyForHoldout===false);
+test("calibration remains unauthorized", report?.readiness?.calibrationAuthorized===false);
+test("production policy remains unauthorized", report?.readiness?.productionImpactPolicyAuthorized===false);
+test("shadow Team Strength transformation remains unauthorized", report?.readiness?.shadowTeamStrengthTransformationAuthorized===false);
+test("matched design remains unmutated", report?.safeguards?.matchedDesignMutated===false);
+test("causal estimand remains unmutated", report?.safeguards?.causalEstimandMutated===false);
+test("learned production weight not created", report?.safeguards?.learnedProductionWeightCreated===false);
+test("player coefficient not authorized", report?.safeguards?.playerCoefficientAuthorized===false);
+test("position coefficient not authorized", report?.safeguards?.positionCoefficientAuthorized===false);
+test("dependency coefficient not authorized", report?.safeguards?.dependencyCoefficientAuthorized===false);
+test("Team Strength point value not authorized", report?.safeguards?.teamStrengthPointValueAuthorized===false);
+test("Team Strength remains unmutated", report?.safeguards?.teamStrengthMutated===false);
+test("Decision Model remains unmutated", report?.safeguards?.decisionModelMutated===false);
+test("Pick'em remains unmutated", report?.safeguards?.pickemScoringMutated===false);
+test("database remains unmutated", report?.safeguards?.databaseMutated===false);
+test("shadow-only boundary preserved", report?.safeguards?.shadowOnlyPreserved===true);
+
+for(const t of tests) console.log(`${t.passed?"PASS":"FAIL"} ${t.name}`);
+const passed=tests.filter(t=>t.passed).length,failed=tests.length-passed;
+console.log(`\nHeterogeneous Player-Impact Calibration diagnostics: ${passed}/${tests.length} passed; ${failed} failed.`);
+console.log(report.decision);
+if(failed) process.exitCode=1;

@@ -21,6 +21,10 @@ import footballEntityContract, {
   isVerifiedFootballEntity,
   validateFootballEntity,
 } from "./contracts/FootballEntityContract.js";
+import footballEntityReferenceConstants from "./constants/footballEntityReferenceConstants.js";
+import footballEntityReferencePolicy from "./contracts/FootballEntityReferencePolicy.js";
+export * from "./constants/footballEntityReferenceConstants.js";
+export * from "./contracts/FootballEntityReferencePolicy.js";
 import personProfileConstants, {
   PERSON_CAREER_EVENT_TYPES,
   PERSON_EDUCATION_TYPES,
@@ -313,9 +317,17 @@ import fidPersistenceArchitecture, {
 } from "./persistence/index.js";
 import durablePersistenceApi from "./persistence/index.js";
 import prospectIntakeArchitecture from "./prospectIntake/index.js";
+import fiisIntakeApi from "./intake/index.js";
+import populationApi from "./population/index.js";
+import draftSelectionApi from "./draftSelection/index.js";
+import canonicalRecordOwnershipApi from "./records/index.js";
 
 export * from "./prospectIntake/index.js";
 export * from "./persistence/index.js";
+export * from "./intake/index.js";
+export * from "./population/index.js";
+export * from "./draftSelection/index.js";
+export * from "./records/index.js";
 
 export {
   FOOTBALL_ENTITY_CONTRACT_NAME,
@@ -594,6 +606,8 @@ export {
 export default Object.freeze({
   ...footballEntityConstants,
   ...footballEntityContract,
+  ...footballEntityReferenceConstants,
+  ...footballEntityReferencePolicy,
   ...personProfileConstants,
   ...personProfileContract,
   ...playerProfileConstants,
@@ -615,4 +629,8 @@ export default Object.freeze({
   ...fidPersistenceArchitecture,
   ...durablePersistenceApi,
   ...prospectIntakeArchitecture,
+  ...fiisIntakeApi,
+  ...populationApi,
+  ...draftSelectionApi,
+  ...canonicalRecordOwnershipApi,
 });

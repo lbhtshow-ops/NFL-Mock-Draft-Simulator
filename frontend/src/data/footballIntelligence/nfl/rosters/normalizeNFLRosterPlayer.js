@@ -1,4 +1,4 @@
-import { createNFLPlayerRecord } from "./createNFLPlayerRecord";
+import { createNFLPlayerRecord } from "./createNFLPlayerRecord.js";
 
 export function normalizeNFLRosterPlayer(rawPlayer = {}) {
   return createNFLPlayerRecord({

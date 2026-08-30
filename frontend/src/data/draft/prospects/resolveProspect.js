@@ -1,7 +1,7 @@
 import {
   getProspectById,
   getProspectByRank,
-} from "./prospectRegistry";
+} from "./prospectRegistry.js";
 
 export function resolveProspect(identifier) {
   if (!identifier) {

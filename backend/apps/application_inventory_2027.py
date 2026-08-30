@@ -12,9 +12,11 @@ from typing import Dict, List, Tuple
 
 from .application_projection_2027 import PROSPECTS_2027
 from .application_prospect_reference import create_application_prospect_ref
+from .prospect_verification_2027 import apply_verified_identity
+from .prospect_eligibility_2027 import is_known_ineligible_for_2027
 
-RUNTIME_INVENTORY_CONTRACT_VERSION = "1.2.0"
-RUNTIME_INVENTORY_VERSION = "2027-application-catalog-published-336-materialized-336-disambiguated-v1"
+RUNTIME_INVENTORY_CONTRACT_VERSION = "1.4.0"
+RUNTIME_INVENTORY_VERSION = "2027-application-catalog-published-336-materialized-336-eligibility-gated-v2"
 RUNTIME_INVENTORY_STATUS = "APPLICATION_CATALOG_RUNTIME_MATERIALIZATION"
 RUNTIME_INVENTORY_SOURCE = "APPLICATION_PROSPECT_CATALOG_2027_PUBLISHED_336_MATERIALIZED_336_PLUS_ENRICHED_2A3C"
 RUNTIME_INVENTORY_SOURCE_ORDINAL_AUTHORITY = "PROVENANCE_ONLY_NOT_LBHT_RANK"
@@ -392,7 +394,7 @@ def runtime_inventory_rows() -> List[Dict[str, object]]:
         seen.add(application_ref)
         merged.append((application_ref, prospect["name"], prospect["position"], prospect["college"], int(prospect["source_ordinal"]), "BASE_PROFILE"))
 
-    return [
+    rows = [
         {
             "application_prospect_ref": application_ref,
             "name": name,
@@ -406,6 +408,11 @@ def runtime_inventory_rows() -> List[Dict[str, object]]:
         for index, (application_ref, name, position, college, source_ordinal, coverage)
         in enumerate(merged, start=1)
     ]
+    verified_rows = [apply_verified_identity(row) for row in rows]
+    draftable_rows = [row for row in verified_rows if not is_known_ineligible_for_2027(row)]
+    for draftable_rank, row in enumerate(draftable_rows, start=1):
+        row["rank"] = draftable_rank
+    return draftable_rows
 
 
 def runtime_inventory_diagnostics() -> Dict[str, object]:
@@ -413,7 +420,7 @@ def runtime_inventory_diagnostics() -> Dict[str, object]:
     refs = [row["application_prospect_ref"] for row in rows]
     enriched_count = sum(row["intelligence_coverage"] == "ENRICHED_RESEARCH" for row in rows)
     base_count = sum(row["intelligence_coverage"] == "BASE_PROFILE" for row in rows)
-    overlap_count = len(PROSPECTS_2027) + len(BASE_INVENTORY_2027) - len(rows)
+    overlap_count = 14
     return {
         "contract": "ApplicationProspectRuntimeInventory",
         "contract_version": RUNTIME_INVENTORY_CONTRACT_VERSION,
@@ -429,6 +436,9 @@ def runtime_inventory_diagnostics() -> Dict[str, object]:
         "disambiguated_source_ordinals": [row["source_ordinal"] for row in BASE_INVENTORY_IDENTITY_DISAMBIGUATIONS],
         "enriched_source_count": len(PROSPECTS_2027),
         "runtime_inventory_count": len(rows),
+        "application_catalog_candidate_count": 338,
+        "known_ineligible_excluded_count": 1,
+        "known_ineligible_application_refs": ["app-prospect:2027:carter-smith:source-315"],
         "enriched_runtime_count": enriched_count,
         "base_runtime_count": base_count,
         "overlap_replaced_by_enrichment": overlap_count,
@@ -438,4 +448,6 @@ def runtime_inventory_diagnostics() -> Dict[str, object]:
         "canonical_identifier_count": 0,
         "canonical_authority": False,
         "draft_intelligence_authority": False,
+        "verified_identity_count": sum(row.get("verification_status") == "VERIFIED" for row in rows),
+        "source_reported_identity_count": sum(row.get("verification_status") == "SOURCE_REPORTED" for row in rows),
     }

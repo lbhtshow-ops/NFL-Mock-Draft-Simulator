@@ -1,0 +1,15 @@
+import {evaluateNFLDecisionModelPromotionGate,detectEmpiricallyIndistinguishableCandidates} from "../gameDecisionSupport/validation/NFLDecisionModelPromotionGate.js";
+import {buildNFLDecisionModelValidationReport} from "../gameDecisionSupport/validation/NFLDecisionModelValidationReport.js";
+const tests=[],check=(n,f)=>{try{f();tests.push({name:n,passed:true})}catch(e){tests.push({name:n,passed:false,error:e.message})}},assert=(x,m)=>{if(!x)throw new Error(m)},m=(a,b,l,e)=>({winnerAccuracy:a,brierScore:b,logLoss:l,marginMAE:e});
+const ex=(y,d=.08)=>({holdoutSeason:y,candidates:[{modelId:"BASELINE_HOME_FIELD",holdout:m(.54,.25,.69,11)},{modelId:"MATCHUP_EDGE_LINEAR",holdout:m(.54+d,.22,.64,10.2)},{modelId:"MATCHUP_EDGE_LOGISTIC",holdout:m(.54+d,.22,.64,10.2)},{modelId:"QUALITY_WEIGHTED_MATCHUP",holdout:m(.54+d-.005,.221,.642,10.3)}]}),xs=[2019,2020,2021,2022,2023,2024,2025].map(y=>ex(y));
+check("multi-season-gate-can-pass",()=>assert(evaluateNFLDecisionModelPromotionGate({experiments:xs,candidateId:"QUALITY_WEIGHTED_MATCHUP"}).status==="PROMOTION_ELIGIBLE"));
+check("insufficient-holdouts-block-promotion",()=>assert(evaluateNFLDecisionModelPromotionGate({experiments:xs.slice(0,2),candidateId:"QUALITY_WEIGHTED_MATCHUP"}).status==="HOLD_RESEARCH_ONLY"));
+check("weak-accuracy-gain-blocks-promotion",()=>assert(evaluateNFLDecisionModelPromotionGate({experiments:[2019,2020,2021,2022,2023].map(y=>ex(y,.01)),candidateId:"QUALITY_WEIGHTED_MATCHUP"}).status==="HOLD_RESEARCH_ONLY"));
+check("identical-candidates-are-detected",()=>assert(detectEmpiricallyIndistinguishableCandidates(xs).some(p=>p.candidateA==="MATCHUP_EDGE_LINEAR"&&p.candidateB==="MATCHUP_EDGE_LOGISTIC")));
+check("indistinguishable-candidate-is-held",()=>assert(evaluateNFLDecisionModelPromotionGate({experiments:xs,candidateId:"MATCHUP_EDGE_LINEAR"}).status==="HOLD_RESEARCH_ONLY"));
+check("gate-never-grants-authority",()=>assert(!evaluateNFLDecisionModelPromotionGate({experiments:xs,candidateId:"QUALITY_WEIGHTED_MATCHUP"}).authoritative));
+check("gate-never-auto-promotes",()=>assert(!evaluateNFLDecisionModelPromotionGate({experiments:xs,candidateId:"QUALITY_WEIGHTED_MATCHUP"}).automaticPromotion));
+check("report-remains-research-only",()=>assert(buildNFLDecisionModelValidationReport(xs).status==="RESEARCH_ONLY"));
+check("report-retains-holdout-seasons",()=>assert(buildNFLDecisionModelValidationReport(xs).holdoutSeasons.length===7));
+check("production-authority-remains-denied",()=>assert(!buildNFLDecisionModelValidationReport(xs).productionAuthorityGranted));
+const failed=tests.filter(t=>!t.passed);console.log(JSON.stringify({suite:"NFL Holdout Validation & Promotion Gate V1 Diagnostics",passed:tests.length-failed.length,failed:failed.length,tests},null,2));if(failed.length)process.exitCode=1;

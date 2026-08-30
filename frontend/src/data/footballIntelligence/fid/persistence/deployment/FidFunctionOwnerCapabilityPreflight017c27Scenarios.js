@@ -1,0 +1,22 @@
+export const FID_FUNCTION_OWNER_CAPABILITY_PREFLIGHT_017C27_SCENARIOS = Object.freeze([
+  ["original-invalid", "lbht.preflight_017c24_result", "lbht.017c24_preflight_result", "invalid_setting_present"],
+  ["digit-component", "lbht.preflight_017c24_result", "lbht.17c24_result", "setting_name_invalid"],
+  ["one-component", "lbht.preflight_017c24_result", "lbht", "setting_name_invalid"],
+  ["empty-component", "lbht.preflight_017c24_result", "lbht..result", "setting_name_invalid"],
+  ["uppercase-mismatch", "current_setting('lbht.preflight_017c24_result'", "current_setting('lbht.Preflight_017c24_result'", "single_governed_setting"],
+  ["hyphen", "lbht.preflight_017c24_result", "lbht.preflight-017c24-result", "setting_name_invalid"],
+  ["whitespace", "lbht.preflight_017c24_result", "lbht.preflight 017c24 result", "setting_name_invalid"],
+  ["nonlocal", ", true)", ", false)", "transaction_local_setting"],
+  ["missing-pending", "PERFORM pg_catalog.set_config(result_setting, 'PENDING', true);", "", "transaction_local_setting"],
+  ["pending-accepted", "classification'<>'PENDING'", "classification'='PENDING'", "pending_output_guard"],
+  ["missing-final-select", "WITH payload AS (", "WITH removed_payload AS (", "preservation:single_final_select"],
+  ["changed-column", " AS result_identity", " AS wrong_identity", "column:result_identity"],
+  ["acl-omission", "metadata_total<>1", "metadata_total<0", "preservation:acl_matrix_coverage_loss"],
+  ["metadata-guard", "IF metadata_oid IS NULL THEN", "IF false THEN", "preservation:missing_metadata_visible_unresolved"],
+  ["mutation", "COMMIT;", "UPDATE fid.example SET x=1;\nCOMMIT;", "preservation:mutation_lock_or_role_change"],
+  ["locking", "COMMIT;", "SELECT 1 FOR UPDATE;\nCOMMIT;", "preservation:mutation_lock_or_role_change"],
+  ["role-change", "COMMIT;", "SET ROLE postgres;\nCOMMIT;", "preservation:mutation_lock_or_role_change"],
+  ["rpc", "COMMIT;", "SELECT fid_execute_atomic_persistence_batch();\nCOMMIT;", "preservation:rpc_invocation"],
+  ["uuid", "COMMIT;", "SELECT gen_random_uuid();\nCOMMIT;", "preservation:lock_uuid_or_identifier_generation"],
+].map(([id, from, to, expectedFailure]) => Object.freeze({ id, from, to, expectedFailure })));
+export default FID_FUNCTION_OWNER_CAPABILITY_PREFLIGHT_017C27_SCENARIOS;

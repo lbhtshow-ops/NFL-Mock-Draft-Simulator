@@ -1,0 +1,30 @@
+export const FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_017C16_REVIEW = Object.freeze({
+  id: "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_017C16_CONTROLLED_DEPLOYMENT_REVIEW",
+  status: "FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_CORRECTION_REQUIRED",
+  target: Object.freeze({ projectId: "ahmorpzcaapvoymiqlkv", environment: "DEDICATED_NON_PRODUCTION_TEST", branch: "main", database: "Primary Database", role: "postgres", postgresql: "17.6" }),
+  authoritativeDatabaseState: "MIGRATION_014_FULLY_ROLLED_BACK",
+  fixedHashes: Object.freeze({
+    amendment: "8A1FDAC9C00D87550B2E06078221AEFF8D20515906682D6C5B7E34B8E9A8152C",
+    preflight: "D2338D8A248ED8E4ABA35A355CF243E10E598AD527E9459B511243E7D0DD5373",
+    reconciliation: "9F0F625A603B618AC68A80069F46D95FC066F814575A6655076CBCDA473D65A8",
+    postVerification: "B4D8F4B1B427E8CDFF381E9051DB9C57E496A70A8F156C57F57197FCC2367F28",
+  }),
+  protectedHashes: Object.freeze({
+    originalAmendment: "8864159652F198734E2985A8E90415E622B5E740324E10DF33FEDB93B1DE5315",
+    originalPreflight: "E65A0BCE99D78937F79718CB0D02BA72DBE4BE03CA3F07F89015FAF175E8C38C",
+    originalReconciliation: "B0CF2C8DAB881845273F060D6DE2CAE1D7B4A5E2FC3194DE4C2FBE3976E0337A",
+    originalPostVerification: "06AFF8E3878F71FE64EBF2B80720A4EB2E1B1753373993D209E39C0D7CBE0A53",
+    migration014: "18EC78EE6F820CE5E47DE5F71AEB2ADE413046487FFC0CA5BAC7CC2E6BF574AD",
+    reconciliation017c5: "EF3F45440082D9558A6CCF60F9F91F1017D0EC8E3EC0338C37FCEB6DC4742AA7",
+    preflight017c8: "5131801D2DFDCDBE04504BD0414272B66329E620EBBCEB1557F6FE8336105495",
+  }),
+  blockers: Object.freeze([
+    "Read-only units directly reference optional fid.fid_persistence_migrations and can fail at parse/planning before sanitized classification.",
+    "Reconciliation collapses SET-only and CREATE-only partial states into one classification.",
+  ]),
+  executionAuthorized: false,
+  sqlExecuted: false,
+  networkDatabaseConnections: 0,
+});
+
+export default FID_FUNCTION_OWNER_CAPABILITY_AMENDMENT_017C16_REVIEW;

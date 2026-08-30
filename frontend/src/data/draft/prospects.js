@@ -1,5 +1,5 @@
-import schoolLogos from "../schools/schoolLogos";
-import { prospectIds } from "../footballIntelligence/registry/prospectIds";
+import schoolLogos from "../schools/schoolLogos.js";
+import { prospectIds } from "../footballIntelligence/registry/prospectIds.js";
 
 const prospects = [
   {

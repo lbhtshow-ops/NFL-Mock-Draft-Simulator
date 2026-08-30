@@ -10,6 +10,8 @@ export default function ProspectHeader({
   confidence,
 }) {
   const playerName = player ? player.name : "Select a Prospect";
+  const confidenceValue = Number.parseFloat(String(confidence).replace("%", ""));
+  const confidenceWidth = Number.isFinite(confidenceValue) ? Math.max(0, Math.min(100, confidenceValue)) : 0;
   const playerMeta = player
     ? `${player.position ?? "POS"} • ${player.college ?? "College"}`
     : "Choose a player above to view his scouting profile.";
@@ -70,7 +72,7 @@ export default function ProspectHeader({
           <div className="prospect_confidence_track">
             <div
               className="prospect_confidence_fill"
-              style={{ width: player ? "74%" : "0%" }}
+              style={{ width: player ? `${confidenceWidth}%` : "0%" }}
             />
           </div>
         </div>

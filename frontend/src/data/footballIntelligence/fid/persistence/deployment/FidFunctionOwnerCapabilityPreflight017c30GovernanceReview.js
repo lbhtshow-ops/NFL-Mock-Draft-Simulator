@@ -1,0 +1,21 @@
+export const FID_FUNCTION_OWNER_CAPABILITY_PREFLIGHT_017C30_GOVERNANCE_REVIEW = Object.freeze({
+  id: "CORRECTED_PREFLIGHT_RESULT_AND_MISMATCH_GOVERNANCE_REVIEW_017C30", version: "17C.30.1",
+  repositoryOnly: true, resultVerified: true, authorization017c23Consumed: true, authorization017c26Consumed: true,
+  authorization017c29Consumed: true, retryAuthorized: false, exactMismatchIdentitiesRecoverableFromAggregate: false,
+  derivabilityReason: "MULTIPLE_GOVERNED_MISMATCH_COMBINATIONS_PRODUCE_COUNT_FIVE",
+  setFalseExpectedBeforeAmendment: true, createFalseExpectedBeforeAmendment: true,
+  setFalseStandaloneMismatch: false, createFalseStandaloneMismatch: false,
+  factsEstablished: Object.freeze(["SQL_COMPLETED", "ONE_VISIBLE_ROW", "READ_ONLY", "ZERO_MUTATIONS", "TARGET_BOUND",
+    "MIGRATION_014_METADATA_COUNT_ZERO", "SET_FALSE", "CREATE_FALSE", "FIVE_GOVERNED_MISMATCHES"]),
+  factsNotEstablished: Object.freeze(["EXACT_MISMATCH_IDENTITIES", "TARGET_DRIFT_CAUSE", "ORACLE_DEFECT",
+    "CONCLUSIVE_ACL_FAILURE", "CLEANUP_REQUIRED"]),
+  amendmentBlocked: true, migration014Blocked: true, cleanupRequired: false,
+  detailDiagnosticRequired: true,
+  diagnosticPath: "frontend/src/data/footballIntelligence/fid/persistence/deployment/review/017c30_fid_function_owner_capability_mismatch_detail_read_only_diagnostic.sql",
+  diagnosticSha256: "A9882BBA3AD98B4EC608FB741672ABCFCAFB1F99CC863DEE83F39C8F35061468",
+  matrix: Object.freeze({ id: "FID_FUNCTION_OWNER_ACL_MATRIX_017C21_V1", version: "17C.21.1", sha256: "E92CAE3BAA5F341ACAC12D9800603DFA09FBB04F084BACC0998581EC673F70FC", entries: 260, invariants: 1, units: 261 }),
+  sqlExecuted: false, databaseConnected: false, authorizationCreated: false,
+  status: "READY_FOR_FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_DIAGNOSTIC_INDEPENDENT_REVIEW",
+  nextSprint: "SPRINT_17C31_FID_FUNCTION_OWNER_CAPABILITY_MISMATCH_DETAIL_DIAGNOSTIC_INDEPENDENT_REVIEW",
+});
+export default FID_FUNCTION_OWNER_CAPABILITY_PREFLIGHT_017C30_GOVERNANCE_REVIEW;

@@ -1,0 +1,8 @@
+import http from "node:http";
+import {buildNFLMatchupIntelligenceProfile} from "../../src/data/footballIntelligence/services/NFLMatchupIntelligenceService.js";
+import {getNFLGameDecision} from "../../src/engines/gameDecisionSupport/canonical/NFLGameDecisionService.js";
+import {createFieDecisionApiHandler} from "./handler.mjs";
+const port=Number(process.env.PORT||8787),allowedOrigin=process.env.FIE_API_ALLOWED_ORIGIN||"*";
+const handler=createFieDecisionApiHandler({buildMatchup:buildNFLMatchupIntelligenceProfile,getDecision:getNFLGameDecision,allowedOrigin});
+const readJson=req=>new Promise((resolve,reject)=>{const chunks=[];let size=0;req.on("data",c=>{size+=c.length;if(size>1024*1024){reject(new Error("Request body exceeds 1 MB."));req.destroy();return}chunks.push(c)});req.on("end",()=>{if(!chunks.length)return resolve(null);try{resolve(JSON.parse(Buffer.concat(chunks).toString("utf8")))}catch{reject(new Error("Request body must be valid JSON."))}});req.on("error",reject)});
+http.createServer(async(req,res)=>{try{const body=req.method==="POST"?await readJson(req):null;const path=new URL(req.url,`http://${req.headers.host||"localhost"}`).pathname;const out=await handler({method:req.method,path,body});res.writeHead(out.statusCode,out.headers);res.end(out.body===null?"":JSON.stringify(out.body))}catch(e){res.writeHead(500,{"Content-Type":"application/json; charset=utf-8","Access-Control-Allow-Origin":allowedOrigin,"Cache-Control":"no-store"});res.end(JSON.stringify({contract:"LBHTFIEDecisionApiError",version:"1.0.0",error:{code:"INTERNAL_ERROR",message:e.message}}))}}).listen(port,"0.0.0.0",()=>console.log(`LBHT Canonical FIE Decision API listening on 0.0.0.0:${port}`));

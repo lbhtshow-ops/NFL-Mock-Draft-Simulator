@@ -1,4 +1,4 @@
-import snapCountRows from "../data/footballIntelligence/nfl/rosters/sources/generatedNFLVerseSnapCountsSource.json";
+import snapCountRows from "../data/footballIntelligence/nfl/rosters/sources/generatedNFLVerseSnapCountsSource.json" with { type: "json" };
 
 function normalizeName(name = "") {
   return name
@@ -96,6 +96,16 @@ snapCountRows.forEach((row) => {
 });
 
 export function getPlayerUsageProfile(player = {}) {
+  const historicalProfile =
+    player?.historicalEvaluationEvidence?.usageProfile ?? null;
+
+  if (historicalProfile) {
+    return {
+      ...historicalProfile,
+      matchedBy: "historicalPregameEvidence",
+    };
+  }
+
   const playerId =
     player?.playerId ||
     player?.identity?.playerId ||

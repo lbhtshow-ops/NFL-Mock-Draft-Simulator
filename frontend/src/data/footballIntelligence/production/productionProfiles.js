@@ -1,5 +1,5 @@
-import { createProductionProfile } from "./createProductionProfile";
-import { prospectIds } from "../registry/prospectIds";
+import { createProductionProfile } from "./createProductionProfile.js";
+import { prospectIds } from "../registry/prospectIds.js";
 
 export const productionProfiles = {
   [prospectIds.ARCH_MANNING]: createProductionProfile({
