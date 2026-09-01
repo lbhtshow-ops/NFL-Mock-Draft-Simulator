@@ -6,6 +6,8 @@ import {
 
 import { createFieDecisionProductionComposition } from "./productionComposition.mjs";
 import { createLE3JProductionConsumerAcceptanceFixture } from "./le3jAcceptanceFixture.mjs";
+import { createFieV2C3ShadowComposition } from "./shadowComposition.mjs";
+import { createFieV2C3ShadowHandler } from "./shadowHandler.mjs";
 
 const port = Number(process.env.PORT || 8787);
 const allowedOrigin = process.env.FIE_API_ALLOWED_ORIGIN || "*";
@@ -13,6 +15,13 @@ const allowedOrigin = process.env.FIE_API_ALLOWED_ORIGIN || "*";
 const acceptanceFixture = createLE3JProductionConsumerAcceptanceFixture();
 const production = createFieDecisionProductionComposition({
   acceptanceFixture,
+});
+
+const shadow = createFieV2C3ShadowComposition();
+const shadowHandler = createFieV2C3ShadowHandler({
+  getShadowDecision: shadow.getShadowDecision,
+  shadowToken: process.env.FIE_V2_C3_SHADOW_TOKEN || "",
+  allowedOrigin,
 });
 
 const acceptanceController = Object.freeze({
@@ -61,7 +70,9 @@ http
     try {
       const body = req.method === "POST" ? await readJson(req) : null;
       const path = new URL(req.url, `http://${req.headers.host || "localhost"}`).pathname;
-      const out = await handler({ method: req.method, path, body });
+      const out = path === "/internal/shadow/v2/c3/game-decisions"
+        ? await shadowHandler({ method: req.method, path, body, headers: req.headers })
+        : await handler({ method: req.method, path, body });
       res.writeHead(out.statusCode, out.headers);
       res.end(out.body === null ? "" : JSON.stringify(out.body));
     } catch (error) {
