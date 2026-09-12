@@ -8,6 +8,7 @@ import { createFieDecisionProductionComposition } from "./productionComposition.
 import { createLE3JProductionConsumerAcceptanceFixture } from "./le3jAcceptanceFixture.mjs";
 import { createFieV2C3ShadowComposition } from "./shadowComposition.mjs";
 import { createFieV2C3ShadowHandler } from "./shadowHandler.mjs";
+import { createFiePublicNFLTeamHandler } from "./publicTeamHandler.mjs";
 
 const port = Number(process.env.PORT || 8787);
 const allowedOrigin = process.env.FIE_API_ALLOWED_ORIGIN || "*";
@@ -24,6 +25,9 @@ const shadowHandler = createFieV2C3ShadowHandler({
   allowedOrigin,
 });
 
+const publicTeamHandler = createFiePublicNFLTeamHandler({
+  allowedOrigin,
+});
 const acceptanceController = Object.freeze({
   authorize: acceptanceFixture.authorize,
   status: acceptanceFixture.status,
@@ -72,7 +76,9 @@ http
       const path = new URL(req.url, `http://${req.headers.host || "localhost"}`).pathname;
       const out = path === "/internal/shadow/v2/c3/game-decisions"
         ? await shadowHandler({ method: req.method, path, body, headers: req.headers })
-        : await handler({ method: req.method, path, body });
+        : path.startsWith("/v1/nfl/teams/")
+          ? await publicTeamHandler({ method: req.method, path, headers: req.headers })
+          : await handler({ method: req.method, path, body });
       res.writeHead(out.statusCode, out.headers);
       res.end(out.body === null ? "" : JSON.stringify(out.body));
     } catch (error) {
