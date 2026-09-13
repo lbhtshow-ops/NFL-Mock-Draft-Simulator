@@ -70,6 +70,40 @@ function publicStaffMember(entry = {}) {
   });
 }
 
+const PUBLIC_FRONT_OFFICE_ROLES = new Set([
+  "GENERAL_MANAGER",
+  "ASSISTANT_GENERAL_MANAGER",
+  "PLAYER_PERSONNEL_EXECUTIVE",
+  "COLLEGE_SCOUTING_EXECUTIVE",
+  "PRO_SCOUTING_EXECUTIVE",
+  "FOOTBALL_OPERATIONS_EXECUTIVE",
+  "PRESIDENT_FOOTBALL_OPERATIONS",
+  "EXECUTIVE_VP_FOOTBALL_OPERATIONS",
+  "PERSONNEL_ADVISOR",
+  "SCOUTING_EXECUTIVE",
+]);
+
+function publicFrontOfficeMember(entry = {}) {
+  const role = stringOrNull(entry.role);
+  const displayNameValue = stringOrNull(entry.displayName);
+
+  if (!role || !displayNameValue || !PUBLIC_FRONT_OFFICE_ROLES.has(role)) return null;
+
+  return freeze({
+    role,
+    title: stringOrNull(entry.title),
+    displayName: displayNameValue,
+    authorityScopes: freeze(
+      Array.isArray(entry.authorityScopes)
+        ? entry.authorityScopes.map(stringOrNull).filter(Boolean)
+        : []
+    ),
+    reportsToRole: stringOrNull(entry.reportsToRole),
+    confidence: Number.isFinite(entry.confidence) ? entry.confidence : null,
+    verifiedAt: entry.verifiedAt || null,
+  });
+}
+
 function normalizedRosterPlayer(player = {}) {
   const identity = player.identity || {};
   const roster = player.roster || {};
@@ -154,6 +188,7 @@ export function buildPublicNFLTeamBundle(team, options = {}) {
   const offense = identity?.offense || {};
   const defense = identity?.defense || {};
   const teamBuilding = identity?.teamBuilding || {};
+  const continuity = identity?.continuity || {};
   const coaching = context?.coaching || {};
   const coachingIdentity = coaching?.identity || {};
 
@@ -182,7 +217,13 @@ export function buildPublicNFLTeamBundle(team, options = {}) {
       pressureIdentity: publicFact(resolvedValue(defense.pressure), defense.pressure),
       subpackageIdentity: publicFact(resolvedValue(defense.subpackage), defense.subpackage),
       defensivePlayCaller: publicFact(playCaller(defense.playCalling), defense.playCalling),
+      personnelPreferences: publicFact(resolvedValue(identity?.personnel?.preferences), identity?.personnel?.preferences),
       teamBuildingPhilosophy: publicFact(resolvedValue(teamBuilding.teamBuildingPhilosophy) ?? resolvedValue(teamBuilding.philosophy), teamBuilding.teamBuildingPhilosophy || teamBuilding.philosophy),
+      draftPhilosophy: publicFact(resolvedValue(teamBuilding.draftPhilosophy), teamBuilding.draftPhilosophy),
+      rosterConstructionPhilosophy: publicFact(resolvedValue(teamBuilding.rosterConstructionPhilosophy) ?? resolvedValue(teamBuilding.rosterConstruction), teamBuilding.rosterConstructionPhilosophy || teamBuilding.rosterConstruction),
+      developmentPhilosophy: publicFact(resolvedValue(teamBuilding.developmentPhilosophy) ?? resolvedValue(teamBuilding.development), teamBuilding.developmentPhilosophy || teamBuilding.development),
+      staffContinuity: publicFact(resolvedValue(continuity.staff), continuity.staff),
+      systemContinuity: publicFact(resolvedValue(continuity.system), continuity.system),
     }),
     leadership: freeze({
       principalOwner: publicFact(displayName(leadership.principalOwner), leadership.principalOwner),
@@ -193,6 +234,11 @@ export function buildPublicNFLTeamBundle(team, options = {}) {
       presidentFootballOperations: publicFact(displayName(leadership.presidentFootballOperations), leadership.presidentFootballOperations),
       generalManager: publicFact(displayName(leadership.generalManager), leadership.generalManager),
     }),
+    frontOffice: freeze(
+      (Array.isArray(organization?.decisionMakers) ? organization.decisionMakers : [])
+        .map(publicFrontOfficeMember)
+        .filter(Boolean)
+    ),
     coaching: freeze({
       headCoach: publicFact(displayName(leadership.headCoach) || (typeof coachingIdentity.headCoach === "string" ? coachingIdentity.headCoach : coachingIdentity.headCoach?.displayName), leadership.headCoach),
       offensiveCoordinator: publicFact(displayName(leadership.offensiveCoordinator) || (typeof coachingIdentity.offensiveCoordinator === "string" ? coachingIdentity.offensiveCoordinator : coachingIdentity.offensiveCoordinator?.displayName), leadership.offensiveCoordinator),
