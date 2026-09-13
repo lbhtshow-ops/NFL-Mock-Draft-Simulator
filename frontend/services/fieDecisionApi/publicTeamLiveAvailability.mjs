@@ -1,4 +1,4 @@
-import { acquireNFLVerseCurrentRosterDepthSignals } from "../../src/data/footballIntelligence/nfl/availability/providers/nflverse/NFLVerseCurrentAvailabilityAcquisition.js";
+import { acquireNFLVerseCurrentRosterDepthSignals } from "./publicTeamScopedAvailabilityAcquisition.mjs";
 import { resolveNFLMultiSignalAvailability } from "../../src/data/footballIntelligence/nfl/availability/signals/NFLMultiSignalAvailabilityResolver.js";
 
 const CACHE = new Map();
