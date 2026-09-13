@@ -1,4 +1,5 @@
-﻿import { buildPublicNFLTeamBundle, PUBLIC_NFL_TEAM_BUNDLE_CONTRACT, PUBLIC_NFL_TEAM_BUNDLE_VERSION } from "./publicTeamProjection.mjs";
+import { buildPublicNFLTeamBundle, PUBLIC_NFL_TEAM_BUNDLE_CONTRACT, PUBLIC_NFL_TEAM_BUNDLE_VERSION } from "./publicTeamProjection.mjs";
+import { enrichPublicTeamDepthAvailability } from "./publicTeamLiveAvailability.mjs";
 
 const TEAM_ROUTE = /^\/v1\/nfl\/teams\/([A-Za-z]{2,3})$/;
 
@@ -25,8 +26,14 @@ export function createFiePublicNFLTeamHandler({ allowedOrigin = "*", buildTeamBu
     if (!match) return response(404, { contract: "LBHTFIEPublicNFLTeamError", version: PUBLIC_NFL_TEAM_BUNDLE_VERSION, error: { code: "TEAM_ROUTE_NOT_FOUND", message: "Unknown public NFL team route." } }, allowedOrigin, "no-store");
 
     const team = match[1].toUpperCase();
-    const bundle = buildTeamBundle(team, { season: 2026 });
-    if (!bundle) return response(404, { contract: "LBHTFIEPublicNFLTeamError", version: PUBLIC_NFL_TEAM_BUNDLE_VERSION, error: { code: "TEAM_NOT_FOUND", message: `Canonical NFL team intelligence is unavailable for ${team}.` } }, allowedOrigin, "no-store");
+    const baseBundle = buildTeamBundle(team, { season: 2026 });
+    const bundle = baseBundle
+      ? await enrichPublicTeamDepthAvailability(baseBundle, {
+          team,
+          season: 2026,
+        })
+      : null;
+    if (!bundle) return response(404, { contract: "LBHTFIEPublicNFLTeamError", version: PUBLIC_NFL_TEAM_BUNDLE_VERSION, error: { code: "TEAM_NOT_FOUND", message: `NFL team intelligence is unavailable for ${team}.` } }, allowedOrigin, "no-store");
 
     return response(200, { ...bundle, contract: PUBLIC_NFL_TEAM_BUNDLE_CONTRACT, version: PUBLIC_NFL_TEAM_BUNDLE_VERSION }, allowedOrigin);
   };
