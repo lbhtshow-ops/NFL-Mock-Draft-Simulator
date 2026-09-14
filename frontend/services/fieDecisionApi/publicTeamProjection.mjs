@@ -83,11 +83,46 @@ const PUBLIC_FRONT_OFFICE_ROLES = new Set([
   "SCOUTING_EXECUTIVE",
 ]);
 
-function publicFrontOfficeMember(entry = {}) {
+function publicFrontOfficeRole(entry = {}) {
   const role = stringOrNull(entry.role);
+  if (!role) return null;
+  if (PUBLIC_FRONT_OFFICE_ROLES.has(role)) return role;
+  if (role !== "OTHER_FOOTBALL_DECISION_MAKER") return null;
+
+  const title = stringOrNull(entry.title) || "";
+  const authorityScopes = Array.isArray(entry.authorityScopes)
+    ? entry.authorityScopes.map(stringOrNull).filter(Boolean)
+    : [];
+  const hasPersonnelAuthority = authorityScopes.includes("PERSONNEL");
+  const hasFootballOperationsAuthority = authorityScopes.includes("FOOTBALL_OPERATIONS");
+
+  if (/\b(player personnel|personnel executive)\b/i.test(title)) {
+    return "PLAYER_PERSONNEL_EXECUTIVE";
+  }
+
+  if (/\b(personnel advisor|football advisor|advisor to (?:the )?general manager|advisor to gm)\b/i.test(title)) {
+    return "PERSONNEL_ADVISOR";
+  }
+
+  if (
+    hasFootballOperationsAuthority &&
+    /\b(football administration|football operations|football strategy|research\s*&\s*analytics|football analytics|chief of staff,\s*football)\b/i.test(title)
+  ) {
+    return "FOOTBALL_OPERATIONS_EXECUTIVE";
+  }
+
+  if (hasPersonnelAuthority && /\bsenior personnel\b/i.test(title)) {
+    return "PERSONNEL_ADVISOR";
+  }
+
+  return null;
+}
+
+function publicFrontOfficeMember(entry = {}) {
+  const role = publicFrontOfficeRole(entry);
   const displayNameValue = stringOrNull(entry.displayName);
 
-  if (!role || !displayNameValue || !PUBLIC_FRONT_OFFICE_ROLES.has(role)) return null;
+  if (!role || !displayNameValue) return null;
 
   return freeze({
     role,
