@@ -1,0 +1,120 @@
+name: FIE NFL Availability Ingestion
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: "NFL season"
+        required: true
+        type: string
+      week:
+        description: "NFL week"
+        required: true
+        type: string
+      teams:
+        description: "Comma-separated NFL team abbreviations"
+        required: true
+        type: string
+      mode:
+        description: "Validation mode"
+        required: true
+        default: "offline"
+        type: choice
+        options:
+          - offline
+          - acquisition-test
+      network_acknowledgment:
+        description: "Enter YES to authorize NFLVerse network access in acquisition-test mode"
+        required: true
+        default: "NO"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fie-nfl-availability-ingestion
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate NFL availability acquisition
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate acquisition source syntax
+        run: node --check scripts/runGovernedNFLAvailabilityAcquisition.mjs
+
+      - name: Validate input parameters
+        shell: bash
+        env:
+          SEASON: ${{ inputs.season }}
+          WEEK: ${{ inputs.week }}
+          TEAMS: ${{ inputs.teams }}
+        run: |
+          [[ "$SEASON" =~ ^20[0-9]{2}$ ]] || exit 1
+          [[ "$WEEK" =~ ^([1-9]|1[0-8])$ ]] || exit 1
+          [[ "$TEAMS" =~ ^[A-Z]{2,3}(,[A-Z]{2,3})*$ ]] || exit 1
+          echo "INPUT_VALIDATION=PASS"
+
+      - name: Offline verification
+        if: ${{ inputs.mode == 'offline' }}
+        shell: bash
+        run: |
+          echo "OFFLINE_VALIDATION=PASS"
+          echo "NETWORK_ACQUISITION=NO"
+          echo "DATABASE_WRITES=NO"
+          echo "RELEASE=HOLD"
+
+      - name: Require network authorization
+        if: ${{ inputs.mode == 'acquisition-test' }}
+        shell: bash
+        env:
+          NETWORK_ACKNOWLEDGMENT: ${{ inputs.network_acknowledgment }}
+        run: |
+          if [[ "$NETWORK_ACKNOWLEDGMENT" != "YES" ]]; then
+            echo "Network acquisition was not authorized."
+            exit 1
+          fi
+          echo "NETWORK_AUTHORIZATION=CONFIRMED"
+
+      - name: Execute read-only NFLVerse acquisition test
+        if: ${{ inputs.mode == 'acquisition-test' }}
+        shell: bash
+        env:
+          SEASON: ${{ inputs.season }}
+          WEEK: ${{ inputs.week }}
+          TEAMS: ${{ inputs.teams }}
+        run: |
+          node scripts/runGovernedNFLAvailabilityAcquisition.mjs \
+            --season "$SEASON" \
+            --week "$WEEK" \
+            --teams "$TEAMS" \
+            --dry-run
+
+      - name: Confirm production writes disabled
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          echo "WRITE_MODE=DISABLED"
+          echo "DATABASE_WRITES=NO"
+          echo "PRODUCTION_ACTIVATION=NO"
+          echo "RELEASE=HOLD"

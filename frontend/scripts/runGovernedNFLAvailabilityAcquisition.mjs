@@ -75,6 +75,12 @@ const databaseUrl = process.env.RESEARCH_REPOSITORY_DATABASE_URL || null;
 if (executeWrite && !databaseUrl) {
   throw new Error("RESEARCH_REPOSITORY_DATABASE_URL is required for writes.");
 }
+if (executeWrite &&
+    process.env.FIE_AVAILABILITY_WRITE_DESTINATION_VERIFIED !== "YES") {
+  throw new Error(
+    "Write mode requires verified destination acknowledgment."
+  );
+}
 
 function validateDatabaseUrl(value) {
   if (!value) return null;
@@ -183,7 +189,7 @@ if (!downloaded) {
   console.log("Research Repository was not mutated.");
   console.log(JSON.stringify(report, null, 2));
   writeReport(report);
-  process.exit(0);
+  process.exit(1);
 }
 
 const rows = parseCSV(downloaded.text);
@@ -206,7 +212,7 @@ if (plan.missingTeams.length) {
 if (!plan.recordCount) {
   console.log("Provider data produced zero canonical records for the selected scope.");
   console.log("Research Repository was not mutated.");
-  process.exit(0);
+  process.exit(1);
 }
 
 const checkedAt = new Date().toISOString();
