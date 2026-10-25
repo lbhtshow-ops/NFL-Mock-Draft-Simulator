@@ -1,0 +1,115 @@
+name: FIE NFLVerse Production Ingestion
+
+on:
+  workflow_dispatch:
+    inputs:
+      season:
+        description: "NFL season"
+        required: true
+        type: string
+      week:
+        description: "NFL week"
+        required: true
+        type: string
+      game_type:
+        description: "Game type"
+        required: true
+        type: choice
+        options:
+          - REG
+          - POST
+      teams:
+        description: "Comma-separated team abbreviations"
+        required: true
+        type: string
+      mode:
+        description: "Execution mode"
+        required: true
+        type: choice
+        default: dry-run
+        options:
+          - dry-run
+          - execute-write
+      network_acknowledgment:
+        description: "Enter YES to authorize NFLVerse network acquisition"
+        required: true
+        type: string
+      write_acknowledgment:
+        description: "Enter AUTHORIZE_WRITE for production database writes"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fie-nflverse-production-ingestion
+  cancel-in-progress: false
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    environment: fie-research-production
+    timeout-minutes: 30
+
+    env:
+      SEASON: ${{ inputs.season }}
+      WEEK: ${{ inputs.week }}
+      GAME_TYPE: ${{ inputs.game_type }}
+      TEAMS: ${{ inputs.teams }}
+      MODE: ${{ inputs.mode }}
+      NETWORK_ACK: ${{ inputs.network_acknowledgment }}
+      WRITE_ACK: ${{ inputs.write_acknowledgment }}
+
+    steps:
+      - name: Validate authorization and scope
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          [[ "$NETWORK_ACK" == "YES" ]] || exit 1
+          [[ "$SEASON" =~ ^20[0-9]{2}$ ]] || exit 1
+          [[ "$WEEK" =~ ^([1-9]|1[0-8])$ ]] || exit 1
+          [[ "$TEAMS" =~ ^[A-Z]{2,3}(,[A-Z]{2,3})*$ ]] || exit 1
+
+          if [[ "$MODE" == "execute-write" ]]; then
+            [[ "$WRITE_ACK" == "AUTHORIZE_WRITE" ]] || exit 1
+          fi
+
+      - name: Checkout approved source
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Run governed NFLVerse ingestion
+        working-directory: frontend
+        env:
+          RESEARCH_REPOSITORY_DATABASE_URL: ${{ secrets.RESEARCH_REPOSITORY_DATABASE_URL }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ARGS=(
+            --season "$SEASON"
+            --week "$WEEK"
+            --game-type "$GAME_TYPE"
+            --teams "$TEAMS"
+          )
+
+          if [[ "$MODE" == "execute-write" ]]; then
+            [[ -n "${RESEARCH_REPOSITORY_DATABASE_URL:-}" ]] || exit 1
+            ARGS+=(--execute-write)
+          else
+            ARGS+=(--dry-run)
+          fi
+
+          node scripts/runGovernedNFLVerseCurrentMultiSignalAvailability.mjs "${ARGS[@]}"
