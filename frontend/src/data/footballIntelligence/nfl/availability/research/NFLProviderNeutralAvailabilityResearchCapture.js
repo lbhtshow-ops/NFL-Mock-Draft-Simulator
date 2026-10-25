@@ -1,4 +1,5 @@
 import researchRepository from "../../../../researchRepository/index.js";
+import { classifyNFLAvailabilityTemporal } from "./NFLAvailabilityTemporalClassification.js";
 
 export const NFL_PROVIDER_NEUTRAL_AVAILABILITY_SOURCE_ID =
   "research-source:lbht-nfl-availability-multisignal";
@@ -186,10 +187,8 @@ function createObservation(signal, checkedAt) {
     normalizedNFLProviderNeutralAvailabilitySignalSnapshot(signal);
   const fingerprint = signalFingerprint(signal);
   const pRef = playerRef(signal);
-  const occurredAt =
-    clean(signal?.timing?.effectiveAt) ||
-    clean(signal?.timing?.observedAt) ||
-    checkedAt;
+  const temporal = classifyNFLAvailabilityTemporal(signal, checkedAt);
+  const occurredAt = temporal.occurredAt;
 
   const observationId = [
     "observation:nfl-multisignal-availability",
@@ -220,12 +219,7 @@ function createObservation(signal, checkedAt) {
         label: signal?.player?.playerName || null,
       },
     ],
-    temporal: {
-      type: researchRepository.RECORDED_OBSERVATION_TEMPORAL_TYPES.INSTANT,
-      occurredAt,
-      precision: researchRepository.RECORDED_OBSERVATION_PRECISION_LEVELS.EXACT,
-      timezone: "UTC",
-    },
+    temporal,
     spatial: {
       type: researchRepository.RECORDED_OBSERVATION_SPATIAL_TYPES.NOT_APPLICABLE,
     },

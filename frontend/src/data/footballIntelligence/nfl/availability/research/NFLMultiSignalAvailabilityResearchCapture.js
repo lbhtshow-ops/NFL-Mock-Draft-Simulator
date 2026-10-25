@@ -1,4 +1,5 @@
 import researchRepository from "../../../../researchRepository/index.js";
+import { classifyNFLAvailabilityTemporal } from "./NFLAvailabilityTemporalClassification.js";
 
 export const NFL_MULTI_SIGNAL_AVAILABILITY_SOURCE_ID = "research-source:sportradar-nfl-availability-multisignal";
 export const NFL_MULTI_SIGNAL_AVAILABILITY_DOMAIN = "NFL_PLAYER_AVAILABILITY";
@@ -88,7 +89,8 @@ function createObservation(signal, checkedAt) {
   const snapshot = normalizedNFLAvailabilitySignalSnapshot(signal);
   const fingerprint = signalFingerprint(signal);
   const pRef = playerRef(signal);
-  const occurredAt = clean(signal?.timing?.effectiveAt) || clean(signal?.timing?.observedAt) || checkedAt;
+  const temporal = classifyNFLAvailabilityTemporal(signal, checkedAt);
+  const occurredAt = temporal.occurredAt;
   const observationId = ["observation:nfl-multisignal-availability", signal.season, gameTypeToken(signal.gameType), signal.week, token(signal.team), token(pRef), token(signal.signalClass), fingerprint].join(":");
   return researchRepository.createRecordedObservation({
     observationId, sessionRef: getNFLMultiSignalAvailabilitySessionId(signal.season, signal.gameType, signal.week), sourceRefs: [NFL_MULTI_SIGNAL_AVAILABILITY_SOURCE_ID],
@@ -100,7 +102,7 @@ function createObservation(signal, checkedAt) {
       { subjectRef: pRef, subjectType: "NFL_PLAYER", role: researchRepository.RECORDED_OBSERVATION_SUBJECT_ROLES.PRIMARY, label: signal?.player?.playerName || null },
       { subjectRef: teamRef(signal.team), subjectType: "NFL_TEAM", role: researchRepository.RECORDED_OBSERVATION_SUBJECT_ROLES.SECONDARY, label: signal.team },
     ],
-    temporal: { type: researchRepository.RECORDED_OBSERVATION_TEMPORAL_TYPES.INSTANT, occurredAt, precision: researchRepository.RECORDED_OBSERVATION_PRECISION_LEVELS.EXACT, timezone: "UTC" },
+    temporal,
     spatial: { type: researchRepository.RECORDED_OBSERVATION_SPATIAL_TYPES.NOT_APPLICABLE },
     record: { field: "availability_signal", valueText: JSON.stringify(snapshot), recordType: NFL_MULTI_SIGNAL_AVAILABILITY_RECORD_TYPE, effectiveAt: occurredAt },
     verification: { state: researchRepository.RECORDED_OBSERVATION_VERIFICATION_STATES.VERIFIED_WITH_LIMITATIONS, verifiedBy: NFL_MULTI_SIGNAL_AVAILABILITY_VERIFIER, verifiedAt: checkedAt, method: "AUTOMATED_PROVIDER_NORMALIZATION", limitations: ["Provider evidence is preserved as published; LBHT resolution remains a separate layer."] },
