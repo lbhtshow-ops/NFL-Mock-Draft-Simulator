@@ -29,6 +29,7 @@ on:
         default: dry-run
         options:
           - dry-run
+          - database-preflight
           - execute-write
       network_acknowledgment:
         description: "Enter YES to authorize NFLVerse network acquisition"
@@ -90,7 +91,84 @@ jobs:
         working-directory: frontend
         run: npm ci
 
+      - name: Verify MDS Runtime database identity
+        if: ${{ inputs.mode == 'database-preflight' || inputs.mode == 'execute-write' }}
+        working-directory: frontend
+        env:
+          RESEARCH_REPOSITORY_DATABASE_URL: ${{ secrets.RESEARCH_REPOSITORY_DATABASE_URL }}
+          EXPECTED_SUPABASE_PROJECT_REF: ahmorpzcaapvovmiqlkv
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import pg from 'pg';
+
+          const uri = process.env.RESEARCH_REPOSITORY_DATABASE_URL;
+          const expected = process.env.EXPECTED_SUPABASE_PROJECT_REF;
+
+          if (!uri) throw new Error('DATABASE_SECRET_MISSING');
+
+          const parsed = new URL(uri);
+          const host = parsed.hostname.toLowerCase();
+          const user = decodeURIComponent(parsed.username);
+
+          const direct = host === `db.${expected}.supabase.co`;
+          const pooler =
+            host.endsWith('.pooler.supabase.com') &&
+            user.endsWith(`.${expected}`);
+
+          if (!direct && !pooler) {
+            throw new Error('DATABASE_PROJECT_IDENTITY_MISMATCH');
+          }
+
+          const pool = new pg.Pool({
+            connectionString: uri,
+            ssl: { rejectUnauthorized: false },
+            max: 1,
+            connectionTimeoutMillis: 15000
+          });
+
+          try {
+            const client = await pool.connect();
+            try {
+              await client.query('BEGIN READ ONLY');
+              const result = await client.query(`
+                SELECT
+                  current_database() AS database_name,
+                  to_regclass('public.research_sources') AS research_sources,
+                  to_regclass('public.research_sessions') AS research_sessions,
+                  to_regclass('public.recorded_observations') AS recorded_observations,
+                  to_regclass('public.evidence_artifacts') AS evidence_artifacts
+              `);
+
+              const row = result.rows[0];
+              const required = [
+                'research_sources',
+                'research_sessions',
+                'recorded_observations',
+                'evidence_artifacts'
+              ];
+
+              for (const table of required) {
+                if (!row[table]) {
+                  throw new Error(`REQUIRED_TABLE_MISSING:${table}`);
+                }
+              }
+
+              console.log('SUPABASE_PROJECT_IDENTITY=PASS');
+              console.log('RESEARCH_REPOSITORY_SCHEMA=PASS');
+              console.log('DATABASE_CONNECTION=PASS');
+              console.log('DATABASE_WRITES=NONE');
+              await client.query('ROLLBACK');
+            } finally {
+              client.release();
+            }
+          } finally {
+            await pool.end();
+          }
+          NODE
       - name: Run governed NFLVerse ingestion
+        if: ${{ inputs.mode != 'database-preflight' }}
         working-directory: frontend
         env:
           RESEARCH_REPOSITORY_DATABASE_URL: ${{ secrets.RESEARCH_REPOSITORY_DATABASE_URL }}
