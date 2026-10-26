@@ -228,6 +228,45 @@ try {
     getDecision: production.getDecision,
   });
 
+  // R29_PERSISTENCE_SAFETY_GATE
+  const persistenceStatus = binding.persistence?.status ?? "UNKNOWN";
+  const persistenceFailures = binding.persistence?.failures;
+  const teamResults = binding.persistence?.teamResults;
+  const refreshSummary = binding.summary;
+  const refreshTeamResults = binding.teamResults;
+
+  const persistenceSafe =
+    persistenceStatus === "SUCCESS" &&
+    Array.isArray(persistenceFailures) &&
+    persistenceFailures.length === 0 &&
+    Array.isArray(teamResults) &&
+    teamResults.length === teams.length &&
+    teamResults.every((result) =>
+      result.status === "SUCCESS" || result.status === "UNCHANGED"
+    );
+
+  const refreshSafe =
+    refreshSummary != null &&
+    Number.isInteger(refreshSummary.refreshFailed) &&
+    refreshSummary.refreshFailed === 0 &&
+    Number.isInteger(refreshSummary.persistenceNotSuccessful) &&
+    refreshSummary.persistenceNotSuccessful === 0 &&
+    Array.isArray(refreshTeamResults) &&
+    refreshTeamResults.length === teams.length &&
+    refreshTeamResults.every((result) =>
+      result.status === "UNCHANGED" ||
+      result.status === "REFRESH_PROCESSED"
+    );
+
+  if (!persistenceSafe || !refreshSafe) {
+    console.error("R29_PRODUCTION_INGESTION_SAFETY_GATE=FAIL");
+    console.error(`PERSISTENCE_STATUS=${persistenceStatus}`);
+    console.error(`PERSISTENCE_FAILURE_COUNT=${Array.isArray(persistenceFailures) ? persistenceFailures.length : "UNKNOWN"}`);
+    console.error(`REFRESH_FAILED=${refreshSummary?.refreshFailed ?? "UNKNOWN"}`);
+    process.exitCode = 1;
+  } else {
+    console.log("R29_PRODUCTION_INGESTION_SAFETY_GATE=PASS");
+  }
   console.log(`Persistence status: ${binding.persistence?.status ?? "UNKNOWN"}`);
   console.log(`Refresh processed: ${binding.summary?.refreshProcessed ?? 0}`);
   console.log(`Unchanged: ${binding.summary?.unchanged ?? 0}`);
