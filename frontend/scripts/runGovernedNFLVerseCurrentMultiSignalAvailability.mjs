@@ -245,7 +245,71 @@ try {
       result.status === "SUCCESS" || result.status === "UNCHANGED"
     );
 
+  // R29_NESTED_REFRESH_EXECUTION_SAFETY_GATE
+  const nestedRefreshSafe =
+    Array.isArray(refreshTeamResults) &&
+    refreshTeamResults.every((teamResult) => {
+      if (teamResult.status === "UNCHANGED") {
+        return teamResult.refresh == null;
+      }
+
+      if (teamResult.status !== "REFRESH_PROCESSED") {
+        return false;
+      }
+
+      const refresh = teamResult.refresh;
+      if (!refresh || !Array.isArray(refresh.results)) {
+        return false;
+      }
+
+      if (refresh.status === "NO_CHANGES") {
+        return refresh.results.length === 0 &&
+          refresh.summary?.refreshRequirements === 0;
+      }
+
+      if (refresh.status !== "COMPLETE") {
+        return false;
+      }
+
+      const required = refresh.results.filter(
+        (result) =>
+          result.orchestration?.refreshRequirement?.refresh?.required === true
+      );
+
+      const executed = refresh.results.filter(
+        (result) => result.execution?.status === "EXECUTED"
+      ).length;
+
+      const unexpectedFailure = refresh.results.some((result) => {
+        const isRequired =
+          result.orchestration?.refreshRequirement?.refresh?.required === true;
+
+        if (isRequired) {
+          return result.execution?.status !== "EXECUTED";
+        }
+
+        return result.execution != null;
+      });
+
+      return (
+        !unexpectedFailure &&
+        Number.isInteger(refresh.summary?.changes) &&
+        refresh.summary.changes === refresh.results.length &&
+        Number.isInteger(refresh.summary?.refreshRequirements) &&
+        refresh.summary.refreshRequirements === required.length &&
+        Number.isInteger(refresh.summary?.executed) &&
+        refresh.summary.executed === executed &&
+        Number.isInteger(refresh.summary?.notExecuted) &&
+        refresh.summary.notExecuted ===
+          refresh.results.length - executed &&
+        required.every((result) =>
+          result.execution?.status === "EXECUTED"
+        )
+      );
+    });
+
   const refreshSafe =
+    nestedRefreshSafe &&
     refreshSummary != null &&
     Number.isInteger(refreshSummary.refreshFailed) &&
     refreshSummary.refreshFailed === 0 &&
