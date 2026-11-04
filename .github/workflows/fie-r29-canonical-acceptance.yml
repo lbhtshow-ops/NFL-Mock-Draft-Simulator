@@ -1,0 +1,250 @@
+name: FIE R29 Canonical Availability Acceptance
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fie-r29-canonical-acceptance
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    environment: fie-research-production
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout approved activation source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: 9210793597d0daf80041a6046159d72e99431cc3
+          persist-credentials: false
+
+      - name: Verify approved application commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "9210793597d0daf80041a6046159d72e99431cc3"
+          echo "APPROVED_APPLICATION_COMMIT=PASS"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Verify CA, database role, and run canonical acceptance
+        working-directory: frontend
+        shell: bash
+        env:
+          FIE_RESEARCH_READ_ONLY_DATABASE_URL: ${{ secrets.FIE_RESEARCH_READ_ONLY_DATABASE_URL }}
+          FIE_RESEARCH_SUPABASE_CA_PEM: ${{ secrets.FIE_RESEARCH_SUPABASE_CA_PEM }}
+        run: |
+          set -euo pipefail
+
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import crypto from 'node:crypto';
+          import pg from 'pg';
+          import { spawnSync } from 'node:child_process';
+
+          const expectedProject = 'ahmorpzcaapvovmiqlkv';
+          const expectedRole = `fie_research_acceptance_ro.${expectedProject}`;
+          const expectedCA = '807025AD50D4ED219D2C9C7D299C004F824EB00CF7F65AFEF607D07B72E6CAFA';
+          const expectedRunnerHash = '7446019C124180D21D78FA88F383B54FF2210B870046B94C72103F943C05FAB9';
+
+          const raw = process.env.FIE_RESEARCH_READ_ONLY_DATABASE_URL;
+          const ca = process.env.FIE_RESEARCH_SUPABASE_CA_PEM;
+
+          if (!raw || !ca) {
+            throw new Error('REQUIRED_ACCEPTANCE_SECRET_MISSING');
+          }
+
+          const uri = new URL(raw);
+
+          if (
+            uri.protocol !== 'postgresql:' &&
+            uri.protocol !== 'postgres:'
+          ) {
+            throw new Error('INVALID_DATABASE_URL_PROTOCOL');
+          }
+
+          if (
+            uri.hostname !== 'aws-0-us-east-1.pooler.supabase.com' ||
+            uri.port !== '5432' ||
+            uri.pathname !== '/postgres' ||
+            decodeURIComponent(uri.username) !== expectedRole
+          ) {
+            throw new Error('DATABASE_IDENTITY_MISMATCH');
+          }
+
+          for (const key of ['sslmode', 'sslrootcert', 'sslcert', 'sslkey']) {
+            if (uri.searchParams.has(key)) {
+              throw new Error(`DISALLOWED_CONNECTION_OPTION:${key}`);
+            }
+          }
+
+          const cert = new crypto.X509Certificate(ca);
+
+          if (
+            cert.fingerprint256.replaceAll(':', '').toUpperCase() !==
+            expectedCA
+          ) {
+            throw new Error('SUPABASE_CA_FINGERPRINT_MISMATCH');
+          }
+
+          console.log('SUPABASE_CA_FINGERPRINT=PASS');
+          console.log('DEDICATED_ROLE_URL=PASS');
+
+          // Fail closed: no caller-supplied PostgreSQL URL options.
+          // This also excludes SSL and session-setting overrides.
+          if ([...uri.searchParams.keys()].length !== 0) {
+            throw new Error('DATABASE_URL_QUERY_PARAMETERS_NOT_ALLOWED');
+          }
+
+          uri.searchParams.set(
+            'options',
+            '-c default_transaction_read_only=on'
+          );
+
+          const protectedUrl = uri.toString();
+
+          const ssl = {
+            ca,
+            rejectUnauthorized: true,
+            servername: uri.hostname
+          };
+
+          const pool = new pg.Pool({
+            connectionString: protectedUrl,
+            ssl,
+            max: 1,
+            connectionTimeoutMillis: 15000
+          });
+
+          try {
+            const client = await pool.connect();
+
+            try {
+              if (
+                !client.connection.stream.encrypted ||
+                !client.connection.stream.authorized
+              ) {
+                throw new Error('TLS_VERIFICATION_FAILED');
+              }
+
+              console.log('TLS_VERIFIED=PASS');
+
+              const identity = await client.query(`
+                SELECT
+                  current_user AS role,
+                  current_setting('default_transaction_read_only') AS read_only
+              `);
+
+              if (
+                identity.rows[0].role !== 'fie_research_acceptance_ro' ||
+                identity.rows[0].read_only !== 'on'
+              ) {
+                throw new Error('READ_ONLY_ROLE_VERIFICATION_FAILED');
+              }
+
+              await client.query('BEGIN READ ONLY');
+
+              try {
+                const tables = [
+                  'research_sources',
+                  'research_sessions',
+                  'evidence_artifacts',
+                  'recorded_observations',
+                  'analytical_observations'
+                ];
+
+                for (const table of tables) {
+                  await client.query(
+                    `SELECT count(*) FROM public.${table}`
+                  );
+                }
+              } finally {
+                await client.query('ROLLBACK');
+              }
+
+              console.log('READ_ONLY_ROLE=PASS');
+              console.log('RESEARCH_TABLE_VISIBILITY=PASS');
+            } finally {
+              client.release();
+            }
+          } finally {
+            await pool.end();
+          }
+
+          // The approved runner has a known insecure TLS option.
+          // Patch only this temporary GitHub checkout, after hash verification.
+          const runnerPath = 'scripts/runLiveCanonicalAvailabilityAcceptance.mjs';
+          const original = fs.readFileSync(runnerPath, 'utf8');
+
+          const actualRunnerHash = crypto
+            .createHash('sha256')
+            .update(fs.readFileSync(runnerPath))
+            .digest('hex')
+            .toUpperCase();
+
+          if (actualRunnerHash !== expectedRunnerHash) {
+            throw new Error('CANONICAL_RUNNER_HASH_MISMATCH');
+          }
+
+          const oldTLS = 'ssl: {' + ' rejectUnauthorized: false },';
+          const occurrences = original.split(oldTLS).length - 1;
+
+          if (occurrences !== 1) {
+            throw new Error('CANONICAL_RUNNER_TLS_PATCH_GUARD_FAILED');
+          }
+
+          const updated = original.replace(
+            oldTLS,
+            `ssl: {
+              ca: process.env.FIE_RESEARCH_SUPABASE_CA_PEM,
+              rejectUnauthorized: true
+            },`
+          );
+
+          fs.writeFileSync(runnerPath, updated, 'utf8');
+
+          console.log('ACCEPTANCE_ONLY_TLS_PATCH=PASS');
+
+          const result = spawnSync(
+            process.execPath,
+            [
+              runnerPath,
+              '--season', '2026',
+              '--week', '8',
+              '--game-type', 'REG',
+              '--team', 'BAL'
+            ],
+            {
+              env: {
+                ...process.env,
+                RESEARCH_REPOSITORY_DATABASE_URL: protectedUrl,
+                PGOPTIONS: '-c default_transaction_read_only=on'
+              },
+              stdio: 'inherit',
+              timeout: 180000
+            }
+          );
+
+          if (result.error) throw result.error;
+
+          if (result.status !== 0) {
+            throw new Error('CANONICAL_ACCEPTANCE_FAILED');
+          }
+
+          console.log('R29_CANONICAL_ACCEPTANCE=PASS');
+          console.log('PRODUCTION_INGESTION=NOT_EXECUTED');
+          NODE
